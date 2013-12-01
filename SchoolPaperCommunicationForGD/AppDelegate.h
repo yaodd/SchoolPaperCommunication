@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "MessageVO.h"
 
+#define IOS_VERSION_7_OR_ABOVE (([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)? (YES):(NO))
+#define TOP_BAR_HEIGHT  (IOS_VERSION_7_OR_ABOVE ? 64 : 44)
+
 @protocol UserListDelegate;
 @protocol ChatDelegate;
 

@@ -23,13 +23,13 @@
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;
 }
-@property (strong, nonatomic) IBOutlet UITableView *chatTableView;
-@property (strong, nonatomic) IBOutlet UIView *sendView;
-@property (strong, nonatomic) IBOutlet UITextField *sendTextField;
-@property (strong, nonatomic) IBOutlet UIButton *sendButton;
-@property (strong, nonatomic) IBOutlet UIButton *recordButton;
+@property (strong, nonatomic) UITableView *chatTableView;
+@property (strong, nonatomic) UIView *sendView;
+@property (strong, nonatomic) UITextField *sendTextField;
+@property (strong, nonatomic) UIButton *sendButton;
+@property (strong, nonatomic) UIButton *recordButton;
 @property (retain, nonatomic) AVAudioPlayer *avPlay;
-@property (strong, nonatomic) IBOutlet UIButton *imagePickerButton;
+@property (strong, nonatomic) UIButton *imagePickerButton;
 
 @property (strong, nonatomic) NSString *chatWithUser;
 - (IBAction)imagePickerAction:(id)sender;

@@ -15,6 +15,7 @@
 #define VOICE_VIEW_TAG      222222
 #define IMAGE_VIEW_TAG      333333
 #define HEAD_VIEW_TAG       444444
+
 @interface ChatViewController ()
 {
     NSMutableArray *aryMessages;
@@ -56,7 +57,7 @@
     }
     
     self.title = self.chatWithUser;
-   
+    [self initLayout];
     [self initHistoryMsg];
     [self initFresh];
     [self initRecord];
@@ -72,6 +73,40 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 	// Do any additional setup after loading the view.
+}
+
+- (void)initLayout{
+    self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 56)];
+    self.chatTableView.delegate = self;
+    self.chatTableView.dataSource = self;
+    [self.view addSubview:chatTableView];
+    
+    self.sendView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT, self.view.frame.size.width, 56)];
+    [self.sendView setBackgroundColor:[UIColor yellowColor]];
+    [self.view addSubview:sendView];
+    
+    self.recordButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
+    [self.recordButton setFrame:CGRectMake(0, 6, 56, 44)];
+    [self.recordButton addTarget:self action:@selector(beginRecord:) forControlEvents:UIControlEventTouchDown];
+    [self.recordButton addTarget:self action:@selector(cancelRecord:) forControlEvents:UIControlEventTouchDragExit];
+    [self.recordButton addTarget:self action:@selector(finishRecord:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sendView addSubview:self.recordButton];
+    
+    self.imagePickerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.imagePickerButton setTitle:@"image" forState:UIControlStateNormal];
+    [self.imagePickerButton setFrame:CGRectMake(56, 6, 56, 44)];
+    [self.imagePickerButton addTarget:self action:@selector(imagePickerButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.sendView addSubview:self.imagePickerButton];
+    
+    self.sendTextField = [[UITextField alloc]initWithFrame:CGRectMake(56 + 56, 6, self.view.frame.size.width - 56 * 3, 44)];
+    [self.sendView addSubview:self.sendTextField];
+    
+    self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.sendButton setFrame:CGRectMake(self.view.frame.size.width - 56, 6, 56, 44)];
+    [self.sendButton setTitle:@"send" forState:UIControlStateNormal];
+    [self.sendButton addTarget:self action:@selector(sendAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sendView addSubview:sendButton];
 }
 //初始化历史消息记录
 - (void)initHistoryMsg{
@@ -169,8 +204,8 @@
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.sendView.frame;
     
-    if (frame.origin.y != screenHeight - keyboardSize.height - 40.) {
-        frame.origin.y = screenHeight - keyboardSize.height - 40.;//lxf
+    if (frame.origin.y != screenHeight - keyboardSize.height - 56.) {
+        frame.origin.y = screenHeight - keyboardSize.height - 56.;//lxf
         
         [UIView animateWithDuration:0.3
                               delay:0
@@ -191,7 +226,7 @@
     
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.sendView.frame;
-    frame.origin.y = screenHeight- 40;//lxf
+    frame.origin.y = screenHeight- 56;//lxf
     self.sendView.frame = frame;
     
     //    [UIView animateWithDuration:fAniTimeSecond animations:^{

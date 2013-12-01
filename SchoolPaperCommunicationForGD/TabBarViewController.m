@@ -7,7 +7,7 @@
 //
 
 #import "TabBarViewController.h"
-
+#import "AppDelegate.h"
 @interface TabBarViewController (){
     NSArray *titleArray;
     NSMutableArray *tabButtonArray;
@@ -30,12 +30,24 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.tabBar.hidden = YES;
     [self initTabBar];
+
+    self.tabBar.hidden = YES;
 }
 
 - (void)initTabBar{
-    UIImageView *tabBarView = [[UIImageView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - 49, 320, 49)];
+    CGFloat tabBarY;
+    if (IOS_VERSION_7_OR_ABOVE) {
+        tabBarY = self.view.frame.size.height - 49;
+    }
+    else{
+        tabBarY = self.view.frame.size.height - 49 - 44 - 20;
+    }
+
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_7_0
+    
+//#endif
+    UIImageView *tabBarView = [[UIImageView alloc]initWithFrame:CGRectMake(0, tabBarY, 320, 49)];
     tabBarView.userInteractionEnabled = YES;
     [tabBarView setBackgroundColor:[UIColor yellowColor]];
     [self.view addSubview:tabBarView];
