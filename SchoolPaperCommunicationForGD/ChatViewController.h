@@ -19,7 +19,8 @@
                                                 AVAudioRecorderDelegate,
                                                 UIImagePickerControllerDelegate,
                                                 UINavigationControllerDelegate,
-                                                    VoiceViewDelegate>{
+                                                VoiceViewDelegate,
+                                                UITextFieldDelegate>{
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _reloading;
 }

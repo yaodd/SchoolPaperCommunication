@@ -100,6 +100,8 @@
     [self.sendView addSubview:self.imagePickerButton];
     
     self.sendTextField = [[UITextField alloc]initWithFrame:CGRectMake(56 + 56, 6, self.view.frame.size.width - 56 * 3, 44)];
+    self.sendTextField.delegate = self;
+    [self.sendTextField addTarget:self action:@selector(textFieldDoneEditing:) forControlEvents:UIControlEventEditingDidEnd];
     [self.sendView addSubview:self.sendTextField];
     
     self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -203,18 +205,20 @@
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.sendView.frame;
+    __block CGRect frame2 = self.chatTableView.frame;
     
     if (frame.origin.y != screenHeight - keyboardSize.height - 56.) {
         frame.origin.y = screenHeight - keyboardSize.height - 56.;//lxf
-        
+        frame2.origin.y = screenHeight - keyboardSize.height - frame2.size.height - 56;
         [UIView animateWithDuration:0.3
                               delay:0
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              self.sendView.frame = frame;
-                             
+                             self.chatTableView.frame = frame2;
                          } completion:^(BOOL finished) {
                              self.sendView.frame = frame;
+                             self.chatTableView.frame = frame2;
                          }];
         
     }
@@ -226,14 +230,19 @@
     
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.sendView.frame;
-    frame.origin.y = screenHeight- 56;//lxf
+    frame.origin.y = screenHeight - 56;//lxf
     self.sendView.frame = frame;
+    
     
     //    [UIView animateWithDuration:fAniTimeSecond animations:^{
     //        self.viewItems.frame = frame;
     //    }];
 }
-
+-(void)textFieldDoneEditing: (id) sender
+{
+    NSLog(@"resign");
+	[sender resignFirstResponder];
+}
 
 #pragma mark -
 //取得当前程序的委托

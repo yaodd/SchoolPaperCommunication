@@ -59,6 +59,8 @@
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
     self.contactsTableView.delegate = self;
+//    [self.contactsTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
+
     [self.view addSubview:self.contactsTableView];
     
     self.searchBar = [[UISearchBar alloc]initWithFrame:CGRectZero];
@@ -83,10 +85,10 @@
 	
 	//利用数组来填充数据
 	NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity : 2];
-    for (int i = 0; i < 3; i ++) {
+    for (int i = 0; i < 13; i ++) {
         NSString *name = @"用户名";
         UIImage *image = [UIImage imageNamed:@"photo"];
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image", nil];
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image",[NSNumber numberWithBool:NO],@"toolIsShow", nil];
         [arr addObject:dic];
     }
 //	[arr addObject: @"关羽"];
@@ -104,7 +106,7 @@
     for (int i = 0; i < 3; i ++) {
         NSString *name = @"用户名2";
         UIImage *image = [UIImage imageNamed:@"photo1"];
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image", nil];
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image",[NSNumber numberWithBool:NO],@"toolIsShow", nil];
         [arr addObject:dic];
     }
 //	[arr addObject: @"曹操"];
@@ -191,14 +193,17 @@
 	//显示联系人名称
     NSDictionary *user = [users objectAtIndex:indexPath.row];
     [contactView setData:user];    
-	cell.textLabel.backgroundColor = [UIColor clearColor];
-	
+//	cell.textLabel.backgroundColor = [UIColor clearColor];
+	[cell setBackgroundColor:[UIColor whiteColor]];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return  40;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
     self.hidesBottomBarWhenPushed = YES;
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ChatViewController *chatViewController = [storyBoard instantiateViewControllerWithIdentifier:@"ChatID"];
