@@ -85,6 +85,15 @@
 		9CA37017184841F1001748F3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CA36FF9184841F1001748F3 /* UIKit.framework */; };
 		9CA3701F184841F1001748F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CA3701D184841F1001748F3 /* InfoPlist.strings */; };
 		9CA37021184841F1001748F3 /* SchoolPaperCommunicationForGDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CA37020184841F1001748F3 /* SchoolPaperCommunicationForGDTests.m */; };
+		9CCACDAD184C821A00739327 /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCACDAC184C821A00739327 /* InfoViewController.m */; };
+		9CCACDB0184C823100739327 /* FunctionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCACDAF184C823100739327 /* FunctionListViewController.m */; };
+		9CCACDB3184C823D00739327 /* DynamicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCACDB2184C823D00739327 /* DynamicsViewController.m */; };
+		9CCACDB6184C824800739327 /* SetUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCACDB5184C824800739327 /* SetUpViewController.m */; };
+		9CCACDBB184C915400739327 /* mod_user.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACDB7184C915400739327 /* mod_user.png */; };
+		9CCACDBC184C915400739327 /* btn_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACDB8184C915400739327 /* btn_down.png */; };
+		9CCACDBD184C915400739327 /* btn_listbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACDB9184C915400739327 /* btn_listbg.png */; };
+		9CCACDBE184C915400739327 /* btn_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACDBA184C915400739327 /* btn_right.png */; };
+		9CCACDC1184C9A7B00739327 /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCACDC0184C9A7B00739327 /* ContactView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +199,20 @@
 		9CA3701C184841F1001748F3 /* SchoolPaperCommunicationForGDTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SchoolPaperCommunicationForGDTests-Info.plist"; sourceTree = "<group>"; };
 		9CA3701E184841F1001748F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9CA37020184841F1001748F3 /* SchoolPaperCommunicationForGDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SchoolPaperCommunicationForGDTests.m; sourceTree = "<group>"; };
+		9CCACDAB184C821A00739327 /* InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoViewController.h; sourceTree = "<group>"; };
+		9CCACDAC184C821A00739327 /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewController.m; sourceTree = "<group>"; };
+		9CCACDAE184C823100739327 /* FunctionListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FunctionListViewController.h; sourceTree = "<group>"; };
+		9CCACDAF184C823100739327 /* FunctionListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FunctionListViewController.m; sourceTree = "<group>"; };
+		9CCACDB1184C823D00739327 /* DynamicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicsViewController.h; sourceTree = "<group>"; };
+		9CCACDB2184C823D00739327 /* DynamicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicsViewController.m; sourceTree = "<group>"; };
+		9CCACDB4184C824800739327 /* SetUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetUpViewController.h; sourceTree = "<group>"; };
+		9CCACDB5184C824800739327 /* SetUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetUpViewController.m; sourceTree = "<group>"; };
+		9CCACDB7184C915400739327 /* mod_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mod_user.png; sourceTree = "<group>"; };
+		9CCACDB8184C915400739327 /* btn_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_down.png; sourceTree = "<group>"; };
+		9CCACDB9184C915400739327 /* btn_listbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_listbg.png; sourceTree = "<group>"; };
+		9CCACDBA184C915400739327 /* btn_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_right.png; sourceTree = "<group>"; };
+		9CCACDBF184C9A7B00739327 /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
+		9CCACDC0184C9A7B00739327 /* ContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +270,10 @@
 		9C2907E318484B0B002CCAF1 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				9CCACDB7184C915400739327 /* mod_user.png */,
+				9CCACDB8184C915400739327 /* btn_down.png */,
+				9CCACDB9184C915400739327 /* btn_listbg.png */,
+				9CCACDBA184C915400739327 /* btn_right.png */,
 				9C12ACD4184B22CA00C81424 /* logo@2x.png */,
 				9C12ACD5184B22CA00C81424 /* logo.png */,
 				9C12ACD8184B295200C81424 /* bookmark_edit_item_bg.png */,
@@ -294,6 +321,8 @@
 			children = (
 				9C2908141848916B002CCAF1 /* ContactsViewController.h */,
 				9C2908151848916B002CCAF1 /* ContactsViewController.m */,
+				9CCACDBF184C9A7B00739327 /* ContactView.h */,
+				9CCACDC0184C9A7B00739327 /* ContactView.m */,
 				9C29082A18499660002CCAF1 /* Chat */,
 			);
 			name = Contacts;
@@ -465,8 +494,12 @@
 		9CA3702A184846CA001748F3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				9C2908371849C6D9002CCAF1 /* Custom */,
+				9CCACDA7184C811100739327 /* Information */,
 				9C290813184890B1002CCAF1 /* Contacts */,
+				9CCACDA8184C812200739327 /* FuncionList */,
+				9CCACDA9184C813200739327 /* Dynamics */,
+				9CCACDAA184C819A00739327 /* SetUp */,
+				9C2908371849C6D9002CCAF1 /* Custom */,
 				9CA3702B184846D0001748F3 /* Tabbar */,
 			);
 			name = UI;
@@ -479,6 +512,42 @@
 				9C2907E018484842002CCAF1 /* TabBarViewController.m */,
 			);
 			name = Tabbar;
+			sourceTree = "<group>";
+		};
+		9CCACDA7184C811100739327 /* Information */ = {
+			isa = PBXGroup;
+			children = (
+				9CCACDAB184C821A00739327 /* InfoViewController.h */,
+				9CCACDAC184C821A00739327 /* InfoViewController.m */,
+			);
+			name = Information;
+			sourceTree = "<group>";
+		};
+		9CCACDA8184C812200739327 /* FuncionList */ = {
+			isa = PBXGroup;
+			children = (
+				9CCACDAE184C823100739327 /* FunctionListViewController.h */,
+				9CCACDAF184C823100739327 /* FunctionListViewController.m */,
+			);
+			name = FuncionList;
+			sourceTree = "<group>";
+		};
+		9CCACDA9184C813200739327 /* Dynamics */ = {
+			isa = PBXGroup;
+			children = (
+				9CCACDB1184C823D00739327 /* DynamicsViewController.h */,
+				9CCACDB2184C823D00739327 /* DynamicsViewController.m */,
+			);
+			name = Dynamics;
+			sourceTree = "<group>";
+		};
+		9CCACDAA184C819A00739327 /* SetUp */ = {
+			isa = PBXGroup;
+			children = (
+				9CCACDB4184C824800739327 /* SetUpViewController.h */,
+				9CCACDB5184C824800739327 /* SetUpViewController.m */,
+			);
+			name = SetUp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -570,6 +639,7 @@
 				9C2907FC18484B39002CCAF1 /* about_pressed@2X.png in Resources */,
 				9C29080C18484B39002CCAF1 /* service@2X.png in Resources */,
 				9CA3700E184841F1001748F3 /* Images.xcassets in Resources */,
+				9CCACDBE184C915400739327 /* btn_right.png in Resources */,
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
 				9C29080318484B39002CCAF1 /* case_pressed.png in Resources */,
 				9C2908481849C756002CCAF1 /* blueArrow@2x.png in Resources */,
@@ -580,6 +650,7 @@
 				9C29080718484B39002CCAF1 /* more_pressed.png in Resources */,
 				9C2907FD18484B39002CCAF1 /* business.png in Resources */,
 				9C290877184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png in Resources */,
+				9CCACDBD184C915400739327 /* btn_listbg.png in Resources */,
 				9C12ACD6184B22CA00C81424 /* logo@2x.png in Resources */,
 				9C2908461849C756002CCAF1 /* blackArrow@2x.png in Resources */,
 				9C290873184B0821002CCAF1 /* ReceiverTextNodeBkg@2x.png in Resources */,
@@ -590,6 +661,7 @@
 				9C29086D184B0821002CCAF1 /* SenderAppNodeBkg_HL@2x.png in Resources */,
 				9C29080618484B39002CCAF1 /* more@2X.png in Resources */,
 				9C29086C184B0821002CCAF1 /* SenderAppNodeBkg_HL.png in Resources */,
+				9CCACDBB184C915400739327 /* mod_user.png in Resources */,
 				9CA37009184841F1001748F3 /* Main.storyboard in Resources */,
 				9C29086E184B0821002CCAF1 /* SenderVoiceNodeDownloading.png in Resources */,
 				9C2907FA18484B39002CCAF1 /* about@2X.png in Resources */,
@@ -607,6 +679,7 @@
 				9C29080118484B39002CCAF1 /* case.png in Resources */,
 				9C12ACDA184B295200C81424 /* bookmark_edit_item_bg.png in Resources */,
 				9C29080518484B39002CCAF1 /* more.png in Resources */,
+				9CCACDBC184C915400739327 /* btn_down.png in Resources */,
 				9C29080218484B39002CCAF1 /* case@2X.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -626,13 +699,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CCACDB6184C824800739327 /* SetUpViewController.m in Sources */,
 				9C29082918499567002CCAF1 /* MessageVO.m in Sources */,
+				9CCACDC1184C9A7B00739327 /* ContactView.m in Sources */,
 				9C2907E118484842002CCAF1 /* TabBarViewController.m in Sources */,
+				9CCACDB0184C823100739327 /* FunctionListViewController.m in Sources */,
 				9C12ACD3184B1FFB00C81424 /* ImageView.m in Sources */,
 				9CA3700C184841F1001748F3 /* ViewController.m in Sources */,
 				9C2908191848A2A3002CCAF1 /* ChatViewController.m in Sources */,
+				9CCACDB3184C823D00739327 /* DynamicsViewController.m in Sources */,
 				9C2908161848916B002CCAF1 /* ContactsViewController.m in Sources */,
 				9CA37006184841F1001748F3 /* AppDelegate.m in Sources */,
+				9CCACDAD184C821A00739327 /* InfoViewController.m in Sources */,
 				9C29083B1849C712002CCAF1 /* EGORefreshTableHeaderView.m in Sources */,
 				9C12ACD0184B170400C81424 /* VoiceView.m in Sources */,
 				9CA37002184841F1001748F3 /* main.m in Sources */,
@@ -767,7 +845,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SchoolPaperCommunicationForGD/SchoolPaperCommunicationForGD-Prefix.pch";
 				INFOPLIST_FILE = "SchoolPaperCommunicationForGD/SchoolPaperCommunicationForGD-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -781,7 +859,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SchoolPaperCommunicationForGD/SchoolPaperCommunicationForGD-Prefix.pch";
 				INFOPLIST_FILE = "SchoolPaperCommunicationForGD/SchoolPaperCommunicationForGD-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

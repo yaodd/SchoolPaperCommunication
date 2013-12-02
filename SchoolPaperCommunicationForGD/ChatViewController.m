@@ -76,7 +76,7 @@
 }
 
 - (void)initLayout{
-    self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 56)];
+    self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT)];
     self.chatTableView.delegate = self;
     self.chatTableView.dataSource = self;
     [self.view addSubview:chatTableView];
@@ -96,7 +96,7 @@
     self.imagePickerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.imagePickerButton setTitle:@"image" forState:UIControlStateNormal];
     [self.imagePickerButton setFrame:CGRectMake(56, 6, 56, 44)];
-    [self.imagePickerButton addTarget:self action:@selector(imagePickerButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.imagePickerButton addTarget:self action:@selector(imagePickerAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.sendView addSubview:self.imagePickerButton];
     
     self.sendTextField = [[UITextField alloc]initWithFrame:CGRectMake(56 + 56, 6, self.view.frame.size.width - 56 * 3, 44)];

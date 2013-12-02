@@ -8,6 +8,11 @@
 
 #import "TabBarViewController.h"
 #import "AppDelegate.h"
+#import "InfoViewController.h"
+#import "ContactsViewController.h"
+#import "FunctionListViewController.h"
+#import "DynamicsViewController.h"
+#import "SetUpViewController.h"
 @interface TabBarViewController (){
     NSArray *titleArray;
     NSMutableArray *tabButtonArray;
@@ -16,12 +21,15 @@
 @end
 
 @implementation TabBarViewController
+@synthesize tabBarView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        [self setHidesBottomBarWhenPushed:YES];
+
     }
     return self;
 }
@@ -30,27 +38,48 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self initControllers];
     [self initTabBar];
 
-    self.tabBar.hidden = YES;
+}
+
+- (void)initControllers{
+    InfoViewController *infoViewController = [[InfoViewController alloc]init];
+    UINavigationController *tab1 = [[UINavigationController alloc]initWithRootViewController:infoViewController];
+    
+    ContactsViewController *contactsViewController = [[ContactsViewController alloc]init];
+    UINavigationController *tab2 = [[UINavigationController alloc]initWithRootViewController:contactsViewController];
+    
+    FunctionListViewController *functionListViewController = [[FunctionListViewController alloc]init];
+    UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:functionListViewController];
+    
+    DynamicsViewController *dynamicsViewController = [[DynamicsViewController alloc]init];
+    UINavigationController *tab4 = [[UINavigationController alloc]initWithRootViewController:dynamicsViewController];
+    
+    SetUpViewController *setUpViewController = [[SetUpViewController alloc]init];
+    UINavigationController *tab5 = [[UINavigationController alloc]initWithRootViewController:setUpViewController];
+    
+//    self.tabBarController.viewControllers = @[tab1,tab2,tab3,tab4,tab5];
+    
+    self.viewControllers = @[tab1,tab2,tab3,tab4,tab5];
 }
 
 - (void)initTabBar{
+//    self.tabBar.hidden = YES;
     CGFloat tabBarY;
-    if (IOS_VERSION_7_OR_ABOVE) {
+//    if (IOS_VERSION_7_OR_ABOVE) {
         tabBarY = self.view.frame.size.height - 49;
-    }
-    else{
-        tabBarY = self.view.frame.size.height - 49 - 44 - 20;
-    }
+//    }
+//    else{
+//        tabBarY = self.view.frame.size.height - 49 - 44 - 20;
+//    }
 
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_7_0
     
-//#endif
-    UIImageView *tabBarView = [[UIImageView alloc]initWithFrame:CGRectMake(0, tabBarY, 320, 49)];
+    tabBarView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 49)];
     tabBarView.userInteractionEnabled = YES;
     [tabBarView setBackgroundColor:[UIColor yellowColor]];
-    [self.view addSubview:tabBarView];
+//    [self.view addSubview:tabBarView];
+    [self.tabBar addSubview:tabBarView];
     
     NSArray *selectedImages = [[NSArray alloc]initWithObjects:@"business_pressed.png",@"case_pressed",@"serve_pressed",@"about_pressed",@"more_pressed",nil];
     NSArray *unselectedImages = [[NSArray alloc]initWithObjects:@"business.png",@"case",@"service",@"about",@"more",nil];

@@ -8,7 +8,9 @@
 
 #import "ViewController.h"
 
-@interface ContactsViewController : ViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ContactsViewController : ViewController <UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
+- (void)scrollTableViewToSearchBarAnimated:(BOOL)animated; 
 @property (strong, nonatomic) IBOutlet UITableView *contactsTableView;
+@property(nonatomic, strong) UISearchBar *searchBar;
 
 @end

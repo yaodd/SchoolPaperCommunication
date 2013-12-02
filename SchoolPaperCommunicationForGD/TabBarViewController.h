@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TabBarViewController : UITabBarController
-
+@property (nonatomic, retain) UIImageView *tabBarView;
 @end
