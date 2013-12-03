@@ -6,13 +6,13 @@
 //  Copyright (c) 2013年 yaodd. All rights reserved.
 //
 
-#import "ViewController.h"
+//#import "ViewController.h"
 #import "AppDelegate.h"
 #import "EGORefreshTableHeaderView.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "VoiceView.h"
-@interface ChatViewController : ViewController <UITableViewDataSource,
+@interface ChatViewController : UIViewController <UITableViewDataSource,
                                                 UITableViewDelegate,
                                                 ChatDelegate,
                                                 EGORefreshTableHeaderDelegate,

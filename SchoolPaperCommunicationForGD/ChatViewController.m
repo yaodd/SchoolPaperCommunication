@@ -79,6 +79,8 @@
     self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT)];
     self.chatTableView.delegate = self;
     self.chatTableView.dataSource = self;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tableViewTapGesture:)];
+    [self.chatTableView addGestureRecognizer:tapGesture];
     [self.view addSubview:chatTableView];
     
     self.sendView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT, self.view.frame.size.width, 56)];
@@ -101,7 +103,7 @@
     
     self.sendTextField = [[UITextField alloc]initWithFrame:CGRectMake(56 + 56, 6, self.view.frame.size.width - 56 * 3, 44)];
     self.sendTextField.delegate = self;
-    [self.sendTextField addTarget:self action:@selector(textFieldDoneEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    [self.sendTextField addTarget:self action:@selector(textFieldDoneEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [self.sendView addSubview:self.sendTextField];
     
     self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -109,6 +111,11 @@
     [self.sendButton setTitle:@"send" forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.sendView addSubview:sendButton];
+}
+- (void)tableViewTapGesture:(id)sender{
+//    [sender resignFirstResponder];
+//    [self.chatTableView resignFirstResponder];
+    [self.sendTextField resignFirstResponder];
 }
 //初始化历史消息记录
 - (void)initHistoryMsg{
@@ -230,9 +237,11 @@
     
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.sendView.frame;
+    __block CGRect frame2 = self.chatTableView.frame;
     frame.origin.y = screenHeight - 56;//lxf
+    frame2.origin.y = 0;
     self.sendView.frame = frame;
-    
+    self.chatTableView.frame = frame2;
     
     //    [UIView animateWithDuration:fAniTimeSecond animations:^{
     //        self.viewItems.frame = frame;

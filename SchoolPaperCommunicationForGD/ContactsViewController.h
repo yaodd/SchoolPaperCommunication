@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 yaodd. All rights reserved.
 //
 
-#import "ViewController.h"
+//#import "ViewController.h"
 
-@interface ContactsViewController : ViewController <UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
+@interface ContactsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 - (void)scrollTableViewToSearchBarAnimated:(BOOL)animated; 
 @property (strong, nonatomic) IBOutlet UITableView *contactsTableView;
 @property(nonatomic, strong) UISearchBar *searchBar;
