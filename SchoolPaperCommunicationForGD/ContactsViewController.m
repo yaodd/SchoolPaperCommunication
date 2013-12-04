@@ -55,6 +55,7 @@
     [self initData];
 //    [self.contactsTableView reloadData];
 }
+//初始化tableView
 - (void)iniTableView{
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
@@ -77,6 +78,7 @@
     self.contactsTableView.tableHeaderView = self.searchBar;
     self.contactsTableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
 }
+//初始化数据加载
 - (void)initData{
     data = [[NSMutableArray alloc]initWithCapacity : 2];
 	
@@ -205,9 +207,10 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     self.hidesBottomBarWhenPushed = YES;
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ChatViewController *chatViewController = [storyBoard instantiateViewControllerWithIdentifier:@"ChatID"];
+//    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ChatViewController *chatViewController = [[ChatViewController alloc]init];
 //    ChatViewController *chatViewController = [[ChatViewController alloc]init];
+    
     [self.navigationController pushViewController:chatViewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }

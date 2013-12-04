@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXTAlertView.h"
 
-@interface DynamicPswViewController : UIViewController
+
+@interface DynamicPswViewController : UIViewController <XXTAlertViewDelegate>
 @property (strong, nonatomic) IBOutlet UITextField *phoneTF;
 @property (strong, nonatomic) IBOutlet UIButton *getDynamicButton;
 - (IBAction)getDynamicAction:(id)sender;

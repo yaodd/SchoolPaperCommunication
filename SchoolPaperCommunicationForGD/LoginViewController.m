@@ -11,6 +11,7 @@
 #import "ChoosePlayerViewController.h"
 #import "AppDelegate.h"
 #import "DynamicPswViewController.h"
+#import "ForgetPswViewController.h"
 @interface LoginViewController ()
 
 @end
@@ -52,14 +53,14 @@
     [loginView.layer setBorderColor:[UIColor colorWithRed:183.0/255 green:183.0/255 blue:183.0/255 alpha:1.0].CGColor];
     
     UIView *leftView1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 32, 39)];
-    UIImageView *leftImageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 12, 14)];
+    UIImageView *leftImageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10, 12, 12, 14)];
     [leftImageView1 setImage:[UIImage imageNamed:@"usericon"]];
     [leftView1 addSubview:leftImageView1];
     accountTF.leftView = leftView1;
     [accountTF setLeftViewMode:UITextFieldViewModeAlways];
     
     UIView *leftView2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 32, 39)];
-    UIImageView *leftImageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 12, 14)];
+    UIImageView *leftImageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(10, 12, 12, 14)];
     [leftImageView2 setImage:[UIImage imageNamed:@"codeicon"]];
     [leftView2 addSubview:leftImageView2];
     passwordTF.leftView = leftView2;
@@ -116,6 +117,8 @@
 }
 
 - (IBAction)forgetPswAction:(id)sender {
+    ForgetPswViewController *forgetPswViewController = [[ForgetPswViewController alloc]initWithNibName:@"ForgetPswViewController" bundle:nil];
+    [self.navigationController pushViewController:forgetPswViewController animated:YES];
 }
 
 - (IBAction)dynamicPswAction:(id)sender {

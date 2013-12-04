@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXTAlertView.h"
 
-@interface ChoosePlayerViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>
+@interface ChoosePlayerViewController : UIViewController <UITableViewDelegate,UITableViewDataSource,XXTAlertViewDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *playerTableView;
+@property (nonatomic, retain) NSMutableArray *dataArray;
 @end

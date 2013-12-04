@@ -74,7 +74,7 @@
                                                object:nil];
 	// Do any additional setup after loading the view.
 }
-
+//初始化布局
 - (void)initLayout{
     self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT)];
     self.chatTableView.delegate = self;

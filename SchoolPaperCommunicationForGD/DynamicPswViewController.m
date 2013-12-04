@@ -9,6 +9,7 @@
 #import "DynamicPswViewController.h"
 #import "XXTAlertView.h"
 
+
 @interface DynamicPswViewController ()
 
 @end
@@ -41,7 +42,7 @@
     [getDynamicButton.layer setBorderColor:[UIColor colorWithRed:183.0/255 green:183.0/255 blue:183.0/255 alpha:1.0].CGColor];
     
     UIView *leftView1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 32, 39)];
-    UIImageView *leftImageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, 12, 14)];
+    UIImageView *leftImageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(10, 12, 12, 14)];
     [leftImageView1 setImage:[UIImage imageNamed:@"usericon"]];
     [leftView1 addSubview:leftImageView1];
     phoneTF.leftView = leftView1;
@@ -56,8 +57,20 @@
 }
 
 - (IBAction)getDynamicAction:(id)sender {
-    XXTAlertView *alertView = [[XXTAlertView alloc]initWithFrame:CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 200, 100)];
-    [alertView show];
     
+    XXTAlertView *alertView = [[XXTAlertView alloc]initWithTitle:@"发送成功" XXTAlertViewType:kXXTAlertViewTypeSucceed otherButtonTitles:@"返回", nil];
+    alertView.delegate = self;
+    [self.navigationController.view addSubview:alertView];
+    [alertView show];
+}
+
+#pragma XXTAlertViewDelegate mark -
+- (void)XXTAlertViewButtonAction:(XXTAlertView *)alertView button:(UIButton *)button{
+    if (button.tag == 0) {
+//        NSLog(@"tag 0");
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else{
+        NSLog(@"tag 1");
+    }
 }
 @end

@@ -8,13 +8,16 @@
 
 #import "ChoosePlayerViewController.h"
 #import "TabBarViewController.h"
+#import "PlayerView.h"
 
+#define PLAYER_VIEW_TAG     111111
 @interface ChoosePlayerViewController ()
 
 @end
 
 @implementation ChoosePlayerViewController
 @synthesize playerTableView;
+@synthesize dataArray;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -30,8 +33,46 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self initLayout];
+    [self initData];
+}
+//初始化布局
+- (void)initLayout{
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStyleBordered target:self action:@selector(backAction:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    self.title = @"选择角色";
+    [playerTableView setSeparatorColor:[UIColor clearColor]];
+    [playerTableView setSectionIndexColor:[UIColor clearColor]];
+    
 }
 
+//返回前询问
+- (void)backAction:(id)sender{
+    XXTAlertView *alertView = [[XXTAlertView alloc]initWithTitle:@"返回登录页？" XXTAlertViewType:kXXTAlertViewTypeNoImage otherButtonTitles:@"取消",@"确定", nil];
+    alertView.delegate = self;
+    [self.navigationController.view addSubview:alertView];
+    [alertView show];
+}
+//自定义alertView委托
+#pragma XXTAlertViewDelegate mark
+- (void)XXTAlertViewButtonAction:(XXTAlertView *)alertView button:(UIButton *)button{
+    if (button.tag == 0) {
+        
+    } else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+//初始化数据
+- (void)initData{
+    NSArray *playerArray = [NSArray arrayWithObjects:@"老师",@"家长",@"学生", nil];
+    NSArray *headImageArray = [NSArray arrayWithObjects:@"photo",@"photo1",@"photo", nil];
+    dataArray = [[NSMutableArray alloc]init];
+    for (int i = 0; i < 3; i ++) {
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[playerArray objectAtIndex:i],@"player",[UIImage imageNamed:[headImageArray objectAtIndex:i]],@"image", nil];
+        [dataArray addObject:dict];
+    }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -40,23 +81,30 @@
 
 #pragma UITableViewDelegate mark -
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 40;
+    return 95;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return [dataArray count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *CellIdentifier = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        
+        PlayerView *playerView = [[PlayerView alloc]initWithDefault];
+        [playerView setTag:PLAYER_VIEW_TAG];
+        [cell setBackgroundColor:[UIColor clearColor]];
+        [cell addSubview:playerView];
     }
-    [cell.textLabel setText:@"老师"];
-    
+    PlayerView *playerView = (PlayerView *)[cell viewWithTag:PLAYER_VIEW_TAG];
+    NSDictionary *dict = [dataArray objectAtIndex:indexPath.row];
+    [playerView setData:dict];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
     TabBarViewController *tabBarViewController = [[TabBarViewController alloc]init];
     [self presentViewController:tabBarViewController animated:YES completion:nil];
 }

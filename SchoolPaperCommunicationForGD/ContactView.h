@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+
+
 @interface ContactView : UIView
 
 @property (nonatomic, retain) UIImageView *userHeadIV;
