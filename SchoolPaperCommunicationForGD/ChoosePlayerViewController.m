@@ -9,6 +9,10 @@
 #import "ChoosePlayerViewController.h"
 #import "TabBarViewController.h"
 #import "PlayerView.h"
+#import "XXTModelGlobal.h"
+#import "XXTUserRole.h"
+#import "XXTModelController.h"
+
 
 #define PLAYER_VIEW_TAG     111111
 @interface ChoosePlayerViewController ()
@@ -65,13 +69,17 @@
 }
 //初始化数据
 - (void)initData{
-    NSArray *playerArray = [NSArray arrayWithObjects:@"老师",@"家长",@"学生", nil];
-    NSArray *headImageArray = [NSArray arrayWithObjects:@"photo",@"photo1",@"photo", nil];
     dataArray = [[NSMutableArray alloc]init];
-    for (int i = 0; i < 3; i ++) {
+    XXTModelGlobal *global = [XXTModelGlobal sharedModel];
+    dataArray = (NSMutableArray *)global.userObjectArr;
+    NSLog(@"array count %d",[dataArray count]);
+//    NSArray *playerArray = [NSArray arrayWithObjects:@"老师",@"家长",@"学生", nil];
+//    NSArray *headImageArray = [NSArray arrayWithObjects:@"photo",@"photo1",@"photo", nil];
+    /*for (int i = 0; i < 3; i ++) {
         NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[playerArray objectAtIndex:i],@"player",[UIImage imageNamed:[headImageArray objectAtIndex:i]],@"image", nil];
         [dataArray addObject:dict];
     }
+     */
 }
 - (void)didReceiveMemoryWarning
 {
@@ -97,14 +105,15 @@
         [cell addSubview:playerView];
     }
     PlayerView *playerView = (PlayerView *)[cell viewWithTag:PLAYER_VIEW_TAG];
-    NSDictionary *dict = [dataArray objectAtIndex:indexPath.row];
-    [playerView setData:dict];
+    XXTUserRole *userRole = [dataArray objectAtIndex:indexPath.row];
+    [playerView setData:userRole];
     return cell;
 }
+//选择某一个角色
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    
+    [XXTModelController selectUserRole:[dataArray objectAtIndex:indexPath.row]];//更改当前的角色选择；
     TabBarViewController *tabBarViewController = [[TabBarViewController alloc]init];
     [self presentViewController:tabBarViewController animated:YES completion:nil];
 }

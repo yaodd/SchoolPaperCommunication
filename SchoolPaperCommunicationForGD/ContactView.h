@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXTContactPerson.h"
 
 
 
@@ -21,6 +22,7 @@
 @property (nonatomic, retain) UIButton  *msgButton;
 @property (nonatomic, retain) UIButton  *chatButton;
 @property (nonatomic, retain) UIButton  *deleteButton;
-@property (nonatomic, retain) NSMutableDictionary *myDict;
-- (void)setData:(NSMutableDictionary *)dict;
+//@property (nonatomic, retain) NSMutableDictionary *myDict;
+@property (nonatomic, retain) XXTContactPerson *contactPerson;
+- (void)setData:(XXTContactPerson *)person;
 @end

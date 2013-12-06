@@ -10,12 +10,16 @@
 
 @implementation XXTImage
 
-@synthesize originPicURL,thumbPicURL;
-
 - (id) initWithDictionary:(NSDictionary *)dict{
     if (self = [super init]){
-        originPicURL = [[dict objectForKey:@"original"] copy];
-        thumbPicURL = [[dict objectForKey:@"thumb"] copy];
+        if ([dict objectForKey:@"original"]!=nil)
+            self.originPicURL = [dict objectForKey:@"original"];
+        if ([dict objectForKey:@"avatar"]!=nil)
+            self.originPicURL = [dict objectForKey:@"avatar"];
+        if ([dict objectForKey:@"thumb"]!=nil)
+            self.thumbPicURL = [dict objectForKey:@"thumb"] ;
+        if ([dict objectForKey:@"avatarThumb"]!=nil)
+            self.thumbPicURL = [dict objectForKey:@"avatarThumb"] ;
     }
     return self;
 }

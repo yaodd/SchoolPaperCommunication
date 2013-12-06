@@ -9,17 +9,19 @@
 #import "XXTObject.h"
 #import "XXTContactPerson.h"
 
-enum XXTGroupType{
+typedef enum{
     XXTGroupTypeTeachers=1,
     XXTGroupTypeParents=2
-};
+}XXTGroupType;
 
 @interface XXTGroup : XXTObject
 
 @property (strong,nonatomic) NSString* groupId;
 @property (strong,nonatomic) NSString* groupName;
-@property enum XXTGroupType groupType;
+@property XXTGroupType groupType;
 
-@property (strong,nonatomic) NSArray* groupMemberArr;
+@property (strong,nonatomic) NSMutableArray* groupMemberArr;
+
+- (XXTGroup*) initWithDictionary:(NSDictionary*) dict;
 
 @end

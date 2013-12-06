@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXTUserRole.h"
 
 @interface PlayerView : UIView
 @property (nonatomic, retain)UIImageView *headImageView;
 @property (nonatomic, retain)UILabel     *playerLabel;
+@property (nonatomic, retain)XXTUserRole *userRole;
 - (id)initWithDefault;
 
-- (void)setData:(NSDictionary *)dict;
+- (void)setData:(XXTUserRole *)role;
 @end

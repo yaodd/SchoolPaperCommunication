@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "Dao.h"
 
 @implementation AppDelegate
 @synthesize window;
@@ -15,6 +16,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    Dao *dao = [Dao sharedDao];
     
     LoginViewController *loginViewController = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
     window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];

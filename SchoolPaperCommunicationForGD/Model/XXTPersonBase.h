@@ -10,17 +10,17 @@
 #import "XXTImage.h"
 #import "XXTObject.h"
 
-enum XXTPersonType {
+typedef enum {
     XXTPersonTypeTeacher = 1,
     XXTPersonTypeParent  = 2,
     XXTPersonTypeStudent = 3,
-};
+}XXTPersonType;
 
 @interface XXTPersonBase : XXTObject
 
 @property (strong,nonatomic) NSString* pid;
 @property (strong,nonatomic) NSString *name;
-@property (nonatomic) enum XXTPersonType type;
+@property (nonatomic) XXTPersonType type;
 @property (strong,nonatomic) XXTImage *avatar;
 
 @end

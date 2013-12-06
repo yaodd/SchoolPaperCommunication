@@ -9,6 +9,9 @@
 #import "ContactsViewController.h"
 #import "ChatViewController.h"
 #import "ContactView.h"
+#import "XXTUserRole.h"
+#import "XXTModelGlobal.h"
+#import "Dao.h"
 
 #define CONTACT_VIEW_TAG    111111
 
@@ -60,8 +63,6 @@
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
     self.contactsTableView.delegate = self;
-//    [self.contactsTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
-
     [self.view addSubview:self.contactsTableView];
     
     self.searchBar = [[UISearchBar alloc]initWithFrame:CGRectZero];
@@ -80,44 +81,40 @@
 }
 //初始化数据加载
 - (void)initData{
-    data = [[NSMutableArray alloc]initWithCapacity : 2];
-	
-	NSMutableDictionary *dict = [[NSMutableDictionary alloc]initWithCapacity : 2];
-	[dict setObject:@"好友" forKey:@"groupname"];
-	
-	//利用数组来填充数据
-	NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity : 2];
-    for (int i = 0; i < 13; i ++) {
-        NSString *name = @"用户名";
-        UIImage *image = [UIImage imageNamed:@"photo"];
-        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image",[NSNumber numberWithBool:NO],@"toolIsShow", nil];
-        [arr addObject:dic];
-    }
-//	[arr addObject: @"关羽"];
-//	[arr addObject: @"张飞"];
-//	[arr addObject: @"孔明"];
-	[dict setObject:arr forKey:@"users"];
-	[data addObject: dict];
-    
-	
-	
-	dict = [[NSMutableDictionary alloc]initWithCapacity : 2];
-	[dict setObject:@"对手" forKey:@"groupname"];
-	
-	arr = [[NSMutableArray alloc] initWithCapacity : 2];
-    for (int i = 0; i < 3; i ++) {
-        NSString *name = @"用户名2";
-        UIImage *image = [UIImage imageNamed:@"photo1"];
-        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image",[NSNumber numberWithBool:NO],@"toolIsShow", nil];
-        [arr addObject:dic];
-    }
-//	[arr addObject: @"曹操"];
-//	[arr addObject: @"司马懿"];
-//	[arr addObject: @"张辽"];
-	[dict setObject:arr forKey:@"users"];
-	[data addObject: dict];
-	
+    XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
+    XXTUserRole *userRole = modelGlobal.currentUser;
+    if ([userRole.contactGroupArr count] == 0) {
+        NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadContactGroup:) object:nil];
+        [thread start];
 
+    }
+    
+    [self updateContactGroup];
+}
+//下载通讯录
+- (void)downloadContactGroup:(NSThread *)thread{
+    Dao *dao = [Dao sharedDao];
+    int isSuccess = [dao requestForGetContactList];
+    if (isSuccess ==  1) {
+        [self performSelectorOnMainThread:@selector(updateContactGroup) withObject:nil waitUntilDone:YES];
+    }
+
+}
+//更新通讯录
+- (void)updateContactGroup{
+    XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
+    XXTUserRole *userRole = modelGlobal.currentUser;
+    data = [[NSMutableArray alloc]init];
+
+    for (XXTGroup *group in userRole.contactGroupArr) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setObject:group.groupName forKey:@"groupname"];
+        NSLog(@"groupname %@",group.groupName);
+        NSArray *groupMemberArr = group.groupMemberArr;
+        [dict setObject:groupMemberArr forKey:@"users"];
+        [data addObject:dict];
+    }
+    [contactsTableView reloadData];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -169,6 +166,7 @@
     } else{
         NSDictionary * d = [data objectAtIndex:section];
         num = [[d objectForKey:@"users"] count];
+        
     }
     return num;
 }
@@ -191,11 +189,9 @@
 	if (users == nil) {
 		return cell;
 	}
-	
-	//显示联系人名称
-    NSDictionary *user = [users objectAtIndex:indexPath.row];
-    [contactView setData:user];    
-//	cell.textLabel.backgroundColor = [UIColor clearColor];
+	//加载数据
+    XXTContactPerson *user = [users objectAtIndex:indexPath.row];
+    [contactView setData:user];
 	[cell setBackgroundColor:[UIColor whiteColor]];
     return cell;
 }

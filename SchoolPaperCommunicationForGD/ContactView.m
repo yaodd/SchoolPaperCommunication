@@ -7,7 +7,7 @@
 //
 
 #import "ContactView.h"
-
+#import "XXTModelController.h"
 @implementation ContactView
 @synthesize userHeadIV;
 @synthesize userNameLabel;
@@ -18,7 +18,8 @@
 @synthesize msgButton;
 @synthesize chatButton;
 @synthesize deleteButton;
-@synthesize myDict;
+//@synthesize myDict;
+@synthesize contactPerson;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -79,23 +80,46 @@
     return self;
 }
 
-- (void)setData:(NSMutableDictionary *)dict{
-    myDict = dict;
-    NSString *name = [dict objectForKey:@"name"];
-    UIImage *image = [dict objectForKey:@"image"];
-    BOOL toolIsShow = [[dict objectForKey:@"toolIsShow"] boolValue];
-    
+- (void)setData:(XXTContactPerson *)person{
+//    myDict = dict;
+    contactPerson = person;
+    NSString *name = person.name;
+    UIImage *image = person.avatar.thumbPicImage;
+//    BOOL toolIsShow = [[dict objectForKey:@"toolIsShow"] boolValue];
+    if (image == nil) {
+        image = [UIImage imageNamed:@"photo"];
+        NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadImage:) object:nil];
+        [thread start];
+    }
     [userHeadIV setImage:image];
     [userNameLabel setText:name];
-    if (toolIsShow) {
-        [toolView setFrame:CGRectMake(50 + 6, 0, self.frame.size.width - 56, self.frame.size.height)];
-    } else{
+    
+//    if (toolIsShow) {
+//        [toolView setFrame:CGRectMake(50 + 6, 0, self.frame.size.width - 56, self.frame.size.height)];
+//    } else{
         [toolView setFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width - 56, self.frame.size.height)];
+//    }
+
+}
+//下载图片
+- (void)downloadImage:(NSThread *)thread{
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:contactPerson.avatar.thumbPicURL]];
+    UIImage *image = [UIImage imageWithData:data];
+    if (image == nil) {
+        NSLog(@"图片下载失败");
+    }else{
+        [self performSelectorOnMainThread:@selector(updateImageView:) withObject:image waitUntilDone:YES];
+        
     }
+    
+}
+- (void)updateImageView:(UIImage *)image{
+    contactPerson.avatar.thumbPicImage = image;
+    [userHeadIV setImage:image];
 }
 
 - (void)hideToolView{
-    [myDict setObject:[NSNumber numberWithBool:NO] forKey:@"toolIsShow"];
+//    [myDict setObject:[NSNumber numberWithBool:NO] forKey:@"toolIsShow"];
     CGRect rect = toolView.frame;
     rect.origin.x = self.frame.size.width;
     [UIView animateWithDuration:0.5 animations:^{
@@ -106,7 +130,7 @@
     }];
 }
 - (void)showToolView{
-    [myDict setObject:[NSNumber numberWithBool:YES] forKey:@"toolIsShow"];
+//    [myDict setObject:[NSNumber numberWithBool:YES] forKey:@"toolIsShow"];
     CGRect rect = toolView.frame;
     rect.origin.x = 50 + 6;
     [UIView animateWithDuration:0.5 animations:^{
