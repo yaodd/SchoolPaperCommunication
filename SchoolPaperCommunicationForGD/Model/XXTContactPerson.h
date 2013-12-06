@@ -13,5 +13,8 @@
 @property (strong,nonatomic) NSString* remark; //备注
 @property (strong,nonatomic) NSString* phone;
 @property (strong,nonatomic) NSString* dialReq;
+@property NSInteger messageEnable;
+
+- (XXTContactPerson*) initWithDictionary:(NSDictionary*) dict;
 
 @end

@@ -7,11 +7,20 @@
 //
 
 #import "XXTMessageBase.h"
+#import "XXTComment.h"
+
+typedef enum {
+    XXTMicroblogCircleTypeMine = 0,
+    XXTMicroblogCircleTypeClass = 1,
+    XXTMicroblogCircleTypeTeacher = 2,
+    XXTMicroblogCircleTypeSchool = 3
+}XXTMicroblogCircleType;
 
 @interface XXTMicroblog : XXTMessageBase
 
 @property (nonatomic) NSInteger commentCount;
 @property (nonatomic) NSInteger likeCount;
 @property (strong,nonatomic) NSMutableArray* commentsArr;
+
 
 @end

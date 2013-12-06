@@ -10,12 +10,14 @@
 #import "Reachability.h"
 #import "XXTModelController.h"
 #import "UIApplication+appinfo.h"
+#import "SSZipArchive.h"
 @interface Dao ()
 
 -(void)initNetworkStateObserver;
 -(void)reachabilityChanged:(NSNotification*)note;
 -(NSDictionary *)request:(NSString *)urlString dict:(NSDictionary *)dict;
 -(void)insertUserInfoToDictionary:(NSMutableDictionary*) dict;
+-(NSString*) getUrlForModule:(NSString*) moduleName WithCmd:(NSString*) cmdStr;
 
 @end
 
@@ -23,19 +25,40 @@
 
 @synthesize reachbility;
 
-//此处为基本ip地址
-NSString *baseUrl = @"http://localhost:8888/index.php";
+#define WTF                      YES
 
-//此处为基本操作码
+//此处为基本ip地址
+//#define baseUrl  @"http://localhost:8888/index.php"
+#define baseUrl @"http://120.197.89.182:8080/mobile/pull"
+
+#define userModuleUrl            @"login"
+#define messageModuleUrl         @"messages"
+#define contactsModuleUrl        @"contacts"
+#define sysModuleUrl             @"modules"
+#define otherModuleUrl           @"others"
+
+
+//此处为基本操作码与URL后缀
+
 #define loginCmd                @"10011"
 
 #define messageListCmd          @"10021"
 #define messageStatusUpdateCmd  @"10022"
 #define sendGroupMessageCmd     @"10023"
+#define messageTemplatesCmd     @"10024"
+#define getModuleMessageCmd     @"10025"
+#define messageHistoryCmd       @"10026"
+#define getMessageReceiverCmd   @"10027"
 
 #define sendInstantMessageCmd   @"10031"
 #define getContactListCmd       @"10032"
 
+#define microblogsListCmd       @"10041"
+#define postMicroblogCmd        @"10042"
+#define postCommentCmd          @"10043"
+#define postLikeCmd             @"10044"
+#define microblogDetailCmd      @"10045"
+#define getCommentAndLikesCmd   @"10046"
 
 //此处为一些常量 - 可以把它们移到config.h里
 #define PLATFORM @"ios"
@@ -147,8 +170,13 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     }
     
     //set http method and body.
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:postData];
+    if (WTF == YES)
+        [request setHTTPMethod:@"GET"];
+    else
+    {
+        [request setHTTPMethod:@"POST"];
+        [request setHTTPBody:postData];
+    }
     //start the connnection and block the thread.
     NSError *error;
     NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
@@ -157,7 +185,8 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
         NSLog(@"Something wrong: %@",[error description]);
         return nil;
     }
-    NSLog(@"data %@",received);
+    NSString* receivedStr = [NSString stringWithUTF8String:[received bytes]];
+    NSLog(@"data %@",receivedStr);
 //    if (received != NULL) {
     response = [NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableContainers error:&error];
     //just for Log.
@@ -173,20 +202,27 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     [dict setObject:PLATFORM forKey:@"platform"];
     [dict setObject:APIVERSION forKey:@"version"];
     
-    if ([XXTUser sharedUser].sessionId != nil){
-        [dict setObject:[XXTUser sharedUser].sessionId forKey:@"sessionKey"];
-        [dict setObject:[XXTUser sharedUser].pid forKey:@"userId"];
-        [dict setObject:[XXTUser sharedUser].schoolId forKey:@"schoolId"];
-        [dict setObject:[XXTUser sharedUser].areaAbbr forKey:@"areaAbbr"];
-        [dict setObject:[NSNumber numberWithInt:[XXTUser sharedUser].type] forKey:@"userType"];
+    if ([XXTModelGlobal sharedModel].sessionId != nil){
+        [dict setObject:[XXTModelGlobal sharedModel].sessionId forKey:@"sessionKey"];
+        [dict setObject:[XXTModelGlobal sharedModel].currentUser.pid forKey:@"userId"];
+        [dict setObject:[XXTModelGlobal sharedModel].currentUser.schoolId forKey:@"schoolId"];
+        [dict setObject:[XXTModelGlobal sharedModel].currentUser.areaAbbr forKey:@"areaAbbr"];
+        [dict setObject:[NSNumber numberWithInt:[XXTModelGlobal sharedModel].currentUser.type] forKey:@"userType"];
     }
+}
+
+- (NSString*) getUrlForModule:(NSString *)moduleName WithCmd:(NSString *)cmdStr{
+    if (WTF == YES)
+        return [NSString stringWithFormat:@"%@/%@/%@",baseUrl,moduleName,cmdStr];
+    else
+        return [NSString stringWithFormat:@"%@/%@/",baseUrl,moduleName];
 }
 
 - (NSInteger) requestForLogin:(NSString *)username password:(NSString *)pwd{
     int ret = 0;
     
     NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
-    [postDic setObject:loginCmd forKey:@"cmd"];
+    [postDic setObject:[NSNumber numberWithInt:[loginCmd intValue]] forKey:@"cmd"];
     [postDic setObject:username forKey:@"account"];
     [postDic setObject:pwd forKey:@"pwd"];
     [postDic setObject:[UIApplication appVersion] forKey:@"appVersion"];
@@ -198,15 +234,19 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     CGFloat screenHeight = screenRect.size.height;
     NSString* screenSize = [NSString stringWithFormat:@"%d×%d",(int)screenWidth,(int)screenHeight];
     [postDic setObject:screenSize forKey:@"screenSize"];
-//    [postDic setObject:[XXTUser sharedUser].deviceToken forKey:@"deviceToken"];
+    if ([[UIApplication deviceType] isEqualToString:@"Simulator"]){
+        [postDic setObject:@"ThisIsSimulator" forKey:@"deviceToken"];
+    }
+    else{
+        [postDic setObject:[XXTModelGlobal sharedModel].deviceToken forKey:@"deviceToken"];
+    }
     [postDic setObject:[UIApplication appId] forKey:@"appId"];
     
-    NSDictionary* rs = [self request:baseUrl dict:postDic];
-    
+    NSString* url = [self getUrlForModule:userModuleUrl WithCmd:loginCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
     ret = [[rs objectForKey:@"resultState"] intValue];
     
     if (ret == 1){
-        [self performSelectorInBackground:@selector(setTimerForMessageList) withObject:nil];
         [XXTModelController loginSuccess:rs];
     }
     
@@ -217,24 +257,16 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
 {
     int ret = 0;
     
-    NSMutableDictionary* dict = [NSMutableDictionary dictionary];
-    [dict setObject:messageListCmd forKey:@"cmd"];
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:messageListCmd forKey:@"cmd"];
     
-    NSString* lastUpdateTimeString;
-    NSDate* lastUpdateTime = [XXTUser sharedUser].lastUpdateTimeForMessageList;
-    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"YYYY-mm-dd hh:mm:ss"];
-    if (lastUpdateTime == nil){
-        lastUpdateTimeString = @"";
-    }
-    else{
-        lastUpdateTimeString = [formatter stringFromDate:lastUpdateTime];
-    }
+    NSDate* lastUpdateTime = [XXTModelGlobal sharedModel].currentUser.lastUpdateTimeForMessageList;
+    NSString* lastUpdateTimeString = [NSDate stringValueOfDate:lastUpdateTime];
+    [postDic setObject:lastUpdateTimeString forKey:@"updateTime"];
+    [self insertUserInfoToDictionary:postDic];
     
-    [dict setObject:lastUpdateTimeString forKey:@"updateTime"];
-    [self insertUserInfoToDictionary:dict];
-    
-    NSDictionary *rs = [self request:baseUrl dict:dict];
+    NSString *url = [self getUrlForModule:messageModuleUrl WithCmd:messageListCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
     
     ret = [[rs objectForKey:@"resultState"] intValue];
     
@@ -261,7 +293,8 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     
     [self insertUserInfoToDictionary:postDic];
     
-    NSDictionary *rs = [self request:baseUrl dict:postDic];
+    NSString *url = [self getUrlForModule:messageModuleUrl WithCmd:messageStatusUpdateCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
     
     ret = [[rs objectForKey:@"resultState"] intValue];
     
@@ -281,7 +314,7 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     NSMutableArray* groupIdsItem = [NSMutableArray array];
     for (NSString* groupId in messageToSend.sendToGroupIdArr){
         NSMutableDictionary* groupInfoDic = [NSMutableDictionary dictionary];
-        XXTGroup* group = [[XXTUser sharedUser] getGroupObjectById:groupId];
+        XXTGroup* group = [[XXTModelGlobal sharedModel].currentUser getGroupObjectById:groupId];
         [groupInfoDic setObject:groupId forKey:@"id"];
         [groupInfoDic setObject:[NSNumber numberWithInt:group.groupType] forKey:@"type"];
         [groupIdsItem addObject:groupInfoDic];
@@ -291,7 +324,7 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     NSMutableArray* receiverIdsItem = [NSMutableArray array];
     for (NSString* receiverId in messageToSend.sendToPersonIdArr){
         NSMutableDictionary* receiverInfoDic = [NSMutableDictionary dictionary];
-        XXTPersonBase* person = [[XXTUser sharedUser] getPersonObjectById:receiverId];
+        XXTPersonBase* person = [[XXTModelGlobal sharedModel].currentUser getPersonObjectById:receiverId];
         [receiverInfoDic setObject:receiverId forKey:@"id"];
         [receiverInfoDic setObject:[NSNumber numberWithInt:person.type] forKey:@"type"];
         [receiverIdsItem addObject:receiverInfoDic];
@@ -317,12 +350,108 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     }
     [postDic setObject:audioArr forKey:@"audios"];
     
-    NSDictionary *rs = [self request:baseUrl dict:postDic];
+    NSString *url = [self getUrlForModule:messageModuleUrl WithCmd:sendGroupMessageCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
     
     ret = [[rs objectForKey:@"resultState"] intValue];
     
     if (ret == 1){
         [XXTModelController groupMessageSendSuccess:messageToSend WithDictionary:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForMessageTemplates{
+    int ret = 0;
+    
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:messageTemplatesCmd forKey:@"cmd"];
+    NSDate* lastUpdateTime = [XXTModelGlobal sharedModel].currentUser.lastUpdateTimeForMessageTemplates;
+    NSString* lastUpdateTimeStr = [NSDate stringValueOfDate:lastUpdateTime];
+    [postDic setObject:lastUpdateTimeStr forKey:@"updateTime"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:messageModuleUrl WithCmd:messageTemplatesCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedMessageTemplatesDictionary:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForMessageHistoryWithDate:(NSDate *)date isPull:(BOOL)isPull pageSize:(int)pageSize keyword:(NSString *)keyword type:(XXTHistoryType)type{
+    int ret = 0;
+    
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:messageHistoryCmd forKey:@"cmd"];
+    NSString *lastUpdateTimeStr = [NSDate stringValueOfDate:date];
+    [postDic setObject:lastUpdateTimeStr forKey:@"dateTime"];
+    [postDic setObject:[NSNumber numberWithInt:isPull] forKey:@"isPull"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    if (keyword == nil) keyword = @"";
+    [postDic setObject:keyword forKey:@"key"];
+    [postDic setObject:[NSNumber numberWithInt:type] forKey:@"type"];
+    
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:messageModuleUrl WithCmd:messageHistoryCmd];
+//    if (WTF)
+//        url = @"http://localhost:8888/messageHistory.php";
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedMessageHistoryDictionary:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForMessageReceivers:(XXTHistoryMessage *)message{
+    int ret = 0;
+    
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:getMessageReceiverCmd forKey:@"cmd"];
+    [postDic setObject:message.msgId forKey:@"id"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:messageModuleUrl WithCmd:getMessageReceiverCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedMessageHistoryReceiverDic:rs ForMessage:message];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForModuleMessages{
+    int ret = 0;
+    
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:getModuleMessageCmd forKey:@"cmd"];
+    NSDate* lastUpdateTime = [XXTModelGlobal sharedModel].currentUser.lastUpdateTimeForModuleMessage;
+    NSString* lastTimeStr = [NSDate stringValueOfDate:lastUpdateTime];
+    [postDic setObject:lastTimeStr forKey:@"updateTime"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:messageModuleUrl WithCmd:getModuleMessageCmd];
+    if (WTF)
+        url = @"http://localhost:8888/moduleMessage.php";
+    NSDictionary *rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedModuleMessageDic:rs];
     }
     
     return ret;
@@ -335,7 +464,7 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     [postDic setObject:sendInstantMessageCmd forKey:@"cmd"];
     
     NSString* receiverId = [messageToSend.sendToPersonIdArr objectAtIndex:0];
-    XXTContactPerson* receiver = (XXTContactPerson*)[[XXTUser sharedUser] getPersonObjectById:receiverId];
+    XXTContactPerson* receiver = (XXTContactPerson*)[[XXTModelGlobal sharedModel].currentUser getPersonObjectById:receiverId];
     [postDic setObject:receiverId forKey:@"id"];
     [postDic setObject:[NSNumber numberWithInt:receiver.type] forKey:@"type"];
     
@@ -358,7 +487,8 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     }
     [postDic setObject:audioArr forKey:@"audios"];
     
-    NSDictionary *rs = [self request:baseUrl dict:postDic];
+    NSString *url = [self getUrlForModule:contactsModuleUrl WithCmd:sendInstantMessageCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
     
     ret = [[rs objectForKey:@"resultState"] intValue];
     
@@ -376,10 +506,184 @@ NSString *baseUrl = @"http://localhost:8888/index.php";
     [postDic setObject:getContactListCmd forKey:@"cmd"];
     [self insertUserInfoToDictionary:postDic];
     
+    NSString* url = [self getUrlForModule:contactsModuleUrl WithCmd:getContactListCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
     
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    if (ret == 1){
+        NSString* zipUrlStr = [rs objectForKey:@"downUrl"];
+        if (zipUrlStr == nil || [zipUrlStr isEqualToString:@""])
+            return 404;
+        NSURL *zipURL = [NSURL URLWithString:zipUrlStr];
+        NSData *data = [NSData  dataWithContentsOfURL:zipURL];
+        NSString *fileName = [[zipURL path] lastPathComponent];
+        NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+        [data writeToFile:filePath atomically:YES];
+        NSString *unzipPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"linkMan.json"];
+        [SSZipArchive unzipFileAtPath:filePath toDestination:NSTemporaryDirectory()];
+        NSData* unzipData = [NSData dataWithContentsOfFile:unzipPath];
+        
+        NSError* error;
+        NSArray *groupDicArr = [NSJSONSerialization JSONObjectWithData:unzipData options:NSJSONReadingMutableContainers error:&error];
+        
+        [XXTModelController receivedContactsListDicArr:groupDicArr];
+        
+    }
     
     return ret;
 }
 
+- (NSInteger) requestForMicroblogsListWithType:(XXTMicroblogCircleType)circleType isPull:(NSInteger)isPull pageSize:(NSInteger)pageSize
+{
+    int ret = 0;
+    
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:microblogsListCmd forKey:@"cmd"];
+    [postDic setObject:[NSNumber numberWithInt:circleType] forKey:@"type"];
+    NSDate* lastUpdateTime = [[XXTModelGlobal sharedModel].currentUser.lastUpdateTimeForMicroblogListArr objectAtIndex:circleType];
+    NSString* lastUpdateTimeString = [NSDate stringValueOfDate:lastUpdateTime];
+    [postDic setObject:lastUpdateTimeString forKey:@"updateTime"];
+    [postDic setObject:[NSNumber numberWithInt:isPull] forKey:@"isPull"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:microblogsListCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        NSArray* microblogArr = [rs objectForKey:@"items"];
+        [XXTModelController receivedMicroblogDics:microblogArr WithType:circleType];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForPostMicroblog:(XXTMicroblog *)microblog{
+    int ret = 0 ;
+    
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postMicroblogCmd forKey:@"cmd"];
+    if (microblog.content != nil)
+        [postDic setObject:microblog.content forKey:@"content"];
+    if ([microblog.images count] > 0){
+        NSMutableArray* imagesDicArr = [NSMutableArray array];
+        for (XXTImage* image in microblog.images){
+            NSMutableDictionary* imageDic = [NSMutableDictionary dictionary];
+            [imageDic setObject:image.originPicURL forKey:@"original"];
+            [imageDic setObject:image.thumbPicURL forKey:@"thumb"];
+            [imagesDicArr addObject:imageDic];
+        }
+        [postDic setObject:imagesDicArr forKey:@"images"];
+    }
+    if ([microblog.audios count]>0){
+        NSMutableArray* audiosDicArr = [NSMutableArray array];
+        for (XXTAudio* audio in microblog.audios){
+            NSMutableDictionary* audioDic = [NSMutableDictionary dictionary];
+            [audioDic setObject:audio.audioURL forKey:@"url"];
+            [audioDic setObject:[NSNumber numberWithInt:audio.duration] forKey:@"duration"];
+            [audiosDicArr addObject:audioDic];
+        }
+        [postDic setObject:audiosDicArr forKey:@"audios"];
+    }
+    
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:postMicroblogCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postMicroblogSuccess:microblog WithDic:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestforPostComment:(XXTComment*) comment microblog:(XXTMicroblog *)microblog{
+    int ret = 0;
+    
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postCommentCmd forKey:@"cmd"];
+    [postDic setObject:comment.content forKey:@"content"];
+    [postDic setObject:microblog.msgId forKey:@"id"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:postCommentCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postCommentSuccess:comment ToMicroblog:microblog WithDic:rs];
+    }
+    
+    return  ret;
+}
+
+- (NSInteger) requestForPostLike:(XXTMicroblog *)microblog{
+    int ret = 0;
+    
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postLikeCmd forKey:@"cmd"];
+    [postDic setObject:microblog.msgId forKey:@"id"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:postLikeCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postLikeSuccessToMicroblog:microblog WithDic:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForMicroblogDetail:(XXTMicroblog *)microblog{
+    int ret = 0 ;
+    
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:microblogDetailCmd forKey:@"cmd"];
+    [postDic setObject:microblog.msgId forKey:@"id"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:microblogDetailCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController microblogDetail:rs forMicroblog:microblog];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForMyCommentAndLikes{
+    int ret = 0 ;
+    
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:getCommentAndLikesCmd forKey:@"cmd"];
+    NSDate* lastUpdateTime = [XXTModelGlobal sharedModel].currentUser.lastUpdateTimeForCommentsAndLikes;
+    NSString* lastUpdateTimeString = [NSDate stringValueOfDate:lastUpdateTime];
+    [postDic setObject:lastUpdateTimeString forKey:@"updateTime"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:getCommentAndLikesCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController getCommentsAndLikes:[rs objectForKey:@"item"]];
+    }
+    
+    return ret;
+}
 
 @end
