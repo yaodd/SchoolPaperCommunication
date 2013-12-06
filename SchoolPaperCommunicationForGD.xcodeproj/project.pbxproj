@@ -68,6 +68,13 @@
 		9C28BE791851DFCC003C1D6F /* XXTUserRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28BE641851DFCC003C1D6F /* XXTUserRole.m */; };
 		9C28BE7A1851DFCC003C1D6F /* Dao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28BE671851DFCC003C1D6F /* Dao.m */; };
 		9C28BE7C1851E083003C1D6F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28BE7B1851E083003C1D6F /* libz.dylib */; };
+		9C28BE801852B9AB003C1D6F /* UIImageView+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28BE7F1852B9AB003C1D6F /* UIImageView+category.m */; };
+		9C28BE891852D399003C1D6F /* chat_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28BE831852D399003C1D6F /* chat_click@2x.png */; };
+		9C28BE8A1852D399003C1D6F /* chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28BE841852D399003C1D6F /* chat@2x.png */; };
+		9C28BE8B1852D399003C1D6F /* message_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28BE851852D399003C1D6F /* message_click@2x.png */; };
+		9C28BE8C1852D399003C1D6F /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28BE861852D399003C1D6F /* message@2x.png */; };
+		9C28BE8D1852D399003C1D6F /* phone_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28BE871852D399003C1D6F /* phone_click@2x.png */; };
+		9C28BE8E1852D399003C1D6F /* phone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28BE881852D399003C1D6F /* phone@2x.png */; };
 		9C2907E118484842002CCAF1 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2907E018484842002CCAF1 /* TabBarViewController.m */; };
 		9C2908161848916B002CCAF1 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2908151848916B002CCAF1 /* ContactsViewController.m */; };
 		9C2908191848A2A3002CCAF1 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2908181848A2A3002CCAF1 /* ChatViewController.m */; };
@@ -247,6 +254,14 @@
 		9C28BE661851DFCC003C1D6F /* Dao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dao.h; sourceTree = "<group>"; };
 		9C28BE671851DFCC003C1D6F /* Dao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dao.m; sourceTree = "<group>"; };
 		9C28BE7B1851E083003C1D6F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		9C28BE7E1852B9AB003C1D6F /* UIImageView+category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+category.h"; sourceTree = "<group>"; };
+		9C28BE7F1852B9AB003C1D6F /* UIImageView+category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+category.m"; sourceTree = "<group>"; };
+		9C28BE831852D399003C1D6F /* chat_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chat_click@2x.png"; path = "../../../../Downloads/通讯录icon/chat_click@2x.png"; sourceTree = "<group>"; };
+		9C28BE841852D399003C1D6F /* chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "chat@2x.png"; path = "../../../../Downloads/通讯录icon/chat@2x.png"; sourceTree = "<group>"; };
+		9C28BE851852D399003C1D6F /* message_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "message_click@2x.png"; path = "../../../../Downloads/通讯录icon/message_click@2x.png"; sourceTree = "<group>"; };
+		9C28BE861852D399003C1D6F /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "message@2x.png"; path = "../../../../Downloads/通讯录icon/message@2x.png"; sourceTree = "<group>"; };
+		9C28BE871852D399003C1D6F /* phone_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "phone_click@2x.png"; path = "../../../../Downloads/通讯录icon/phone_click@2x.png"; sourceTree = "<group>"; };
+		9C28BE881852D399003C1D6F /* phone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "phone@2x.png"; path = "../../../../Downloads/通讯录icon/phone@2x.png"; sourceTree = "<group>"; };
 		9C2907DF18484842002CCAF1 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		9C2907E018484842002CCAF1 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		9C2908141848916B002CCAF1 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsViewController.h; sourceTree = "<group>"; };
@@ -508,6 +523,28 @@
 			path = Net;
 			sourceTree = "<group>";
 		};
+		9C28BE811852B9B3003C1D6F /* UIImageView+category */ = {
+			isa = PBXGroup;
+			children = (
+				9C28BE7E1852B9AB003C1D6F /* UIImageView+category.h */,
+				9C28BE7F1852B9AB003C1D6F /* UIImageView+category.m */,
+			);
+			name = "UIImageView+category";
+			sourceTree = "<group>";
+		};
+		9C28BE821852D370003C1D6F /* contacts */ = {
+			isa = PBXGroup;
+			children = (
+				9C28BE831852D399003C1D6F /* chat_click@2x.png */,
+				9C28BE841852D399003C1D6F /* chat@2x.png */,
+				9C28BE851852D399003C1D6F /* message_click@2x.png */,
+				9C28BE861852D399003C1D6F /* message@2x.png */,
+				9C28BE871852D399003C1D6F /* phone_click@2x.png */,
+				9C28BE881852D399003C1D6F /* phone@2x.png */,
+			);
+			name = contacts;
+			sourceTree = "<group>";
+		};
 		9C2907E218484AFE002CCAF1 /* Resourse */ = {
 			isa = PBXGroup;
 			children = (
@@ -519,6 +556,7 @@
 		9C2907E318484B0B002CCAF1 /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				9C28BE821852D370003C1D6F /* contacts */,
 				9CCACDB7184C915400739327 /* mod_user.png */,
 				9CCACDB8184C915400739327 /* btn_down.png */,
 				9CCACDB9184C915400739327 /* btn_listbg.png */,
@@ -598,6 +636,7 @@
 		9C2908371849C6D9002CCAF1 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				9C28BE811852B9B3003C1D6F /* UIImageView+category */,
 				9CCACE27184F2BF000739327 /* AlertView */,
 				9C2908381849C6F9002CCAF1 /* EGORefresh */,
 			);
@@ -942,7 +981,9 @@
 				9C28BDFE1851C11A003C1D6F /* buttonright_click@2x.png in Resources */,
 				9CA3700E184841F1001748F3 /* Images.xcassets in Resources */,
 				9CCACDBE184C915400739327 /* btn_right.png in Resources */,
+				9C28BE8A1852D399003C1D6F /* chat@2x.png in Resources */,
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
+				9C28BE8D1852D399003C1D6F /* phone_click@2x.png in Resources */,
 				9C2908481849C756002CCAF1 /* blueArrow@2x.png in Resources */,
 				9CCACDD3184F100D00739327 /* logo@2x.png in Resources */,
 				9CCACDD2184F100D00739327 /* codeicon@2x.png in Resources */,
@@ -951,12 +992,14 @@
 				9C29084B1849C756002CCAF1 /* whiteArrow.png in Resources */,
 				9C28BE121851C45F003C1D6F /* study_chosen@2x.png in Resources */,
 				9C290874184B0821002CCAF1 /* ReceiverVoiceNodeDownloading.png in Resources */,
+				9C28BE8E1852D399003C1D6F /* phone@2x.png in Resources */,
 				9C2908471849C756002CCAF1 /* blueArrow.png in Resources */,
 				9CCACE26184F24B300739327 /* DynamicPswViewController.xib in Resources */,
 				9C28BE131851C45F003C1D6F /* study@2x.png in Resources */,
 				9C28BDFF1851C11A003C1D6F /* buttonright@2x.png in Resources */,
 				9C290877184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png in Resources */,
 				9CCACDBD184C915400739327 /* btn_listbg.png in Resources */,
+				9C28BE8B1852D399003C1D6F /* message_click@2x.png in Resources */,
 				9C28BE0B1851C45F003C1D6F /* circle@2x.png in Resources */,
 				9C2908461849C756002CCAF1 /* blackArrow@2x.png in Resources */,
 				9CCACDD5184F100D00739327 /* usericon@2x.png in Resources */,
@@ -984,7 +1027,9 @@
 				9C28BE161851C605003C1D6F /* buttonleft_click@2x.png in Resources */,
 				9C0F7DA7184B3FC7002B9233 /* photo.png in Resources */,
 				9C28BDF81851C11A003C1D6F /* backbutton_click@2x.png in Resources */,
+				9C28BE8C1852D399003C1D6F /* message@2x.png in Resources */,
 				9CCACE20184F1A7E00739327 /* ChoosePlayerViewController.xib in Resources */,
+				9C28BE891852D399003C1D6F /* chat_click@2x.png in Resources */,
 				9C290875184B0821002CCAF1 /* ReceiverVoiceNodeDownloading@2x.png in Resources */,
 				9C28BDFA1851C11A003C1D6F /* button_click@2x.png in Resources */,
 				9C0F7DA8184B3FC7002B9233 /* photo@2x.png in Resources */,
@@ -1048,6 +1093,7 @@
 				9C28BE371851DED3003C1D6F /* NSString+base64.m in Sources */,
 				9C28BE721851DFCC003C1D6F /* XXTMessageTemplate.m in Sources */,
 				9C28BE361851DED3003C1D6F /* NSData+AES.m in Sources */,
+				9C28BE801852B9AB003C1D6F /* UIImageView+category.m in Sources */,
 				9C28BE3D1851DED3003C1D6F /* zip.c in Sources */,
 				9CCACDAD184C821A00739327 /* InfoViewController.m in Sources */,
 				9C28BE691851DFCC003C1D6F /* XXTAudio.m in Sources */,

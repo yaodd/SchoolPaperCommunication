@@ -8,10 +8,10 @@
 
 #import "ContactsViewController.h"
 #import "ChatViewController.h"
-#import "ContactView.h"
 #import "XXTUserRole.h"
 #import "XXTModelGlobal.h"
 #import "Dao.h"
+#import "UIImageView+category.h"
 
 #define CONTACT_VIEW_TAG    111111
 
@@ -63,6 +63,7 @@
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
     self.contactsTableView.delegate = self;
+    [self.contactsTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.contactsTableView];
     
     self.searchBar = [[UISearchBar alloc]initWithFrame:CGRectZero];
@@ -171,15 +172,16 @@
     return num;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 62;
+    return 66;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *CellIdentifier = [NSString stringWithFormat:@"Cell"];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        ContactView *contactView = [[ContactView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 62)];
+        ContactView *contactView = [[ContactView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 66)];
         [contactView setTag:CONTACT_VIEW_TAG];
+        contactView.delegate = self;
         [cell addSubview:contactView];
     }
     ContactView *contactView = (ContactView *)[cell viewWithTag:CONTACT_VIEW_TAG];
@@ -196,17 +198,14 @@
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return  40;
+    return  44;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     self.hidesBottomBarWhenPushed = YES;
-//    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ChatViewController *chatViewController = [[ChatViewController alloc]init];
-//    ChatViewController *chatViewController = [[ChatViewController alloc]init];
-    
     [self.navigationController pushViewController:chatViewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
@@ -219,11 +218,11 @@
 	if (UIInterfaceOrientationLandscapeRight == [[UIDevice currentDevice] orientation] ||
         UIInterfaceOrientationLandscapeLeft == [[UIDevice currentDevice] orientation])
 	{
-		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 480, 40)];
+		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 480, 44)];
 	}
 	else
 	{
-		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
+		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
         //self.tableView.tableHeaderView.frame = CGRectMake(0.f, 0.f, 320.f, 44.f);
 	}
     //UIView *hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
@@ -246,22 +245,27 @@
 	//由于按钮的标题，
 	//4个参数是上边界，左边界，下边界，右边界。
 	eButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-	[eButton setTitleEdgeInsets:UIEdgeInsetsMake(5, 10, 0, 0)];
-	[eButton setImageEdgeInsets:UIEdgeInsetsMake(5, 5, 0, 0)];
+	[eButton setTitleEdgeInsets:UIEdgeInsetsMake(6, 50, 0, 0)];
+	[eButton setImageEdgeInsets:UIEdgeInsetsMake(5, 10, 0, 0)];
     
     
 	//设置按钮显示颜色
 	eButton.backgroundColor = [UIColor lightGrayColor];
 	[eButton setTitle:[[data objectAtIndex:section] objectForKey:@"groupname"] forState:UIControlStateNormal];
 	[eButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [eButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     //[eButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-	
-	[eButton setBackgroundImage: [ UIImage imageNamed: @"btn_listbg.png" ] forState:UIControlStateNormal];//btn_line.png"
+	[eButton setBackgroundColor:[UIColor whiteColor]];
+//	[eButton setBackgroundImage: [UIImage imageNamed: @"btn_listbg.png" ] forState:UIControlStateNormal];//btn_line.png"
 	//[eButton setTitleShadowColor:[UIColor colorWithWhite:0.1 alpha:1] forState:UIControlStateNormal];
 	//[eButton.titleLabel setShadowOffset:CGSizeMake(1, 1)];
     
 	[hView addSubview: eButton];
     
+    UIView *sepector = [[UIView alloc]initWithFrame:CGRectMake(0, 43, hView.frame.size.width, 1)];
+    [sepector setBackgroundColor:[UIColor colorWithRed:213.0/255 green:213.0/255 blue:213.0/255 alpha:1.0]];
+    
+    [hView addSubview:sepector];
 	return hView;
     
 }
@@ -336,5 +340,28 @@
     [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
 //    }x
 }
+#pragma contactViewDelegate mark -
+- (void)ContactViewButtonAction:(ContactView *)contactView button:(UIButton *)button{
+    if (button.tag == 0) {
+        NSLog(@"打电话");
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://10086"]];
+        UIWebView*callWebview =[[UIWebView alloc] init];
+        NSURL *telURL =[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",contactView.phoneLabel.text]];// 貌似tel:// 或者 tel: 都行
+        [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
+        //记得添加到view上
+        [self.view addSubview:callWebview];
 
+    }
+    if (button.tag == 1) {
+        NSLog(@"发短信");
+    }
+    if (button.tag == 2) {
+        NSLog(@"即时聊天");
+        self.hidesBottomBarWhenPushed = YES;
+        ChatViewController *chatViewController = [[ChatViewController alloc]init];
+        [self.navigationController pushViewController:chatViewController animated:YES];
+        self.hidesBottomBarWhenPushed = NO;
+
+    }
+}
 @end

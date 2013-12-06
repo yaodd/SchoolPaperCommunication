@@ -7,6 +7,7 @@
 //
 
 #import "PlayerView.h"
+#import "UIImageView+category.h"
 
 #define VIEW_X      12
 #define VIEW_Y      0
@@ -58,32 +59,11 @@
     NSArray *playerArray = [NSArray arrayWithObjects:@"老师",@"家长",@"学生", nil];
 
     userRole = role;
-    XXTImage *xxtImage = role.avatar;
-    UIImage *image = xxtImage.thumbPicImage;
-    if (image == nil) {
-        image = [UIImage imageNamed:@"photo"];
-        NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadImage:) object:nil];
-        [thread start];
-    }
-    NSString *player = [playerArray objectAtIndex:role.type - 1];
     
-    [headImageView setImage:image];
+    NSString *player = [playerArray objectAtIndex:role.type - 1];
+    [headImageView setImageWithPerson:role];
     [playerLabel setText:player];
     
-}
-- (void)downloadImage:(NSThread *)thread{
-    NSData *data = [[NSData alloc]initWithContentsOfURL:[NSURL URLWithString:userRole.avatar.thumbPicURL]];
-    UIImage *image = [[UIImage alloc]initWithData:data];
-    if (image == nil) {
-        NSLog(@"图片下载失败");
-    }else{
-        NSLog(@"图片下载成功");
-        [self performSelectorOnMainThread:@selector(updateImageView:) withObject:image waitUntilDone:YES];
-    }
-}
-- (void)updateImageView:(UIImage *)image{
-    userRole.avatar.thumbPicImage = image;
-    [headImageView setImage:image];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

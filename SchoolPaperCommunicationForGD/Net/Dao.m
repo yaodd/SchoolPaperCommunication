@@ -274,9 +274,7 @@
         NSArray *newMessagesList = [rs objectForKey:@"items"];
         if ([newMessagesList count] > 0)
             [XXTModelController receivedNewMessages:newMessagesList];
-        
     }
-    
     return ret;
 }
 
