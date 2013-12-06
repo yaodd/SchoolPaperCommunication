@@ -19,8 +19,10 @@
 @property (strong,nonatomic) NSArray* images;   //存XXTImage
 @property (strong,nonatomic) NSArray* audios;   //存XXTAudio
 
-@property (strong,nonatomic) NSDate* sendTime;
+@property (strong,nonatomic) NSDate* dateTime;
 
-- (id) initWithContent:(NSString*) content images:(NSArray*) imagesArr audio:(NSArray*) audiosArr;
+- (id) initWithContent:(NSString*) content
+          imageObjects:(NSArray*) imagesArr
+          audioObjects:(NSArray*) audiosArr;
 
 @end

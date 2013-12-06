@@ -11,7 +11,7 @@
 @implementation XXTMessageSend
 
 - (id) initWithGroupIds:(NSArray *)groupIds personIds:(NSArray *)personIds content:(NSString *)content images:(NSArray *)imagesArr audio:(NSArray *)audiosArr{
-    if (self = [super initWithContent:content images:imagesArr audio:audiosArr]){
+    if (self = [super initWithContent:content imageObjects:imagesArr audioObjects:audiosArr]){
         if (groupIds!=nil){
             self.sendToGroupIdArr = groupIds;
         }

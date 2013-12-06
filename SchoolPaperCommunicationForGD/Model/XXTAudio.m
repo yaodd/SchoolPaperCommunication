@@ -10,12 +10,10 @@
 
 @implementation XXTAudio
 
-@synthesize audioURL,duration;
-
 - (id) initWithDictionary:(NSDictionary *)dict{
     if (self = [super init]){
-        audioURL = [[dict objectForKey:@"url"] copy];
-        duration = [[dict objectForKey:@"duration"] integerValue];
+        self.audioURL = [dict objectForKey:@"url"];
+        self.duration = [[dict objectForKey:@"duration"] integerValue];
     }
     return self;
 }
