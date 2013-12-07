@@ -85,7 +85,7 @@
     NSArray *selectedImages = [[NSArray alloc]initWithObjects:@"news_chosen",@"contact_chosen",@"circle_chosen",@"study_chosen",@"setting_chosen",nil];
     NSArray *unselectedImages = [[NSArray alloc]initWithObjects:@"news",@"contact",@"circle",@"study",@"setting",nil];
     titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯录",@"家校圈",@"学习",@"设置", nil];
-    self.title = [titleArray objectAtIndex:0];
+//    self.title = [titleArray objectAtIndex:0];
     tabButtonArray = [[NSMutableArray alloc]init];
     
     float coordinax = 0;
@@ -122,7 +122,7 @@
     UIButton *button = (UIButton *) sender;
     self.selectedIndex = button.tag;
     button.selected = YES;
-    self.title = [titleArray objectAtIndex:button.tag];
+//    self.title = [titleArray objectAtIndex:button.tag];
     for (UIButton *tempButton in tabButtonArray) {
         if (tempButton.tag != button.tag) {
             tempButton.selected = NO;

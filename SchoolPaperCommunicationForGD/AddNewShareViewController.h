@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddNewShareViewController : UIViewController
-
+@interface AddNewShareViewController : UIViewController<UITextViewDelegate>
+@property (nonatomic, retain) UITextView *shareContent;
+@property (nonatomic, retain) UIImageView *shareImage;
+@property (nonatomic, retain) UIButton *addPhoto;
 @end
