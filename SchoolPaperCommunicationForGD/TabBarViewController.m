@@ -13,6 +13,7 @@
 #import "FunctionListViewController.h"
 #import "DynamicsViewController.h"
 #import "SetUpViewController.h"
+#import "ShareListViewController.h"
 @interface TabBarViewController (){
     NSArray *titleArray;
     NSMutableArray *tabButtonArray;
@@ -53,7 +54,7 @@
     FunctionListViewController *functionListViewController = [[FunctionListViewController alloc]init];
     UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:functionListViewController];
     
-    DynamicsViewController *dynamicsViewController = [[DynamicsViewController alloc]init];
+    ShareListViewController *dynamicsViewController = [[ShareListViewController alloc]init];
     UINavigationController *tab4 = [[UINavigationController alloc]initWithRootViewController:dynamicsViewController];
     
     SetUpViewController *setUpViewController = [[SetUpViewController alloc]init];
