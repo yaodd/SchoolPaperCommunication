@@ -76,6 +76,9 @@
 }
 //初始化布局
 - (void)initLayout{
+    UIBarButtonItem *detailButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"photo"] style:UIBarButtonItemStylePlain target:self action:@selector(detailAction:)];
+    self.navigationItem.rightBarButtonItem = detailButton;
+    
     self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT)];
     self.chatTableView.delegate = self;
     self.chatTableView.dataSource = self;
@@ -112,9 +115,12 @@
     [self.sendButton addTarget:self action:@selector(sendAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.sendView addSubview:sendButton];
 }
+//个人详细信息
+- (void)detailAction:(id)sender{
+    
+}
+//点击tableView任何地方都收起键盘
 - (void)tableViewTapGesture:(id)sender{
-//    [sender resignFirstResponder];
-//    [self.chatTableView resignFirstResponder];
     [self.sendTextField resignFirstResponder];
 }
 //初始化历史消息记录

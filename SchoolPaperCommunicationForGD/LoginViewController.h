@@ -17,6 +17,7 @@
 @property (strong, nonatomic) IBOutlet UIView *loginView;
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
 @property (strong, nonatomic) IBOutlet UIButton *dynamicsPswButton;
+@property (strong, nonatomic) IBOutlet UIView *moveView;
 - (IBAction)forgetPswAction:(id)sender;
 - (IBAction)dynamicPswAction:(id)sender;
 - (IBAction)loginAction:(id)sender;

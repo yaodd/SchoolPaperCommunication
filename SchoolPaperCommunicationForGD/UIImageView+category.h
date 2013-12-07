@@ -10,7 +10,5 @@
 #import "XXTPersonBase.h"
 
 @interface UIImageView (category)
-@property (nonatomic, retain)XXTPersonBase *myPerson;
-//- (void)setImageWithUrl:(NSURL *)url person:(XXTPersonBase *)person;
 - (void)setImageWithPerson:(XXTPersonBase *)person;
 @end

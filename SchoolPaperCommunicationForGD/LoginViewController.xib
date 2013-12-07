@@ -13,6 +13,7 @@
                 <outlet property="forgetPswButton" destination="Z8A-Tw-idU" id="X7r-xu-4l8"/>
                 <outlet property="loginButton" destination="rFQ-xj-QeV" id="7pQ-UH-QY1"/>
                 <outlet property="loginView" destination="8HI-bJ-xfH" id="EEY-Kb-0oA"/>
+                <outlet property="moveView" destination="XIL-de-g8d" id="QeW-VI-wLe"/>
                 <outlet property="passwordTF" destination="VLE-mX-pnF" id="meK-sr-Vk6"/>
                 <outlet property="remeberPswCheck" destination="KuS-5u-jDe" id="fu4-4w-FAW"/>
                 <outlet property="view" destination="1" id="3"/>

@@ -9,15 +9,6 @@
 #import "UIImageView+category.h"
 
 @implementation UIImageView (category)
-@dynamic myPerson;
-/*
-- (void)setImageWithUrl:(NSURL *)url person:(XXTPersonBase *)person{
-    self.myPerson = person;
-    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadImageWithUrl:) object:url];
-    [thread start];
-}
- */
-
 - (void)setImageWithPerson:(XXTPersonBase *)person{
 //    self.myPerson = person;
     if (person.avatar.thumbPicImage == nil) {

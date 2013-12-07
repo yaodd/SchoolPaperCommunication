@@ -54,12 +54,13 @@
     }else{
         tableViewY = 49;
     }
-    [self iniTableView];
+    [self initLayout];
     [self initData];
 //    [self.contactsTableView reloadData];
 }
 //初始化tableView
-- (void)iniTableView{
+- (void)initLayout{
+    self.title = @"通讯录";
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
     self.contactsTableView.delegate = self;
@@ -79,7 +80,12 @@
     
     self.contactsTableView.tableHeaderView = self.searchBar;
     self.contactsTableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
+    
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"photo"] style:UIBarButtonItemStyleBordered target:self action:@selector(refreshAction:)];
+    
+    self.navigationItem.rightBarButtonItem = refreshButton;
 }
+
 //初始化数据加载
 - (void)initData{
     XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
@@ -116,6 +122,12 @@
         [data addObject:dict];
     }
     [contactsTableView reloadData];
+}
+//刷新按钮响应事件
+- (void)refreshAction:(id)sender
+{
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadContactGroup:) object:nil];
+    [thread start];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
