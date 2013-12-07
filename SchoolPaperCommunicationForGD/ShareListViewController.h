@@ -11,11 +11,12 @@
 #import "EGORefreshTableHeaderView.h"
 #import "NIDropDown.h"
 #import "ShareListCell.h"
+#import "Dao.h"
 
 @interface ShareListViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, NIDropDownDelegate, ShareListCellDelegate>
 {
     UITableView *_tableView;
-    NSMutableArray *_dataArray;
+    NSArray *_dataArray;
     BOOL _reloading;
     EGORefreshTableHeaderView *_refreshHeaderView;
     EGORefreshTableFooterView *_refreshFooterView;
@@ -31,8 +32,6 @@
 @property (nonatomic, retain) UIImageView *userHeadImage;
 @property (nonatomic, retain) UILabel *userName;
 @property (nonatomic, retain) UIButton *myMessage;
-@property (nonatomic) NSInteger *scopeIndex;
+@property (nonatomic) NSInteger scopeIndex;
 
-- (void)reloadTableViewDataSource;
-- (void)doneLoadingTableViewData;
 @end

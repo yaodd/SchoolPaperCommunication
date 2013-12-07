@@ -7,122 +7,76 @@
 //
 
 #import "ContactView.h"
-
+#import "XXTModelController.h"
+#import "UIImageView+category.h"
 @implementation ContactView
 @synthesize userHeadIV;
 @synthesize userNameLabel;
-@synthesize toolView;
-@synthesize showButton;
-@synthesize hideButton;
 @synthesize phoneButton;
 @synthesize msgButton;
 @synthesize chatButton;
-@synthesize deleteButton;
-@synthesize myDict;
+@synthesize toolButton;
+@synthesize contactPerson;
+@synthesize phoneLabel;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
 //        myDict = [NSDictionary]
-        
-        userHeadIV = [[UIImageView alloc]initWithFrame:CGRectMake(6, 6, 50, 50)];
+        CGFloat leftButtonX = 5;
+        userHeadIV = [[UIImageView alloc]initWithFrame:CGRectMake(leftButtonX, 9,48, 48)];
         userHeadIV.layer.masksToBounds = YES;
-        [userHeadIV.layer setCornerRadius:25];
+        [userHeadIV.layer setCornerRadius:24];
         [self addSubview:userHeadIV];
         
-        
-        userNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(6 + 50 , 6, self.frame.size.width - 56, 50)];
-        [userNameLabel setFont:[UIFont systemFontOfSize:30]];
+        leftButtonX += (10 + 48);
+        userNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(leftButtonX, 15, 100, 18)];
+        [userNameLabel setFont:[UIFont systemFontOfSize:15]];
+        [userNameLabel setBackgroundColor:[UIColor clearColor]];
         [self addSubview:userNameLabel];
         
-        showButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-        [showButton setFrame:CGRectMake(self.frame.size.width - 50, 6, 50, 50)];
-        [showButton addTarget:self action:@selector(showButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:showButton];
+        phoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(leftButtonX, 39, 100, 18)];
+        [phoneLabel setBackgroundColor:[UIColor clearColor]];
+        [phoneLabel setTextColor:[UIColor colorWithRed:120.0/255 green:120.0/255 blue:120.0/255 alpha:1.0]];
+        [self addSubview:phoneLabel];
         
-        toolView = [[UIView alloc]initWithFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width - 56, self.frame.size.height)];
-        [toolView setBackgroundColor:[UIColor orangeColor]];
-        [self addSubview:toolView];
-        
-        CGFloat toolViewButtonX = 6.0f;
-        hideButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        [hideButton setFrame:CGRectMake(toolViewButtonX, 6, 50, 50)];
-        [hideButton addTarget:self action:@selector(hideButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [toolView addSubview:hideButton];
-        toolViewButtonX += (50 + 6);
-        
-        phoneButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        [phoneButton setFrame:CGRectMake(toolViewButtonX, 6, 50, 50)];
-        [phoneButton addTarget:self action:@selector(hideButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [toolView addSubview:phoneButton];
-        toolViewButtonX += (50 + 6);
-
-        chatButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        [chatButton setFrame:CGRectMake(toolViewButtonX, 6, 50, 50)];
-        [chatButton addTarget:self action:@selector(hideButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [toolView addSubview:chatButton];
-        toolViewButtonX += (50 + 6);
-        
-        msgButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        [msgButton setFrame:CGRectMake(toolViewButtonX, 6, 50, 50)];
-        [msgButton addTarget:self action:@selector(hideButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [toolView addSubview:msgButton];
-        toolViewButtonX += (50 + 6);
-        
-        deleteButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        [deleteButton setFrame:CGRectMake(toolViewButtonX, 6, 50, 50)];
-        [deleteButton addTarget:self action:@selector(hideButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [toolView addSubview:deleteButton];
-        
+        CGFloat buttonX = 161;
+        CGFloat buttonRadius = 24;
+        CGFloat buttonY = 9;
+        NSArray *imageNameArrayN = [NSArray arrayWithObjects:@"phone",@"message",@"chat", nil];
+        NSArray *imageNameArrayH = [NSArray arrayWithObjects:@"phone_click",@"message_click",@"chat_click", nil];
+        for (int i = 0; i < 3; i ++) {
+            toolButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [toolButton setFrame:CGRectMake(buttonX, buttonY, buttonRadius * 2, buttonRadius * 2)];
+            [toolButton.layer setCornerRadius:buttonRadius];
+//            [toolButton setBackgroundColor:[UIColor greenColor]];
+            [toolButton setTag:i];
+            [toolButton setImageEdgeInsets:UIEdgeInsetsMake(11, 11, 11, 11)];
+            [toolButton setImage:[UIImage imageNamed:[imageNameArrayN objectAtIndex:i]] forState:UIControlStateNormal];
+            [toolButton setImage:[UIImage imageNamed:[imageNameArrayH objectAtIndex:i]] forState:UIControlStateHighlighted];
+            [toolButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:toolButton];
+            buttonX += 53;
+        }
+        UIView *sepector = [[UIView alloc]initWithFrame:CGRectMake(0, 64, self.frame.size.width, 1)];
+        [sepector setBackgroundColor:[UIColor colorWithRed:213.0/255 green:213.0/255 blue:213.0/255 alpha:1.0]];
+        [self addSubview:sepector];
     }
     return self;
 }
 
-- (void)setData:(NSMutableDictionary *)dict{
-    myDict = dict;
-    NSString *name = [dict objectForKey:@"name"];
-    UIImage *image = [dict objectForKey:@"image"];
-    BOOL toolIsShow = [[dict objectForKey:@"toolIsShow"] boolValue];
-    
-    [userHeadIV setImage:image];
-    [userNameLabel setText:name];
-    if (toolIsShow) {
-        [toolView setFrame:CGRectMake(50 + 6, 0, self.frame.size.width - 56, self.frame.size.height)];
-    } else{
-        [toolView setFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width - 56, self.frame.size.height)];
-    }
+- (void)setData:(XXTContactPerson *)person{
+    contactPerson = person;
+    [userHeadIV setImageWithPerson:person];
+    [userNameLabel setText:person.name];
+    [phoneLabel setText:person.phone];
 }
-
-- (void)hideToolView{
-    [myDict setObject:[NSNumber numberWithBool:NO] forKey:@"toolIsShow"];
-    CGRect rect = toolView.frame;
-    rect.origin.x = self.frame.size.width;
-    [UIView animateWithDuration:0.5 animations:^{
-        toolView.frame = rect;
-    } completion:^(BOOL finish){
-//        [toolView setHidden:YES];
-//        [self setUserInteractionEnabled:NO];
-    }];
+- (void)buttonAction:(id)sender{
+    UIButton *button = (UIButton *)sender;
+    [self.delegate ContactViewButtonAction:self button:button];
 }
-- (void)showToolView{
-    [myDict setObject:[NSNumber numberWithBool:YES] forKey:@"toolIsShow"];
-    CGRect rect = toolView.frame;
-    rect.origin.x = 50 + 6;
-    [UIView animateWithDuration:0.5 animations:^{
-        toolView.frame = rect;
-    } completion:^(BOOL finish){
-//        [self setUserInteractionEnabled:YES];
-    }];
-}
-- (void)showButtonAction:(id)sender{
-    NSLog(@"show");
-    [self showToolView];
-}
-- (void)hideButtonAction:(id)sender{
-    [self hideToolView];
-}
-
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
