@@ -37,6 +37,14 @@
 		9C12ACD3184B1FFB00C81424 /* ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C12ACD2184B1FFA00C81424 /* ImageView.m */; };
 		9C12ACDA184B295200C81424 /* bookmark_edit_item_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C12ACD8184B295200C81424 /* bookmark_edit_item_bg.png */; };
 		9C12ACDB184B295200C81424 /* bookmark_edit_item_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C12ACD9184B295200C81424 /* bookmark_edit_item_bg@2x.png */; };
+		9C1BF0B3185362D3002E57DD /* call_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0AD185362D3002E57DD /* call_click@2x.png */; };
+		9C1BF0B4185362D3002E57DD /* call@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0AE185362D3002E57DD /* call@2x.png */; };
+		9C1BF0B5185362D3002E57DD /* chat_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0AF185362D3002E57DD /* chat_click@2x.png */; };
+		9C1BF0B6185362D3002E57DD /* chat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0B0185362D3002E57DD /* chat@2x.png */; };
+		9C1BF0B7185362D3002E57DD /* message_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0B1185362D3002E57DD /* message_click@2x.png */; };
+		9C1BF0B8185362D3002E57DD /* message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0B2185362D3002E57DD /* message@2x.png */; };
+		9C1BF0BB1853630F002E57DD /* arrow_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0B91853630F002E57DD /* arrow_close@2x.png */; };
+		9C1BF0BC1853630F002E57DD /* arrow_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C1BF0BA1853630F002E57DD /* arrow_open@2x.png */; };
 		9C28BDE918518291003C1D6F /* ForgetPswViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28BDE718518291003C1D6F /* ForgetPswViewController.m */; };
 		9C28BDEA18518291003C1D6F /* ForgetPswViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C28BDE818518291003C1D6F /* ForgetPswViewController.xib */; };
 		9C28BDED185192CA003C1D6F /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28BDEC185192CA003C1D6F /* PlayerView.m */; };
@@ -242,6 +250,14 @@
 		9C12ACD2184B1FFA00C81424 /* ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageView.m; sourceTree = "<group>"; };
 		9C12ACD8184B295200C81424 /* bookmark_edit_item_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark_edit_item_bg.png; sourceTree = "<group>"; };
 		9C12ACD9184B295200C81424 /* bookmark_edit_item_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark_edit_item_bg@2x.png"; sourceTree = "<group>"; };
+		9C1BF0AD185362D3002E57DD /* call_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call_click@2x.png"; sourceTree = "<group>"; };
+		9C1BF0AE185362D3002E57DD /* call@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "call@2x.png"; sourceTree = "<group>"; };
+		9C1BF0AF185362D3002E57DD /* chat_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_click@2x.png"; sourceTree = "<group>"; };
+		9C1BF0B0185362D3002E57DD /* chat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat@2x.png"; sourceTree = "<group>"; };
+		9C1BF0B1185362D3002E57DD /* message_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_click@2x.png"; sourceTree = "<group>"; };
+		9C1BF0B2185362D3002E57DD /* message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message@2x.png"; sourceTree = "<group>"; };
+		9C1BF0B91853630F002E57DD /* arrow_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_close@2x.png"; sourceTree = "<group>"; };
+		9C1BF0BA1853630F002E57DD /* arrow_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_open@2x.png"; sourceTree = "<group>"; };
 		9C28BDE618518291003C1D6F /* ForgetPswViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgetPswViewController.h; sourceTree = "<group>"; };
 		9C28BDE718518291003C1D6F /* ForgetPswViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgetPswViewController.m; sourceTree = "<group>"; };
 		9C28BDE818518291003C1D6F /* ForgetPswViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgetPswViewController.xib; sourceTree = "<group>"; };
@@ -701,6 +717,14 @@
 		9C28BE821852D370003C1D6F /* contacts */ = {
 			isa = PBXGroup;
 			children = (
+				9C1BF0B91853630F002E57DD /* arrow_close@2x.png */,
+				9C1BF0BA1853630F002E57DD /* arrow_open@2x.png */,
+				9C1BF0AD185362D3002E57DD /* call_click@2x.png */,
+				9C1BF0AE185362D3002E57DD /* call@2x.png */,
+				9C1BF0AF185362D3002E57DD /* chat_click@2x.png */,
+				9C1BF0B0185362D3002E57DD /* chat@2x.png */,
+				9C1BF0B1185362D3002E57DD /* message_click@2x.png */,
+				9C1BF0B2185362D3002E57DD /* message@2x.png */,
 				9C6307171853414A00511954 /* call_click@2x.png */,
 				9C6307181853414A00511954 /* call@2x.png */,
 				9C6307191853414A00511954 /* ctd@2x.png */,
@@ -1187,9 +1211,13 @@
 				9C28BE0A1851C45F003C1D6F /* circle_chosen@2x.png in Resources */,
 				9C290876184B0821002CCAF1 /* ReceiverVoiceNodePlaying.png in Resources */,
 				9C2908451849C756002CCAF1 /* blackArrow.png in Resources */,
+				9C1BF0B8185362D3002E57DD /* message@2x.png in Resources */,
 				59BD22461853072300528A12 /* like@2x.png in Resources */,
 				9C290872184B0821002CCAF1 /* ReceiverTextNodeBkg.png in Resources */,
 				59BD22491853072300528A12 /* newsbutton_click@2x.png in Resources */,
+				9C0F7DAA184B3FC7002B9233 /* photo1@2x.png in Resources */,
+				9C28BDFE1851C11A003C1D6F /* buttonright_click@2x.png in Resources */,
+				59BD22441853072300528A12 /* create@2x.png in Resources */,
 				9C63072A18535AE400511954 /* SendMessageViewController.xib in Resources */,
 				9C0F7DAA184B3FC7002B9233 /* photo1@2x.png in Resources */,
 				9C28BDFE1851C11A003C1D6F /* buttonright_click@2x.png in Resources */,
@@ -1198,9 +1226,14 @@
 				59BD22431853072300528A12 /* create_click@2x.png in Resources */,
 				9CA3700E184841F1001748F3 /* Images.xcassets in Resources */,
 				9CCACDBE184C915400739327 /* btn_right.png in Resources */,
+				59BD22521853074500528A12 /* like_on@2x.png in Resources */,
+				59BD224B1853072300528A12 /* next_click@2x.png in Resources */,
+				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
+				9C2908481849C756002CCAF1 /* blueArrow@2x.png in Resources */,
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
 				59BD22521853074500528A12 /* like_on@2x.png in Resources */,
 				59BD224B1853072300528A12 /* next_click@2x.png in Resources */,
+				9C1BF0BB1853630F002E57DD /* arrow_close@2x.png in Resources */,
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
 				9C2908481849C756002CCAF1 /* blueArrow@2x.png in Resources */,
 				9C6307201853414A00511954 /* ctd@2x.png in Resources */,
@@ -1233,6 +1266,7 @@
 				9C28BE0B1851C45F003C1D6F /* circle@2x.png in Resources */,
 				9C2908461849C756002CCAF1 /* blackArrow@2x.png in Resources */,
 				9CCACDD5184F100D00739327 /* usericon@2x.png in Resources */,
+				9C1BF0B6185362D3002E57DD /* chat@2x.png in Resources */,
 				9C63070D18531F0D00511954 /* message@2x.png in Resources */,
 				9C290873184B0821002CCAF1 /* ReceiverTextNodeBkg@2x.png in Resources */,
 				9CA37000184841F1001748F3 /* InfoPlist.strings in Resources */,
@@ -1250,10 +1284,15 @@
 				9C29086D184B0821002CCAF1 /* SenderAppNodeBkg_HL@2x.png in Resources */,
 				59BD22451853072300528A12 /* like_click@2x.png in Resources */,
 				9C29086C184B0821002CCAF1 /* SenderAppNodeBkg_HL.png in Resources */,
+				59BD22421853072300528A12 /* comment@2x.png in Resources */,
+				9C28BE0E1851C45F003C1D6F /* news_chosen@2x.png in Resources */,
+				59BD224D1853072300528A12 /* triangle@2x.png in Resources */,
+				59BD22401853072300528A12 /* back@2x.png in Resources */,
 				9C6307241853414A00511954 /* startchat@2x.png in Resources */,
 				9C6306DA1853042200511954 /* sync_click@2x.png in Resources */,
 				59BD22421853072300528A12 /* comment@2x.png in Resources */,
 				9C28BE0E1851C45F003C1D6F /* news_chosen@2x.png in Resources */,
+				9C1BF0BC1853630F002E57DD /* arrow_open@2x.png in Resources */,
 				59BD224D1853072300528A12 /* triangle@2x.png in Resources */,
 				59BD22401853072300528A12 /* back@2x.png in Resources */,
 				9CCACDBB184C915400739327 /* mod_user.png in Resources */,
@@ -1273,18 +1312,23 @@
 				9C63071F1853414A00511954 /* call@2x.png in Resources */,
 				9C28BE161851C605003C1D6F /* buttonleft_click@2x.png in Resources */,
 				9C28BDF81851C11A003C1D6F /* backbutton_click@2x.png in Resources */,
+				9C28BDF81851C11A003C1D6F /* backbutton_click@2x.png in Resources */,
 				9C6306EE1853077600511954 /* record@2x.png in Resources */,
 				9CCACE20184F1A7E00739327 /* ChoosePlayerViewController.xib in Resources */,
 				9C6306EC1853077600511954 /* photo@2x.png in Resources */,
 				9C28BDF81851C11A003C1D6F /* backbutton_click@2x.png in Resources */,
+				9C1BF0B3185362D3002E57DD /* call_click@2x.png in Resources */,
 				9CCACE20184F1A7E00739327 /* ChoosePlayerViewController.xib in Resources */,
 				9C290875184B0821002CCAF1 /* ReceiverVoiceNodeDownloading@2x.png in Resources */,
 				59BD22411853072300528A12 /* comment_click@2x.png in Resources */,
 				9C28BDFA1851C11A003C1D6F /* button_click@2x.png in Resources */,
+				9C1BF0B4185362D3002E57DD /* call@2x.png in Resources */,
 				9C29084A1849C756002CCAF1 /* grayArrow@2x.png in Resources */,
 				9CCACE2C184F320D00739327 /* succeed@2x.png in Resources */,
 				9CCACE18184F16A300739327 /* Main.storyboard in Resources */,
+				9C1BF0B7185362D3002E57DD /* message_click@2x.png in Resources */,
 				9C12ACDA184B295200C81424 /* bookmark_edit_item_bg.png in Resources */,
+				9C1BF0B5185362D3002E57DD /* chat_click@2x.png in Resources */,
 				9C6306E81853077600511954 /* audio@2x.png in Resources */,
 				9CCACDBC184C915400739327 /* btn_down.png in Resources */,
 				9C28BE171851C605003C1D6F /* buttonleft@2x.png in Resources */,

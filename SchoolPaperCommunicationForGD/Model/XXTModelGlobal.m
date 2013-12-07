@@ -24,7 +24,7 @@
     self.sessionId = [infoDic objectForKey:@"sessionKey"];
     
     NSMutableArray* userArr = [NSMutableArray array];
-    NSArray* userDicArr = [infoDic objectForKey:@"item"];
+    NSArray* userDicArr = [infoDic objectForKey:@"items"];
     for (NSDictionary* userInfoDic in userDicArr){
         XXTUserRole* userRole = [[XXTUserRole alloc] initWithDictionary:userInfoDic];
         [userArr addObject:userRole];
