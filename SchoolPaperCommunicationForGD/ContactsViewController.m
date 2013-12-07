@@ -81,7 +81,7 @@
     self.contactsTableView.tableHeaderView = self.searchBar;
     self.contactsTableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
     
-    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"photo"] style:UIBarButtonItemStyleBordered target:self action:@selector(refreshAction:)];
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"sync"] style:UIBarButtonItemStyleBordered target:self action:@selector(refreshAction:)];
     
     self.navigationItem.rightBarButtonItem = refreshButton;
 }
@@ -248,17 +248,21 @@
 	eButton.tag = section;//把节号保存到按钮tag，以便传递到expandButtonClicked方法
     
 	//根据是否展开，切换按钮显示图片
-	if ([self isExpanded:section])
-		[eButton setImage: [ UIImage imageNamed: @"btn_down.png" ] forState:UIControlStateNormal];
-	else
-		[eButton setImage: [ UIImage imageNamed: @"btn_right.png" ] forState:UIControlStateNormal];
-    
+	if ([self isExpanded:section]){
+		[eButton setImage: [ UIImage imageNamed:@"arrow_open"] forState:UIControlStateNormal];
+        [eButton setTitleEdgeInsets:UIEdgeInsetsMake(6, 45.5, 0, 0)];
+
+    }
+	else{
+		[eButton setImage: [ UIImage imageNamed:@"arrow_close"] forState:UIControlStateNormal];
+        [eButton setTitleEdgeInsets:UIEdgeInsetsMake(6, 50, 0, 0)];
+
+    }
     
 	//由于按钮的标题，
 	//4个参数是上边界，左边界，下边界，右边界。
 	eButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-	[eButton setTitleEdgeInsets:UIEdgeInsetsMake(6, 50, 0, 0)];
-	[eButton setImageEdgeInsets:UIEdgeInsetsMake(5, 10, 0, 0)];
+	[eButton setImageEdgeInsets:UIEdgeInsetsMake(5, 20, 0, 0)];
     
     
 	//设置按钮显示颜色
@@ -376,4 +380,5 @@
 
     }
 }
+#pragma UISearchBarDelegate mark;
 @end

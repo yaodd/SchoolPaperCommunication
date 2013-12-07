@@ -39,7 +39,7 @@
     CGFloat position = 65;
     CGFloat width = 150;
         //背影图片
-    UIImage *bubble = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fromSelf?@"SenderAppNodeBkg_HL":@"ReceiverTextNodeBkg" ofType:@"png"]];
+    UIImage *bubble = [UIImage imageNamed:fromSelf?@"bubble_grey":@"bubble_blue"];
     [bubbleImageView setImage:[bubble stretchableImageWithLeftCapWidth:floorf(bubble.size.width/2) topCapHeight:floorf(bubble.size.height/2)]];
     
     //    NSLog(@"%f,%f",size.width,size.height);
@@ -50,13 +50,13 @@
     [button setBackgroundImage:msg.image forState:UIControlStateNormal];
     if(fromSelf)
     {
-        frame = CGRectMake(320-position-(width+30.0f), 0.0f, width+30.0f, width+30.0f);
-        button.frame = CGRectMake(10, 20, width, width);
-    }
-    else{
         frame = CGRectMake(position, 0.0f, width+30.0f, width+30.0f);
         button.frame = CGRectMake(20, 20, width, width);
-
+    }
+    else{
+        
+        frame = CGRectMake(320-position-(width+30.0f), 0.0f, width+30.0f, width+30.0f);
+        button.frame = CGRectMake(10, 20, width, width);
     }
     self.frame = frame;
     

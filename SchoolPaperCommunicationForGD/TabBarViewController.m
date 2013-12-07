@@ -121,7 +121,7 @@
     UIButton *button = (UIButton *) sender;
     self.selectedIndex = button.tag;
     button.selected = YES;
-    self.title = [titleArray objectAtIndex:button.tag];
+//    self.title = [titleArray objectAtIndex:button.tag];
     for (UIButton *tempButton in tabButtonArray) {
         if (tempButton.tag != button.tag) {
             tempButton.selected = NO;
