@@ -7,6 +7,7 @@
 //
 
 #import "ChatViewController.h"
+#import "PersonDetailViewController.h"
 //#import <Foundation/Foundation.h>
 #import "BubbleView.h"
 #import "VoiceView.h"
@@ -132,9 +133,13 @@
     [self.sendButton setTintColor:[UIColor colorWithRed:13.0/255 green:152.0/255 blue:219.0/255 alpha:1.0]];
     [self.sendView addSubview:sendButton];
 }
-//个人详细信息
+//个人详细信息响应
 - (void)detailAction:(id)sender{
-    
+    [self setHidesBottomBarWhenPushed:YES];
+    UIStoryboard *storyborad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PersonDetailViewController *personDetailViewController = [storyborad instantiateViewControllerWithIdentifier:@"PersonDetail"];
+    [self.navigationController pushViewController:personDetailViewController animated:YES];
+    [self setHidesBottomBarWhenPushed:NO];
 }
 //点击tableView任何地方都收起键盘
 - (void)tableViewTapGesture:(id)sender{

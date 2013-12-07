@@ -13,6 +13,7 @@
 #import "FunctionListViewController.h"
 #import "DynamicsViewController.h"
 #import "SetUpViewController.h"
+#import "ShareListViewController.h"
 @interface TabBarViewController (){
     NSArray *titleArray;
     NSMutableArray *tabButtonArray;
@@ -53,7 +54,7 @@
     FunctionListViewController *functionListViewController = [[FunctionListViewController alloc]init];
     UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:functionListViewController];
     
-    DynamicsViewController *dynamicsViewController = [[DynamicsViewController alloc]init];
+    ShareListViewController *dynamicsViewController = [[ShareListViewController alloc]init];
     UINavigationController *tab4 = [[UINavigationController alloc]initWithRootViewController:dynamicsViewController];
     
     SetUpViewController *setUpViewController = [[SetUpViewController alloc]init];
@@ -84,7 +85,7 @@
     NSArray *selectedImages = [[NSArray alloc]initWithObjects:@"news_chosen",@"contact_chosen",@"circle_chosen",@"study_chosen",@"setting_chosen",nil];
     NSArray *unselectedImages = [[NSArray alloc]initWithObjects:@"news",@"contact",@"circle",@"study",@"setting",nil];
     titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯录",@"家校圈",@"学习",@"设置", nil];
-    self.title = [titleArray objectAtIndex:0];
+//    self.title = [titleArray objectAtIndex:0];
     tabButtonArray = [[NSMutableArray alloc]init];
     
     float coordinax = 0;

@@ -60,7 +60,7 @@
 }
 //初始化tableView
 - (void)initLayout{
-    self.title = @"通讯录";
+//    self.title = @"通讯录";
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
     self.contactsTableView.delegate = self;
