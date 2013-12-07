@@ -8,7 +8,10 @@
 
 #import "ContactsViewController.h"
 #import "ChatViewController.h"
-#import "ContactView.h"
+#import "XXTUserRole.h"
+#import "XXTModelGlobal.h"
+#import "Dao.h"
+#import "UIImageView+category.h"
 
 #define CONTACT_VIEW_TAG    111111
 
@@ -51,16 +54,17 @@
     }else{
         tableViewY = 49;
     }
-    [self iniTableView];
+    [self initLayout];
     [self initData];
 //    [self.contactsTableView reloadData];
 }
-- (void)iniTableView{
+//初始化tableView
+- (void)initLayout{
+    self.title = @"通讯录";
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
     self.contactsTableView.delegate = self;
-//    [self.contactsTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
-
+    [self.contactsTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:self.contactsTableView];
     
     self.searchBar = [[UISearchBar alloc]initWithFrame:CGRectZero];
@@ -76,46 +80,54 @@
     
     self.contactsTableView.tableHeaderView = self.searchBar;
     self.contactsTableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
-}
-- (void)initData{
-    data = [[NSMutableArray alloc]initWithCapacity : 2];
-	
-	NSMutableDictionary *dict = [[NSMutableDictionary alloc]initWithCapacity : 2];
-	[dict setObject:@"好友" forKey:@"groupname"];
-	
-	//利用数组来填充数据
-	NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity : 2];
-    for (int i = 0; i < 13; i ++) {
-        NSString *name = @"用户名";
-        UIImage *image = [UIImage imageNamed:@"photo"];
-        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image",[NSNumber numberWithBool:NO],@"toolIsShow", nil];
-        [arr addObject:dic];
-    }
-//	[arr addObject: @"关羽"];
-//	[arr addObject: @"张飞"];
-//	[arr addObject: @"孔明"];
-	[dict setObject:arr forKey:@"users"];
-	[data addObject: dict];
     
-	
-	
-	dict = [[NSMutableDictionary alloc]initWithCapacity : 2];
-	[dict setObject:@"对手" forKey:@"groupname"];
-	
-	arr = [[NSMutableArray alloc] initWithCapacity : 2];
-    for (int i = 0; i < 3; i ++) {
-        NSString *name = @"用户名2";
-        UIImage *image = [UIImage imageNamed:@"photo1"];
-        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithObjectsAndKeys:name,@"name",image,@"image",[NSNumber numberWithBool:NO],@"toolIsShow", nil];
-        [arr addObject:dic];
-    }
-//	[arr addObject: @"曹操"];
-//	[arr addObject: @"司马懿"];
-//	[arr addObject: @"张辽"];
-	[dict setObject:arr forKey:@"users"];
-	[data addObject: dict];
-	
+    UIBarButtonItem *refreshButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"photo"] style:UIBarButtonItemStyleBordered target:self action:@selector(refreshAction:)];
+    
+    self.navigationItem.rightBarButtonItem = refreshButton;
+}
 
+//初始化数据加载
+- (void)initData{
+    XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
+    XXTUserRole *userRole = modelGlobal.currentUser;
+    if ([userRole.contactGroupArr count] == 0) {
+        NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadContactGroup:) object:nil];
+        [thread start];
+
+    }
+    
+    [self updateContactGroup];
+}
+//下载通讯录
+- (void)downloadContactGroup:(NSThread *)thread{
+    Dao *dao = [Dao sharedDao];
+    int isSuccess = [dao requestForGetContactList];
+    if (isSuccess ==  1) {
+        [self performSelectorOnMainThread:@selector(updateContactGroup) withObject:nil waitUntilDone:YES];
+    }
+
+}
+//更新通讯录
+- (void)updateContactGroup{
+    XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
+    XXTUserRole *userRole = modelGlobal.currentUser;
+    data = [[NSMutableArray alloc]init];
+
+    for (XXTGroup *group in userRole.contactGroupArr) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setObject:group.groupName forKey:@"groupname"];
+        NSLog(@"groupname %@",group.groupName);
+        NSArray *groupMemberArr = group.groupMemberArr;
+        [dict setObject:groupMemberArr forKey:@"users"];
+        [data addObject:dict];
+    }
+    [contactsTableView reloadData];
+}
+//刷新按钮响应事件
+- (void)refreshAction:(id)sender
+{
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadContactGroup:) object:nil];
+    [thread start];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -167,19 +179,21 @@
     } else{
         NSDictionary * d = [data objectAtIndex:section];
         num = [[d objectForKey:@"users"] count];
+        
     }
     return num;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 62;
+    return 66;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *CellIdentifier = [NSString stringWithFormat:@"Cell"];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        ContactView *contactView = [[ContactView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 62)];
+        ContactView *contactView = [[ContactView alloc]initWithFrame:CGRectMake(0, 0, cell.frame.size.width, 66)];
         [contactView setTag:CONTACT_VIEW_TAG];
+        contactView.delegate = self;
         [cell addSubview:contactView];
     }
     ContactView *contactView = (ContactView *)[cell viewWithTag:CONTACT_VIEW_TAG];
@@ -189,25 +203,21 @@
 	if (users == nil) {
 		return cell;
 	}
-	
-	//显示联系人名称
-    NSDictionary *user = [users objectAtIndex:indexPath.row];
-    [contactView setData:user];    
-//	cell.textLabel.backgroundColor = [UIColor clearColor];
+	//加载数据
+    XXTContactPerson *user = [users objectAtIndex:indexPath.row];
+    [contactView setData:user];
 	[cell setBackgroundColor:[UIColor whiteColor]];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return  40;
+    return  44;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     self.hidesBottomBarWhenPushed = YES;
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    ChatViewController *chatViewController = [storyBoard instantiateViewControllerWithIdentifier:@"ChatID"];
-//    ChatViewController *chatViewController = [[ChatViewController alloc]init];
+    ChatViewController *chatViewController = [[ChatViewController alloc]init];
     [self.navigationController pushViewController:chatViewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
@@ -220,11 +230,11 @@
 	if (UIInterfaceOrientationLandscapeRight == [[UIDevice currentDevice] orientation] ||
         UIInterfaceOrientationLandscapeLeft == [[UIDevice currentDevice] orientation])
 	{
-		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 480, 40)];
+		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 480, 44)];
 	}
 	else
 	{
-		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
+		hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
         //self.tableView.tableHeaderView.frame = CGRectMake(0.f, 0.f, 320.f, 44.f);
 	}
     //UIView *hView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 40)];
@@ -247,22 +257,27 @@
 	//由于按钮的标题，
 	//4个参数是上边界，左边界，下边界，右边界。
 	eButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-	[eButton setTitleEdgeInsets:UIEdgeInsetsMake(5, 10, 0, 0)];
-	[eButton setImageEdgeInsets:UIEdgeInsetsMake(5, 5, 0, 0)];
+	[eButton setTitleEdgeInsets:UIEdgeInsetsMake(6, 50, 0, 0)];
+	[eButton setImageEdgeInsets:UIEdgeInsetsMake(5, 10, 0, 0)];
     
     
 	//设置按钮显示颜色
 	eButton.backgroundColor = [UIColor lightGrayColor];
 	[eButton setTitle:[[data objectAtIndex:section] objectForKey:@"groupname"] forState:UIControlStateNormal];
 	[eButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [eButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     //[eButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-	
-	[eButton setBackgroundImage: [ UIImage imageNamed: @"btn_listbg.png" ] forState:UIControlStateNormal];//btn_line.png"
+	[eButton setBackgroundColor:[UIColor whiteColor]];
+//	[eButton setBackgroundImage: [UIImage imageNamed: @"btn_listbg.png" ] forState:UIControlStateNormal];//btn_line.png"
 	//[eButton setTitleShadowColor:[UIColor colorWithWhite:0.1 alpha:1] forState:UIControlStateNormal];
 	//[eButton.titleLabel setShadowOffset:CGSizeMake(1, 1)];
     
 	[hView addSubview: eButton];
     
+    UIView *sepector = [[UIView alloc]initWithFrame:CGRectMake(0, 43, hView.frame.size.width, 1)];
+    [sepector setBackgroundColor:[UIColor colorWithRed:213.0/255 green:213.0/255 blue:213.0/255 alpha:1.0]];
+    
+    [hView addSubview:sepector];
 	return hView;
     
 }
@@ -337,5 +352,28 @@
     [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
 //    }x
 }
+#pragma contactViewDelegate mark -
+- (void)ContactViewButtonAction:(ContactView *)contactView button:(UIButton *)button{
+    if (button.tag == 0) {
+        NSLog(@"打电话");
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://10086"]];
+        UIWebView*callWebview =[[UIWebView alloc] init];
+        NSURL *telURL =[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@",contactView.phoneLabel.text]];// 貌似tel:// 或者 tel: 都行
+        [callWebview loadRequest:[NSURLRequest requestWithURL:telURL]];
+        //记得添加到view上
+        [self.view addSubview:callWebview];
 
+    }
+    if (button.tag == 1) {
+        NSLog(@"发短信");
+    }
+    if (button.tag == 2) {
+        NSLog(@"即时聊天");
+        self.hidesBottomBarWhenPushed = YES;
+        ChatViewController *chatViewController = [[ChatViewController alloc]init];
+        [self.navigationController pushViewController:chatViewController animated:YES];
+        self.hidesBottomBarWhenPushed = NO;
+
+    }
+}
 @end
