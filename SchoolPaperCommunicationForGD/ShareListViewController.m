@@ -9,13 +9,14 @@
 #import "ShareListViewController.h"
 #import "AddNewShareViewController.h"
 #import "DetailViewController.h"
+#import "XXTModelGlobal.h"
 #define kRefreshFooter 1
 #define kRefreshHeader 0
 #define kFontOfText @"Heiti SC"
-#define kIndexOfClass 0
-#define kIndexOfSchool 1
+#define kIndexOfMine 0
+#define kIndexOfClass 1
 #define kIndexOfTeacher 2
-#define kIndexOfHomeSchool 3
+#define kIndexOfSchool 3
 
 
 @interface ShareListViewController ()
@@ -34,7 +35,11 @@
     UIButton *scopeSelectBtn;
     UILabel *scopeTitle;
     UIImageView *scopeIndicator;
-    NSArray *scopeTitleArr;
+    NSDictionary *scopeTitleArr;
+    
+    Dao *dao;
+    
+    XXTMicroblogCircleType blogCircleType;
 }
 @synthesize tableView = _tableView;
 @synthesize userHeadImage;
@@ -68,9 +73,13 @@
         originY = 0;
     }
     
-    self.title = @"家校圈";
+    scopeIndex = kIndexOfSchool;
+    blogCircleType = XXTMicroblogCircleTypeSchool;
     
-    scopeTitleArr = [[NSArray alloc] initWithObjects:@"班圈", @"校圈", @"教师圈", @"家校圈", nil];
+    NSArray *objects = [NSArray arrayWithObjects:[NSNumber numberWithInt:kIndexOfMine], [NSNumber numberWithInt:kIndexOfClass], [NSNumber numberWithInt:kIndexOfTeacher], [NSNumber numberWithInt:kIndexOfSchool], nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"我的分享", @"班圈", @"教师圈", @"学校圈", nil];
+    
+    scopeTitleArr = [[NSDictionary alloc] initWithObjects:objects forKeys:keys];
     
     [self initViewsOnNavigationBar];
     
@@ -82,10 +91,12 @@
     [self.view addSubview:_tableView];
     
     _dataArray = [[NSMutableArray alloc] init];
-    [self requestData];
     
     [self initHeaderRefresh];
     [self initFooterRefresh];
+    
+    NSThread *loadDataThread = [[NSThread alloc] initWithTarget:self selector:@selector(reloadTableViewOldDataSource) object:nil];
+    [loadDataThread start];
 }
 
 //load views
@@ -104,10 +115,10 @@
     scopeSelectBtn.backgroundColor = [UIColor colorWithRed:13/255.0 green:152/255.0 blue:219/255.0 alpha:1.0];
     [scopeSelectBtn addTarget:self action:@selector(scopeSelectBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
     scopeSelectBtn.titleLabel.font = [UIFont fontWithName:@"Heiti SC" size:22.0];
-    scopeSelectBtn.titleLabel.text = @"家校圈";
+    scopeSelectBtn.titleLabel.text = @"学校圈";
     scopeSelectBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
     scopeSelectBtn.titleLabel.textColor = [UIColor whiteColor];
-    [scopeSelectBtn setTitle:@"家校圈" forState:UIControlStateNormal];
+    [scopeSelectBtn setTitle:@"学校圈" forState:UIControlStateNormal];
     
     self.navigationItem.titleView = scopeSelectBtn;
 }
@@ -130,7 +141,7 @@
     [self.view addSubview:userHeadImage];
     
     userName = [[UILabel alloc] init];
-    userName.frame = CGRectMake(100, 104, 100, 24);
+    userName.frame = CGRectMake(100, 42+originY, 100, 24);
     userName.backgroundColor = [UIColor clearColor];
     userName.textAlignment = NSTextAlignmentLeft;
     userName.textColor = [UIColor whiteColor];
@@ -140,7 +151,7 @@
     userName.text = @"李小林";
     [self.view addSubview:userName];
     
-    myMessage = [[UIButton alloc] initWithFrame:CGRectMake(100, 132, 75, 25.5)];
+    myMessage = [[UIButton alloc] initWithFrame:CGRectMake(100, 70+originY, 75, 25.5)];
     myMessage.backgroundColor = [UIColor clearColor];
     [myMessage setImage:[UIImage imageNamed:@"newsbutton"] forState:UIControlStateNormal];
     [myMessage setImage:[UIImage imageNamed:@"newsbutton_click"] forState:UIControlStateSelected];
@@ -151,7 +162,7 @@
 {
     if(scopeDropDown == nil){
         CGFloat height = scopeTitleArr.count * 29.0f;
-        scopeDropDown = [[NIDropDown alloc] showDropDown:sender :&height :scopeTitleArr];
+        scopeDropDown = [[NIDropDown alloc] showDropDown:sender :&height :scopeTitleArr.allKeys];
         [self.view addSubview:scopeDropDown];
         scopeDropDown.delegate = self;
     }else {
@@ -161,20 +172,37 @@
 }
 
 - (void) niDropDownDelegateMethod: (NIDropDown *) sender {
+    NSString *title = scopeSelectBtn.titleLabel.text;
+    NSLog(@"查看家校圈范围-----%@", title);
+    
+    scopeIndex = [[scopeTitleArr objectForKey:title] intValue];
+    switch (scopeIndex) {
+        case kIndexOfMine:
+            blogCircleType = XXTMicroblogCircleTypeMine;
+            break;
+            
+        case kIndexOfClass:
+            blogCircleType = XXTMicroblogCircleTypeClass;
+            break;
+        
+        case kIndexOfTeacher:
+            blogCircleType = XXTMicroblogCircleTypeTeacher;
+            break;
+            
+        case kIndexOfSchool:
+            blogCircleType = XXTMicroblogCircleTypeSchool;
+            break;
+            
+        default:
+            break;
+    }
+
     [self dropDownRel];
 }
 
 -(void)dropDownRel{
     //    [dropDown release];
     scopeDropDown = nil;
-}
-
-- (void)requestData
-{
-    NSArray *arr = @[@"aaa",@"bbb", @"ccc"];
-    [_dataArray addObject:arr];
-    //sleep(2);
-    [self performSelectorOnMainThread:@selector(reloadUI) withObject:nil waitUntilDone:NO];
 }
 
 - (void)addNewShare{
@@ -197,21 +225,32 @@
     _reloading = NO;
 }
 
-- (void)reloadMoreData
+- (void)reloadTableViewOldDataSource
 {
     NSLog(@"refreshFooterView is reloading!");
+    
+    dao = [Dao sharedDao];
+    NSInteger state = [dao requestForMicroblogsListWithType:blogCircleType isPull:0 pageSize:20];
+    //返回值state为0时表示读取数据失败，1时为读取数据成功
+    NSLog(@"requst state - %d", (int)state);
+    
+    //从后台读取数据后将其赋值到本地成员变量上
+    NSArray *arr = [[XXTModelGlobal sharedModel].currentUser.microblogsArrOfArr objectAtIndex:blogCircleType];
+    _dataArray = arr;
+    
     _reloading = YES;
-    [NSThread detachNewThreadSelector:@selector(requestData) toTarget:self withObject:nil];
+    [NSThread detachNewThreadSelector:@selector(doneLoadingOldTableViewData) toTarget:self withObject:nil];
 }
 
-- (void)reloadUI
+- (void)doneLoadingOldTableViewData
 {
     _reloading = NO;
     
-    //停止下拉的动作,恢复表格的便宜
 	[_refreshFooterView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
     //更新界面
     [_tableView reloadData];
+    
+    //更新完列表后调整底部刷新控件的位置
     [self setRefreshViewFrame];
     NSLog(@"refreshFooterView end reloading!");
 }
@@ -227,7 +266,9 @@
 //出发下拉刷新动作，开始拉取数据
 - (void)egoRefreshTableFooterDidTriggerRefresh:(EGORefreshTableFooterView*)view
 {
-    [self reloadMoreData];
+    //新建线程处理读取后台数据
+    NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(reloadTableViewOldDataSource) object:nil];
+    [thread start];
 }
 //返回当前刷新状态：是否在刷新
 - (BOOL)egoRefreshTableFooterDataSourceIsLoading:(EGORefreshTableFooterView*)view
@@ -238,6 +279,79 @@
 -(NSDate *)egoRefreshTableFooterDataSourceLastUpdated:(EGORefreshTableFooterView *)view
 {
     return [NSDate date];
+}
+
+////////////////////////////////
+//About the header refresh View
+- (void)initHeaderRefresh
+{
+    if (_refreshHeaderView == nil) {
+        
+        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - _tableView.bounds.size.height, self.view.frame.size.width, _tableView.bounds.size.height)];
+        view.delegate = self;
+        [_tableView addSubview:view];
+        _refreshHeaderView = view;
+        
+    }
+    
+    //  update the last update date
+    [_refreshHeaderView refreshLastUpdatedDate];
+}
+
+- (void)reloadTableViewNewDataSource{
+    
+    NSLog(@"refreshHeaderView is reloading!");
+
+    dao = [Dao sharedDao];
+    NSInteger state = [dao requestForMicroblogsListWithType:XXTMicroblogCircleTypeSchool isPull:1 pageSize:50];
+    //返回值state为0时表示读取数据失败，1时为读取数据成功
+    NSLog(@"requst state--%d", (int)state);
+    
+    //从后台读取数据后将其赋值到本地成员变量上
+    NSArray *arr = [[XXTModelGlobal sharedModel].currentUser.microblogsArrOfArr objectAtIndex:blogCircleType];
+    _dataArray = arr;
+    
+    _reloading = YES;
+    [self performSelectorOnMainThread:@selector(doneLoadingNewTableViewData) withObject:nil waitUntilDone:YES];
+
+
+}
+
+- (void)doneLoadingNewTableViewData{
+    
+    //  model should call this when its done loading
+    [_tableView reloadData];
+    
+    _reloading = NO;
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+    
+    //更新完列表后调整底部刷新控件的位置
+    [self setRefreshViewFrame];
+    NSLog(@"refreshHeaderView end reloading!");
+    
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    
+    //新建线程处理读取后台数据
+    NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(reloadTableViewNewDataSource) object:nil];
+    [thread start];
+    
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+    
+    return _reloading; // should return if data source model is reloading
+    
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+    
+    return [NSDate date]; // should return date data source was last changed
+    
 }
 
 #pragma mark - UIScrollView
@@ -261,88 +375,13 @@
 //松开后判断表格是否在刷新，若在刷新则表格位置偏移，且状态说明文字变化为loading...
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-   oldContentOffsetY = scrollView.contentOffset.y;
+    oldContentOffsetY = scrollView.contentOffset.y;
     
     if(oldContentOffsetY < contentOffsetY){
         [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
     }else{
         [_refreshFooterView egoRefreshScrollViewDidEndDragging:scrollView];
     }
-}
-
-////////////////////////////////
-//About the header refresh View
-- (void)initHeaderRefresh
-{
-    if (_refreshHeaderView == nil) {
-        
-        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - _tableView.bounds.size.height, self.view.frame.size.width, _tableView.bounds.size.height)];
-        view.delegate = self;
-        [_tableView addSubview:view];
-        _refreshHeaderView = view;
-        
-    }
-    
-    //  update the last update date
-    [_refreshHeaderView refreshLastUpdatedDate];
-}
-
-- (void)reloadTableViewDataSource{
-    
-    NSLog(@"refreshHeaderView is reloading!");
-    //  should be calling your tableviews data source model to reload
-    //  put here just for demo
-    _reloading = YES;
-
-}
-
-- (void)doneLoadingTableViewData{
-    
-    //  model should call this when its done loading
-    [_tableView reloadData];
-    
-    _reloading = NO;
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-    NSLog(@"refreshHeaderView end reloading!");
-    
-}
-/*
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    
-}
-*/
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    
-    [self reloadTableViewDataSource];
-    [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
-    
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-    
-    return _reloading; // should return if data source model is reloading
-    
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-    
-    return [NSDate date]; // should return date data source was last changed
-    
 }
 
 #pragma Mark - tableView delegate & datasourse
@@ -354,13 +393,22 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150.0f;
+    NSInteger row = indexPath.row;
+    XXTMicroblog *micro = [_dataArray objectAtIndex:row];
+    
+    //The following code is for getting the exact height of text content
+    NSString *content = micro.content;
+    CGSize size = CGSizeMake(240, 2000);
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Heiti SC" size:15.0], NSFontAttributeName,[UIColor colorWithRed:135/255.0 green:132/255.0 blue:134/255.0 alpha:1.0], NSForegroundColorAttributeName, nil];
+    CGRect contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+    
+    CGFloat height = contentFrame.size.height + 105.0f;
+    return height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //return [_dataArray count];
-    return 11;
+    return [_dataArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -375,6 +423,34 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+    NSInteger row = indexPath.row;
+    XXTMicroblog *micro = [_dataArray objectAtIndex:row];
+    
+    //Translate the shareDateTime to NSString
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+   [formatter setDateStyle:NSDateFormatterMediumStyle];
+   [formatter setTimeStyle:NSDateFormatterShortStyle];
+   [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [formatter stringFromDate:micro.dateTime];
+    cell.shareDate.text = dateString;
+    
+    //The following code is for getting the exact height of text content
+    NSString *content = micro.content;
+    CGSize size = CGSizeMake(240, 2000);
+    cell.shareContent.text = content;
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Heiti SC" size:15.0], NSFontAttributeName,[UIColor colorWithRed:135/255.0 green:132/255.0 blue:134/255.0 alpha:1.0], NSForegroundColorAttributeName, nil];
+    CGRect contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+    cell.shareContent.frame = CGRectMake(cell.shareContent.frame.origin.x, cell.shareContent.frame.origin.y, contentFrame.size.width, contentFrame.size.height);
+    
+    //Adjust the height of comment background
+    cell.commentBackground.frame = CGRectMake(cell.commentBackground.frame.origin.x, cell.commentBackground.frame.origin.y, cell.commentBackground.frame.size.width, contentFrame.size.height+50);
+    
+    //Adjust the origin Y of bottomView
+    cell.bottomView.frame = CGRectMake(cell.bottomView.frame.origin.x, cell.commentBackground.frame.size.height-30, cell.bottomView.frame.size.width, cell.bottomView.frame.size.height);
+    
+    //Fix the exact number of comment and like
+    cell.numberOfComment.text = [NSString stringWithFormat:@"%ld", (long)micro.commentCount];
+    cell.numberOflike.text = [NSString stringWithFormat:@"%ld", (long)micro.likeCount];
     
     return cell;
 }

@@ -59,6 +59,7 @@
     userHead.image = [UIImage imageNamed:@"photo"];
     userHead.layer.masksToBounds = YES;
     userHead.layer.cornerRadius = 22.5f;
+    userHead.tag = 0;
     [self.contentView addSubview:userHead];
     
     userHeadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -93,11 +94,7 @@
     [commentBackground addTarget:self action:@selector(jumpToShareDetal) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:commentBackground];
     
-    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, commentBackground.frame.size.height - 40, commentBackground.frame.size.width, 1)];
-    line.backgroundColor = [UIColor colorWithRed:213/255.0 green:213/255.0 blue:213/255.0 alpha:1.0];
-    [commentBackground addSubview:line];
-    
-    shareContent = [[UILabel alloc] initWithFrame:CGRectMake(70, 54, 240, 100)];
+    shareContent = [[UILabel alloc] initWithFrame:CGRectMake(70, 54, 240, 0)];
     shareContent.backgroundColor = kViewBackgroundColor;
     shareContent.textColor = kTextColorContent;
     shareContent.textAlignment = NSTextAlignmentLeft;
@@ -110,22 +107,26 @@
     [shareImg setBackgroundColor:[UIColor blackColor]];
     [self.contentView addSubview:shareImg];
     
-    bottomView = [[UIButton alloc] initWithFrame:CGRectMake(0, commentBackground.frame.size.height-40, commentBackground.frame.size.width, 40)];
+    bottomView = [[UIButton alloc] initWithFrame:CGRectMake(0, commentBackground.frame.size.height-30, commentBackground.frame.size.width, 30)];
     bottomView.backgroundColor = [UIColor clearColor];
     [bottomView addTarget:self action:@selector(jumpToShareDetal) forControlEvents:UIControlEventTouchUpInside];
     [commentBackground addSubview:bottomView];
+    
+    UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, commentBackground.frame.size.width, 1)];
+    line.backgroundColor = [UIColor colorWithRed:213/255.0 green:213/255.0 blue:213/255.0 alpha:1.0];
+    [bottomView addSubview:line];
     
     UIImageView *indicator = [[UIImageView alloc] initWithFrame:CGRectMake(bottomView.frame.size.width-11.5, bottomView.frame.size.height/2 - 5, 6.5, 10)];
     indicator.backgroundColor = [UIColor clearColor];
     indicator.image = [UIImage imageNamed:@"next"];
     [bottomView addSubview:indicator];
     
-    commentBtn = [[UIButton alloc] initWithFrame:CGRectMake(43, 0, 40, 40)];
+    commentBtn = [[UIButton alloc] initWithFrame:CGRectMake(43, 0, 30, 30)];
     [commentBtn addTarget:self action:@selector(commentBtnPressedDown) forControlEvents:UIControlEventTouchDown];
     [commentBtn addTarget:self action:@selector(commentBtnPressedUp) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:commentBtn];
     
-    likeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+    likeBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     [likeBtn addTarget:self action:@selector(likeBtnPressedDown) forControlEvents:UIControlEventTouchDown];
     [likeBtn addTarget:self action:@selector(likeBtnPressedUp) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:likeBtn];
