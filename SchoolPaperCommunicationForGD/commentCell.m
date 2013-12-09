@@ -9,8 +9,8 @@
 #import "commentCell.h"
 
 @implementation commentCell
-@synthesize userComment;
-@synthesize userHead;
+@synthesize comment;
+@synthesize head;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -18,21 +18,27 @@
     if (self) {
         // Initialization coded
         
-        userHead = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 30, 30)];
-        userHead.image = [UIImage imageNamed:@"photo"];
-        userHead.layer.cornerRadius = userHead.frame.size.width/2;
-        userHead.layer.masksToBounds = YES;
-        userHead.backgroundColor = [UIColor clearColor];
-        [self.contentView addSubview:userHead];
+        [self setBackgroundColor:[UIColor clearColor]];
         
-        userComment = [[UILabel alloc] initWithFrame:CGRectMake(50, 20, 240, 20)];
-        userComment.backgroundColor = [UIColor clearColor];
-        userComment.textColor = [UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
-        userComment.font = [UIFont fontWithName:@"Heiti SC" size:15.0];
-        userComment.textAlignment = NSTextAlignmentLeft;
-        userComment.lineBreakMode = NSLineBreakByCharWrapping;
-        userComment.numberOfLines = 0;
-        [self.contentView addSubview:userComment];
+        head = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 30, 30)];
+        head.image = [UIImage imageNamed:@"photo"];
+        head.layer.cornerRadius = head.frame.size.width/2;
+        head.layer.masksToBounds = YES;
+        head.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:head];
+        
+        comment = [[UILabel alloc] initWithFrame:CGRectMake(50, 20, 240, 20)];
+        comment.backgroundColor = [UIColor clearColor];
+        comment.textColor = [UIColor colorWithRed:52/255.0 green:52/255.0 blue:52/255.0 alpha:1.0];
+        comment.font = [UIFont fontWithName:@"Heiti SC" size:15.0];
+        comment.textAlignment = NSTextAlignmentLeft;
+        comment.lineBreakMode = NSLineBreakByCharWrapping;
+        comment.numberOfLines = 0;
+        [self.contentView addSubview:comment];
+        
+        UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1)];
+        line.backgroundColor = [UIColor colorWithRed:213/255.0 green:213/255.0 blue:213/255.0 alpha:1.0];
+        [self.contentView addSubview:line];
     }
     return self;
 }

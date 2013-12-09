@@ -8,6 +8,7 @@
 
 #import "ShareListViewController.h"
 #import "AddNewShareViewController.h"
+#import "AddNewCommentViewController.h"
 #import "DetailViewController.h"
 #import "XXTModelGlobal.h"
 #define kRefreshFooter 1
@@ -92,12 +93,13 @@
     
     [self initViewsOnNavigationBar];
     
-    [self initViewsOnTop];
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, originY + themeImage.frame.size.height, 320, contentHeight-111-49)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, originY, 320, contentHeight-49)];
     _tableView.dataSource=self;
     _tableView.delegate=self;
+    _tableView.contentOffset = CGPointMake(0, 111);
     [self.view addSubview:_tableView];
+    
+    [self initViewsOnTop];
     
     _dataArray = [[NSMutableArray alloc] init];
     
@@ -133,24 +135,26 @@
 }
 
 - (void)initViewsOnTop{
-    themeImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, originY, 320, 111)];
+    themeImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 111)];
     themeImage.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:themeImage];
+    themeImage.userInteractionEnabled = YES;
+    _tableView.tableHeaderView = themeImage;
+    _tableView.tableHeaderView.userInteractionEnabled = YES;
     
     seachBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, originY, 320, 40)];
     seachBar.placeholder = @"搜索";
     seachBar.backgroundColor = [UIColor clearColor];
     //[self.view addSubview:seachBar];
     
-    userHeadImage = [[UIImageView alloc] initWithFrame:CGRectMake(20, 32 + originY, 69, 69)];
+    userHeadImage = [[UIImageView alloc] initWithFrame:CGRectMake(20, 32, 69, 69)];
     userHeadImage.image = [UIImage imageNamed:@"photo"];
     userHeadImage.layer.masksToBounds = YES;
     userHeadImage.layer.cornerRadius = 34.5f;
     userHeadImage.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:userHeadImage];
+    [self.themeImage addSubview:userHeadImage];
     
     userName = [[UILabel alloc] init];
-    userName.frame = CGRectMake(100, 42+originY, 100, 24);
+    userName.frame = CGRectMake(100, 42, 100, 24);
     userName.backgroundColor = [UIColor clearColor];
     userName.textAlignment = NSTextAlignmentLeft;
     userName.textColor = [UIColor whiteColor];
@@ -158,13 +162,13 @@
     userName.shadowOffset = CGSizeMake(1, 1);
     userName.shadowColor = [UIColor blackColor];
     userName.text = @"李小林";
-    [self.view addSubview:userName];
+    [self.themeImage addSubview:userName];
     
-    myMessage = [[UIButton alloc] initWithFrame:CGRectMake(100, 70+originY, 75, 25.5)];
+    myMessage = [[UIButton alloc] initWithFrame:CGRectMake(100, 70, 75, 25.5)];
     myMessage.backgroundColor = [UIColor clearColor];
     [myMessage setImage:[UIImage imageNamed:@"newsbutton"] forState:UIControlStateNormal];
     [myMessage setImage:[UIImage imageNamed:@"newsbutton_click"] forState:UIControlStateSelected];
-    [self.view addSubview:myMessage];
+    [self.themeImage addSubview:myMessage];
 }
 
 - (IBAction)scopeSelectBtnPressed:(id)sender
@@ -443,6 +447,8 @@
     NSInteger row = indexPath.row;
     XXTMicroblog *micro = [_dataArray objectAtIndex:row];
     
+    cell.tag = indexPath.row;
+    
     //Translate the shareDateTime to NSString
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
    [formatter setDateStyle:NSDateFormatterMediumStyle];
@@ -479,12 +485,28 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"Row %d did selected!", indexPath.row);
 }
 
-//shareListCell delegate
-- (void)jumpToShareDetailDelegate
+
+#pragma Mark
+#pragma shareListCell delegate
+- (void)jumpToShareDetailDelegateWithTag:(NSInteger)tag
 {
-    DetailViewController *controller = [[DetailViewController alloc] init];
+    XXTMicroblog *micro = [_dataArray objectAtIndex:tag];
+    
+    //the method "hidesBottomBarWhenPushed" is for hidding the tab bar
+    self.hidesBottomBarWhenPushed = YES;
+    
+    DetailViewController *controller = [[DetailViewController alloc] initWithMicro:micro];
+    [self.navigationController pushViewController:controller animated:YES];
+    
+    self.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)jumpToAddCommentDelegateWithTag:(NSInteger)tag
+{
+    AddNewCommentViewController *controller = [[AddNewCommentViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "DetailViewController.h"
+#import "AddNewCommentViewController.h"
 #import "commentCell.h"
 #define kTextName @"Heiti SC"
 #define kTextColorName [UIColor colorWithRed:86/255.0 green:122/255.0 blue:150/255.0 alpha:1.0f]
@@ -27,10 +28,14 @@
     UIButton *likeBtn;
     UIImageView *commentImg;
     UIImageView *likeImg;
+    UIImageView *triangle;
 
     CGFloat originY;
     BOOL isIOS7;
     NSInteger contentHeight;
+    NSInteger heightForList;
+    
+    XXTMicroblog *micro;
 }
 @synthesize userHead;
 @synthesize userName;
@@ -50,6 +55,14 @@
     if (self) {
         // Custom initialization
     }
+    return self;
+}
+
+- (id)initWithMicro:(XXTMicroblog *)microBlog
+{
+    self = [super init];
+    
+    micro = microBlog;
     return self;
 }
 
@@ -84,6 +97,8 @@
     [self initUserInfoView];
     [self initShareDetailView];
     [self initCommentDetailView];
+    
+    [self setData];
 }
 
 //load views
@@ -131,7 +146,7 @@
 {
     CGFloat newOriginY = 65;
     
-    shareContent = [[UILabel alloc] initWithFrame:CGRectMake(10, 10+newOriginY, 240, 100)];
+    shareContent = [[UILabel alloc] initWithFrame:CGRectMake(10, 10+newOriginY, 240, 0)];
     shareContent.backgroundColor = [UIColor clearColor];
     shareContent.textColor = kTextColorContent;
     shareContent.textAlignment = NSTextAlignmentLeft;
@@ -148,14 +163,14 @@
 
 - (void)initCommentDetailView
 {
-    CGFloat newOriginY = 10 + shareContent.frame.size.height + 10 + shareImg.frame.size.height + 5;
+    CGFloat newOriginY = 65 + shareContent.frame.size.height + shareImg.frame.size.height;
     
-    UIImageView *triangle = [[UIImageView alloc] initWithFrame:CGRectMake(30, newOriginY+5, 10, 5)];
+    triangle = [[UIImageView alloc] initWithFrame:CGRectMake(30, newOriginY+5, 10, 5)];
     triangle.image = [UIImage imageNamed:@"triangle"];
     triangle.backgroundColor = [UIColor clearColor];
     [self.scrollView addSubview:triangle];
     
-    commentBackground = [[UIImageView alloc] initWithFrame:CGRectMake(10, newOriginY+10, 305, 103)];
+    commentBackground = [[UIImageView alloc] initWithFrame:CGRectMake(10, newOriginY+10, 305, 40)];
     commentBackground.backgroundColor = [UIColor colorWithRed:238/255.0 green:238/255.0 blue:238/255.0 alpha:1.0f];
     commentBackground.layer.cornerRadius = 5.0f;
     commentBackground.userInteractionEnabled = YES;
@@ -199,13 +214,48 @@
     line.backgroundColor = [UIColor colorWithRed:213/255.0 green:213/255.0 blue:213/255.0 alpha:1.0];
     [self.commentBackground addSubview:line];
     
-    commentList = [[UITableView alloc] initWithFrame:CGRectMake(0, commentBackground.frame.size.height, commentBackground.frame.size.width, commentBackground.frame.size.height - 40)];
+    commentList = [[UITableView alloc] initWithFrame:CGRectMake(0, 40, commentBackground.frame.size.width, 0)];
+    commentList.dataSource = self;
     commentList.delegate = self;
     commentList.scrollEnabled = NO;
     commentList.separatorColor = [UIColor clearColor];
     commentList.backgroundColor = [UIColor clearColor];
     [commentBackground addSubview:commentList];
     
+}
+
+- (void)setData
+{
+    NSLog(@"setData");
+    //The following code is for getting the exact height of text content
+    NSString *content = micro.content;
+    CGSize size = CGSizeMake(240, 2000);
+    self.shareContent.text = content;
+    CGSize contentSize = [content sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0] forWidth:size.width lineBreakMode:NSLineBreakByCharWrapping];
+    CGRect contentFrame = CGRectMake(self.shareContent.frame.origin.x, self.shareContent.frame.origin.y, self.shareContent.frame.size.width, contentSize.height);
+    self.shareContent.frame = CGRectMake(self.shareContent.frame.origin.x, self.shareContent.frame.origin.y, contentFrame.size.width, contentFrame.size.height);
+    
+    //Translate the shareDateTime to NSString
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSString *dateString = [formatter stringFromDate:micro.dateTime];
+    self.shareDate.text = dateString;
+    
+    NSInteger height = 0;
+    for(int i = 0; i < 2; ++i){
+        height += commentList.contentSize.height;
+    }
+    NSLog(@"tableViewcommentheight:%d", height);
+    CGRect commentBgFrame = commentBackground.frame;
+    commentBackground.frame = CGRectMake(commentBgFrame.origin.x, commentBgFrame.origin.y+contentFrame.size.height+20, commentBgFrame.size.width, commentBgFrame.size.height + height);
+    
+    triangle.frame = CGRectMake(triangle.frame.origin.x, triangle.frame.origin.y+contentFrame.size.height+20, triangle.frame.size.width, triangle.frame.size.height);
+    
+    //Fix the exact number of comment and like
+    numberOfComment.text = [NSString stringWithFormat:@"%ld", (long)micro.commentCount];
+    numberOflike.text = [NSString stringWithFormat:@"%ld", (long)micro.likeCount];
 }
 
 - (void)jumpToUserDetail
@@ -219,9 +269,8 @@
 
 - (void)commentBtnPressedUp{
     commentImg.image = [UIImage imageNamed:@"comment"];
-    int number = [numberOfComment.text intValue];
-    number++;
-    numberOfComment.text = [NSString stringWithFormat:@"%d",number];
+    AddNewCommentViewController *controller = [[AddNewCommentViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)likeBtnPressedDown{
@@ -244,8 +293,18 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    return 70;
+    NSLog(@"Height for row: %d", indexPath.row);
+    NSInteger height;
+    //The following code is for getting the exact height of text content
+    XXTComment *comment = [micro.commentsArr objectAtIndex:indexPath.row];
+    CGSize size = CGSizeMake(240, 1000);
+    CGSize contentSize = [comment.content sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0] forWidth:size.width lineBreakMode:NSLineBreakByCharWrapping];
+    height = contentSize.height;
+    heightForList += height;
+    if(indexPath.row == 2-1){
+        commentBackground.frame = CGRectMake(commentBackground.frame.origin.x, commentBackground.frame.origin.y, commentBackground.frame.size.width, commentBackground.frame.size.height+heightForList);
+    }
+    return height+35;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -255,22 +314,30 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"cell for row at indexpath :row(%d), section(%d)", indexPath.row, indexPath.section);
     static NSString *CellIdentifier = @"CommentListCell";
     commentCell *cell = (commentCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if(cell == nil){
-        commentCell *cell = [[commentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[commentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
+    //The following code is for getting the exact height of text content
+    XXTComment *comment = [micro.commentsArr objectAtIndex:indexPath.row];
+    NSLog(@"comment:%@",comment.content);
+    CGSize size = CGSizeMake(240, 2000);
+    cell.comment.text = comment.content;
+    CGSize contentSize = [comment.content sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0] forWidth:size.width lineBreakMode:NSLineBreakByCharWrapping];
+    cell.comment.frame = CGRectMake(cell.comment.frame.origin.x, cell.comment.frame.origin.y, cell.comment.frame.size.width, contentSize.height);
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 }
-
 
 @end
