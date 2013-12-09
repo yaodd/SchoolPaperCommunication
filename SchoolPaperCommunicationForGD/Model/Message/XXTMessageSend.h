@@ -20,7 +20,7 @@
 - (id) initWithGroupIds:(NSArray*) groupIds
               personIds:(NSArray*) personIds
                 content:(NSString *)content
-                images:(NSArray *)imagesArr
+                 images:(NSArray *)imagesArr
                   audio:(NSArray *)audiosArr;
 
 @end

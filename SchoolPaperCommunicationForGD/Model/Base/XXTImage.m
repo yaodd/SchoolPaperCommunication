@@ -24,4 +24,21 @@
     return self;
 }
 
+- (void) encodeWithCoder:(NSCoder *)aCoder{
+    [aCoder encodeObject:self.originPicURL forKey:@"originURL"];
+    [aCoder encodeObject:self.thumbPicURL forKey:@"thumbURL"];
+    [aCoder encodeObject:self.originPicImage forKey:@"originPic"];
+    [aCoder encodeObject:self.thumbPicImage forKey:@"thumbPic"];
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super initWithCoder:aDecoder]){
+        self.originPicURL = [aDecoder decodeObjectForKey:@"originURL"];
+        self.thumbPicURL  = [aDecoder decodeObjectForKey:@"thumbURL"];
+        self.originPicImage =[aDecoder decodeObjectForKey:@"originPic"];
+        self.thumbPicImage =[aDecoder decodeObjectForKey:@"thumbPic"];
+    }
+    return self;
+}
+
 @end

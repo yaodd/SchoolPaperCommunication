@@ -14,6 +14,11 @@
 #import "XXTMicroblog.h"
 #import "XXTHistoryMessage.h"
 #import "XXTModuleMessage.h"
+#import "XXTModelConfig.h"
+#import "XXTBulletin.h"
+#import "XXTHomework.h"
+#import "XXTEvaluateTemplate.h"
+#import "XXTQuestion.h"
 
 @interface XXTUserRole : XXTPersonBase
 
@@ -26,19 +31,29 @@
 @property (strong,nonatomic) NSMutableArray* messageTemplatesArr;
 @property (strong,nonatomic) NSMutableArray* messageHistoryArr;
 @property (strong,nonatomic) NSMutableArray* moduleMessagesArr;
-
-@property (strong,nonatomic) NSArray* microblogsArrOfArr;  //
+@property (strong,nonatomic) NSMutableArray* microblogsArrOfArr;
+@property (strong,nonatomic) NSMutableArray* bulletinArrOfArr;
+@property (strong,nonatomic) NSMutableArray* homeworkArr;
+@property (strong,nonatomic) NSMutableArray* evaluateTemplatesArr;
+@property (strong,nonatomic) NSMutableArray* questionArr;
 
 @property (strong,nonatomic) NSDate* lastUpdateTimeForMessageList;
 @property (strong,nonatomic) NSMutableArray* lastUpdateTimeForMicroblogListArr;
 @property (strong,nonatomic) NSDate* lastUpdateTimeForCommentsAndLikes;
 @property (strong,nonatomic) NSDate* lastUpdateTimeForMessageTemplates;
 @property (strong,nonatomic) NSDate* lastUpdateTimeForModuleMessage;
-
--(XXTGroup*) getGroupObjectById:(NSString*) groupId;
--(XXTPersonBase*) getPersonObjectById:(NSString*) pid;
+@property (strong,nonatomic) NSMutableArray* lastUpdateTimeForBulletinArr;
+@property (strong,nonatomic) NSDate* lastUpdateTimeForHomework;
+@property (strong,nonatomic) NSDate* lastUpdateTimeForEvaluateTemplates;
 
 @property (strong,nonatomic) NSMutableArray *myCommentsAndLikes;
 @property NSInteger commentAndLikesReadCount; //已经读过的comment和like数,未读数为当前总数-已读数
+
+- (id) initLoad;
+- (void) save;
+
+-(XXTGroup*) getGroupObjectById:(id) groupId;
+-(XXTPersonBase*) getPersonObjectById:(id) pid;
+-(NSArray*) getMessagesBetweenMeAndPerson:(id) pid;
 
 @end

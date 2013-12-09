@@ -18,4 +18,16 @@
     return self;
 }
 
+- (void) encodeWithCoder:(NSCoder *)aCoder{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeInteger:self.type forKey:@"templateType"];
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder{
+    if (self=[super initWithCoder:aDecoder]){
+        self.type = [aDecoder decodeIntegerForKey:@"templateType"];
+    }
+    return self;
+}
+
 @end

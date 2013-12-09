@@ -142,12 +142,14 @@
     [self.likeBtn addSubview:likeImg];
     
     numberOflike = [[UILabel alloc] initWithFrame:CGRectMake(commentImg.frame.origin.x + commentImg.frame.size.width + 3, 8, 20, 15)];
+    numberOflike.backgroundColor = [UIColor clearColor];
     numberOflike.textColor = kTextColorHint;
     numberOflike.font = [UIFont fontWithName:kTextName size:kFontSizeHint];
     numberOflike.text = @"0";
     [self.likeBtn addSubview:numberOflike];
     
     numberOfComment = [[UILabel alloc] initWithFrame:CGRectMake(likeImg.frame.origin.x + likeImg.frame.size.width + 3, 8, 20, 15)];
+    numberOfComment.backgroundColor = [UIColor clearColor];
     numberOfComment.textColor = kTextColorHint;
     numberOfComment.font = [UIFont fontWithName:kTextName size:kFontSizeHint];
     numberOfComment.text = @"0";

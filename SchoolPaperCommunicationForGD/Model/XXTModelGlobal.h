@@ -8,6 +8,7 @@
 
 #import "XXTObject.h"
 #import "XXTUserRole.h"
+#import "XXTFeedback.h"
 
 @interface XXTModelGlobal : XXTObject
 
@@ -18,6 +19,9 @@
 
 @property (strong , nonatomic) NSArray* userObjectArr;
 @property (strong , nonatomic) XXTUserRole* currentUser;
+
+@property (strong , nonatomic) NSArray* feedbackArr;
+@property NSInteger feedbackCount;
 
 -(void) initWithLoginInfoDictionary:(NSDictionary*) infoDic;
 

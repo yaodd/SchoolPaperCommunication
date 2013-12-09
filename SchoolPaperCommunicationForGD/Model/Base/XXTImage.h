@@ -9,13 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "XXTObject.h"
 
-@interface XXTImage : XXTObject
+@interface XXTImage : XXTObject 
 
 @property (strong,nonatomic) NSString *originPicURL;    //原始图片URL
 @property (strong,nonatomic) NSString *thumbPicURL;     //缩略图URL
 @property (strong,nonatomic) UIImage  *originPicImage;  //原始图UIImage
 @property (strong,nonatomic) UIImage  *thumbPicImage;   //缩略图UIImage
-
-
 
 @end

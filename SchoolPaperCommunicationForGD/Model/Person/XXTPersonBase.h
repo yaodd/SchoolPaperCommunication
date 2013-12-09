@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "XXTImage.h"
 #import "XXTObject.h"
+#import "XXTEvaluate.h"
 
 typedef enum {
     XXTPersonTypeTeacher = 1,
@@ -18,9 +19,12 @@ typedef enum {
 
 @interface XXTPersonBase : XXTObject
 
-@property (strong,nonatomic) NSString* pid;
+@property (strong,nonatomic) NSNumber* pid;
 @property (strong,nonatomic) NSString *name;
 @property (nonatomic) XXTPersonType type;
 @property (strong,nonatomic) XXTImage *avatar;
+
+@property (strong,nonatomic) NSMutableArray* evaluateArr;
+@property (strong,nonatomic) NSDate *lastUpdateTimeForEvaluateArr;
 
 @end

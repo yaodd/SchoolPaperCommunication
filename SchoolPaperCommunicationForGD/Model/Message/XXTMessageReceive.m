@@ -23,4 +23,20 @@
     return self;
 }
 
+- (void) encodeWithCoder:(NSCoder *)aCoder{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.senderId forKey:@"senderId"];
+    [aCoder encodeBool:self.isGroupMessage forKey:@"isGroupMessage"];
+    [aCoder encodeBool:self.isRead forKey:@"isRead"];
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super initWithCoder:aDecoder]){
+        self.senderId = [aDecoder decodeObjectForKey:@"senderId"];
+        self.isGroupMessage = [aDecoder decodeBoolForKey:@"isGroupMessage"];
+        self.isRead = [aDecoder decodeBoolForKey:@"isRead"];
+    }
+    return self;
+}
+
 @end

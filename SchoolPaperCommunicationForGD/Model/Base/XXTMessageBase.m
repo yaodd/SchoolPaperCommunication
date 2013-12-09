@@ -49,4 +49,23 @@
     return self;
 }
 
+- (void) encodeWithCoder:(NSCoder *)aCoder{
+    [aCoder encodeObject:self.msgId forKey:@"id"];
+    [aCoder encodeObject:self.content forKey:@"content"];
+    [aCoder encodeObject:self.images forKey:@"images"];
+    [aCoder encodeObject:self.audios forKey:@"audios"];
+    [aCoder encodeObject:self.dateTime forKey:@"dateTime"];
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super initWithCoder:aDecoder]){
+        self.msgId = [aDecoder decodeObjectForKey:@"id"];
+        self.content=[aDecoder decodeObjectForKey:@"content"];
+        self.images =[aDecoder decodeObjectForKey:@"images"];
+        self.audios =[aDecoder decodeObjectForKey:@"audios"];
+        self.dateTime=[aDecoder decodeObjectForKey:@"dateTime"];
+    }
+    return self;
+}
+
 @end

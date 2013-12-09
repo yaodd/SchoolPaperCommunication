@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NSDate+string.h"
 
-@interface XXTObject : NSObject
+@interface XXTObject : NSObject <NSCoding>
 
 - (id) initWithDictionary:(NSDictionary*) dict;
 

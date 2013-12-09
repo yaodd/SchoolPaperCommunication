@@ -32,4 +32,22 @@
     [self.receiverNames addObjectsFromArray:namesArr];
 }
 
+- (void) encodeWithCoder:(NSCoder *)aCoder{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.receiverNames forKey:@"receiverNames"];
+    [aCoder encodeInteger:self.sendCount forKey:@"sendCount"];
+    [aCoder encodeInteger:self.sendSuccessCount forKey:@"sendSucCount"];
+    [aCoder encodeInteger:self.readCount forKey:@"readCount"];
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder{
+    if (self = [super initWithCoder:aDecoder]){
+        self.receiverNames = [aDecoder decodeObjectForKey:@"receiverNames"];
+        self.sendCount = [aDecoder decodeIntegerForKey:@"sendCount"];
+        self.sendSuccessCount = [aDecoder decodeIntegerForKey:@"sendSucCount"];
+        self.readCount = [aDecoder decodeIntegerForKey:@"readCount"];
+    }
+    return self;
+}
+
 @end

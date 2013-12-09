@@ -21,6 +21,11 @@ typedef enum {
 @property (nonatomic) NSInteger commentCount;
 @property (nonatomic) NSInteger likeCount;
 @property (strong,nonatomic) NSMutableArray* commentsArr;
+@property (copy , nonatomic) NSString* name;
 
+- (XXTMicroblog*) initWithContent:(NSString *)content
+                     imageObjects:(NSArray *)imageObjects
+                     audioObjects:(NSArray *)audioObjects
+                       posterName:(NSString*) posterName;
 
 @end

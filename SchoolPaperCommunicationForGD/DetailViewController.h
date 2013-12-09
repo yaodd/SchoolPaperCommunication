@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) UIImageView *userHead;
 @property (nonatomic, retain) UILabel *userName;
@@ -19,5 +19,7 @@
 @property (nonatomic, retain) UILabel *numberOflike;
 @property (nonatomic, retain) UILabel *numberOfComment;
 @property (nonatomic, retain) UIView *commentBackground;
+@property (nonatomic, retain) UIScrollView *scrollView;
+@property (nonatomic ,retain) NSMutableArray *commentDataArray;
 
 @end

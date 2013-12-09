@@ -25,12 +25,15 @@
 
 @implementation ShareListViewController
 {
+    BOOL isIOS7;
+    
     int refreshFlag;
     CGFloat contentOffsetY;
     CGFloat oldContentOffsetY;
     CGFloat newContentOffsetY;
     
     CGFloat originY;
+    NSInteger contentHeight;
     
     UIButton *scopeSelectBtn;
     UILabel *scopeTitle;
@@ -63,14 +66,20 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+    //Get the size of screen and the version of system
     NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"7.0" options: NSNumericSearch];
+    CGRect screenFrame =  [[UIScreen mainScreen] bounds];
+    NSLog(@"%ld", (long)screenFrame.size.height);
     if (order == NSOrderedSame || order == NSOrderedDescending)
     {
         // OS version >= 7.0
-        originY = 66;
+        originY = 64;
+        isIOS7 = YES;
+        contentHeight = screenFrame.size.height - 64;
     }else{
         originY = 0;
+        isIOS7 = NO;
+        contentHeight = screenFrame.size.height - 44;
     }
     
     scopeIndex = kIndexOfSchool;
@@ -85,7 +94,7 @@
     
     [self initViewsOnTop];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 66 + themeImage.frame.size.height, 320, 340)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, originY + themeImage.frame.size.height, 320, contentHeight-111-49)];
     _tableView.dataSource=self;
     _tableView.delegate=self;
     [self.view addSubview:_tableView];
@@ -400,9 +409,17 @@
     NSString *content = micro.content;
     CGSize size = CGSizeMake(240, 2000);
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Heiti SC" size:15.0], NSFontAttributeName,[UIColor colorWithRed:135/255.0 green:132/255.0 blue:134/255.0 alpha:1.0], NSForegroundColorAttributeName, nil];
-    CGRect contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+    CGFloat height;
+    if(isIOS7 == YES){
+        CGRect contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];//This method only valid in ios7
+        height += contentFrame.size.height;
+    }else {
+        CGSize contentSize = [content sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0] forWidth:size.width lineBreakMode:NSLineBreakByCharWrapping];
+        height += contentSize.height;
+
+    }
     
-    CGFloat height = contentFrame.size.height + 105.0f;
+    height += 105.0f;
     return height;
 }
 
@@ -439,7 +456,13 @@
     CGSize size = CGSizeMake(240, 2000);
     cell.shareContent.text = content;
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Heiti SC" size:15.0], NSFontAttributeName,[UIColor colorWithRed:135/255.0 green:132/255.0 blue:134/255.0 alpha:1.0], NSForegroundColorAttributeName, nil];
-    CGRect contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];
+    CGRect contentFrame;
+    if(isIOS7 == YES){
+        contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];//This method only valid in ios7
+    }else {
+        CGSize contentSize = [content sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0] forWidth:size.width lineBreakMode:NSLineBreakByCharWrapping];
+        contentFrame = CGRectMake(cell.shareContent.frame.origin.x, cell.shareContent.frame.origin.y, cell.shareContent.frame.size.width, contentSize.height);
+    }
     cell.shareContent.frame = CGRectMake(cell.shareContent.frame.origin.x, cell.shareContent.frame.origin.y, contentFrame.size.width, contentFrame.size.height);
     
     //Adjust the height of comment background
