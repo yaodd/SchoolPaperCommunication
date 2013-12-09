@@ -8,6 +8,7 @@
 
 #import "SendMessageViewController.h"
 #import "AppDelegate.h"
+#import "Dao.h"
 #define XXT_VIEW_TAG    111111
 #define MSG_VIEW_TAG    222222
 
@@ -70,9 +71,9 @@
     currentViewTag = XXT_VIEW_TAG;
     modelGlobal = [XXTModelGlobal sharedModel];
     userRole = modelGlobal.currentUser;
-//    currentPerson = (XXTContactPerson *)[userRole getPersonObjectById:currentPid];
-//    NSString *contactInfo = [NSString stringWithFormat:@"%@ %@",currentPerson.name,currentPerson.phone];
-//    [receiveContactsLabel setText:contactInfo];
+    currentPerson = (XXTContactPerson *)[userRole getPersonObjectById:currentPid];
+    NSString *contactInfo = [NSString stringWithFormat:@"%@ %@",currentPerson.name,currentPerson.phone];
+    [receiveContactsLabel setText:contactInfo];
     upRect = methodXXTView.frame;
     downRect = methodMSGView.frame;
     
@@ -104,6 +105,14 @@
 //发送按钮响应
 - (void)sendAction:(id)sender{
     NSLog(@"发送");
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(sendSelector:) object:nil];
+    [thread start];
+}
+//异步发送
+- (void)sendSelector:(NSThread *)thread{
+    Dao *dao = [Dao sharedDao];
+    
+    
 }
 - (UIImage *)createImageWithColor:(UIColor *)color
 {

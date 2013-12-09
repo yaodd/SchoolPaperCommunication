@@ -7,7 +7,7 @@
 //
 
 #import "ForgetPswViewController.h"
-
+#import "Dao.h"
 @interface ForgetPswViewController ()
 
 @end
@@ -57,12 +57,36 @@
 }
 
 - (IBAction)getAuthCodeAction:(id)sender {
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(getAutoCodeSelector:) object:nil];
+    [thread start];
+    
+
+}
+//异步获取认证码
+- (void)getAutoCodeSelector:(NSThread *)thread{
+    NSString *accountStr = phoneTF.text;
+    if (accountStr.length != 0) {
+        Dao *dao = [Dao sharedDao];
+        NSInteger  isSuccess = [dao requestForForgetPasswordForAccount:accountStr];
+        if (isSuccess) {
+            [self performSelectorOnMainThread:@selector(showAlertView) withObject:nil waitUntilDone:YES];
+        }else{
+            NSLog(@"认证码发送失败");
+        }
+    }else{
+        NSLog(@"手机号不能为空！");
+    }
+    
+    
+}
+//发送成功
+- (void)showAlertView{
     XXTAlertView *alertView = [[XXTAlertView alloc]initWithTitle:@"发送成功" XXTAlertViewType:kXXTAlertViewTypeSucceed otherButtonTitles:@"返回", nil];
     alertView.delegate = self;
     [self.navigationController.view addSubview:alertView];
     [alertView show];
-
 }
+
 
 #pragma XXTAlertViewDelegate mark -
 - (void)XXTAlertViewButtonAction:(XXTAlertView *)alertView button:(UIButton *)button{

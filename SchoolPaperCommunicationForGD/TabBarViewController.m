@@ -14,9 +14,14 @@
 #import "DynamicsViewController.h"
 #import "SetUpViewController.h"
 #import "ShareListViewController.h"
+#import "StudyViewController.h"
+#import "XXTModelGlobal.h"
 @interface TabBarViewController (){
     NSArray *titleArray;
     NSMutableArray *tabButtonArray;
+    
+    XXTUserRole *userRole;
+    XXTPersonType personType;
 }
 
 @end
@@ -39,17 +44,31 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self initData];
     [self initControllers];
     [self initTabBar];
 
+}
+- (void)initData{
+    XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
+    userRole = modelGlobal.currentUser;
+    personType = userRole.type;
 }
 
 - (void)initControllers{
     InfoViewController *infoViewController = [[InfoViewController alloc]init];
     UINavigationController *tab1 = [[UINavigationController alloc]initWithRootViewController:infoViewController];
     
-    ContactsViewController *contactsViewController = [[ContactsViewController alloc]init];
-    UINavigationController *tab2 = [[UINavigationController alloc]initWithRootViewController:contactsViewController];
+    UINavigationController *tab2;
+    if (personType == XXTPersonTypeParent || personType == XXTPersonTypeTeacher) {
+        ContactsViewController *contactsViewController = [[ContactsViewController alloc]init];
+         tab2 = [[UINavigationController alloc]initWithRootViewController:contactsViewController];
+    } else{
+        StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
+        tab2 = [[UINavigationController alloc]initWithRootViewController:studyViewController];
+        
+    }
+    
     
     FunctionListViewController *functionListViewController = [[FunctionListViewController alloc]init];
     UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:functionListViewController];
@@ -84,7 +103,13 @@
     
     NSArray *selectedImages = [[NSArray alloc]initWithObjects:@"news_chosen",@"contact_chosen",@"circle_chosen",@"study_chosen",@"setting_chosen",nil];
     NSArray *unselectedImages = [[NSArray alloc]initWithObjects:@"news",@"contact",@"circle",@"study",@"setting",nil];
-    titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯录",@"家校圈",@"学习",@"设置", nil];
+    NSLog(@"personType %d",personType);
+    if (personType == XXTPersonTypeParent || personType == XXTPersonTypeTeacher) {
+        titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯录",@"家校圈",@"学习",@"设置", nil];
+    } else{
+        titleArray = [[NSArray alloc]initWithObjects:@"消息",@"学习",@"家校圈",@"学习",@"设置", nil];
+
+    }
 //    self.title = [titleArray objectAtIndex:0];
     tabButtonArray = [[NSMutableArray alloc]init];
     
