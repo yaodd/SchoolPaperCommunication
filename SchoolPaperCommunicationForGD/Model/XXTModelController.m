@@ -15,6 +15,10 @@
     [[XXTModelGlobal sharedModel] initWithLoginInfoDictionary:receivedDic];
 }
 
++ (void) logoffSuccess{
+    [[XXTModelGlobal sharedModel].currentUser save];
+}
+
 + (void) selectUserRole:(XXTUserRole *)user{
     [[Dao sharedDao] performSelectorInBackground:@selector(setTimerForMessageList) withObject:nil];
     [XXTModelGlobal sharedModel].currentUser = user;
@@ -180,6 +184,139 @@
         [groupArr addObject:group];
     }
     currentUser.contactGroupArr = groupArr;
+}
+
++ (void) receivedBulletinListDicArr:(NSArray *)bulletinDicArr type:(XXTBulletinType)type{
+    XXTUserRole *currentUser = [XXTModelGlobal sharedModel].currentUser;
+    NSMutableArray* bulletinArr = [currentUser.bulletinArrOfArr objectAtIndex:type];
+    for (NSDictionary* bulletinDic in bulletinDicArr){
+        XXTBulletin *bulletin = [[XXTBulletin alloc] initWithDictionary:bulletinDic];
+        for (XXTBulletin* oldBulletin in bulletinArr){
+            if ([oldBulletin.bid isEqualToNumber:bulletin.bid])
+            {
+                [bulletinArr removeObject:oldBulletin];
+                break;
+            }
+        }
+        [bulletinArr addObject:bulletin];
+    }
+}
+
++ (void) prepareToPostBulletin:(XXTBulletin *)bulletin{
+    NSMutableArray* arr = [[XXTModelGlobal sharedModel].currentUser.bulletinArrOfArr objectAtIndex:XXTBulletinTypeClass];
+    [arr addObject:bulletin];
+    //既然只有教师端,那应该都是加在Class通知里面吧
+}
+
++ (void) postBulletinSuccess:(XXTBulletin *)bulletin WithDic:(NSDictionary *)recievedDic{
+    bulletin.bid = [recievedDic objectForKey:@"id"];
+}
+
++ (void) receivedHomeworkListDicArr:(NSArray *)homeworkDicArr{
+    XXTUserRole* currentUser = [XXTModelGlobal sharedModel].currentUser;
+    NSMutableArray* homeworkArr = currentUser.homeworkArr;
+    for (NSDictionary* homeworkDic in homeworkDicArr){
+        XXTHomework* homework = [[XXTHomework alloc] initWithDictionary:homeworkDic];
+        for (XXTHomework* oldHmwork in homeworkArr){
+            if ([oldHmwork.homeworkId isEqualToNumber:homework.homeworkId]){
+                [homeworkArr removeObject:oldHmwork];
+                break;
+            }
+        }
+        [homeworkArr addObject:homework];
+    }
+}
+
++ (void) prepareToPostHomework:(XXTHomework *)homework{
+    XXTUserRole* currentUser = [XXTModelGlobal sharedModel].currentUser;
+    [currentUser.homeworkArr addObject:homework];
+}
+
++ (void) postHomeworkSuccess:(XXTHomework *)homework WithDic:(NSDictionary *)receivedDic{
+    homework.homeworkId = [receivedDic objectForKey:@"id"];
+    homework.dateTime = [NSDate date];
+}
+
++ (void) receivedEvaluateListDicArr:(NSArray*)evaluateDicArr{
+    XXTUserRole *currentUser = [XXTModelGlobal sharedModel].currentUser;
+    NSMutableArray* evaluateList = currentUser.evaluateArr;
+    for (NSDictionary* evaluateDic in  evaluateDicArr){
+        XXTEvaluate* newEvaluate = [[XXTEvaluate alloc] initWithDictionary:evaluateDic];
+        for (XXTEvaluate* oldEvaluate in evaluateList){
+            if ([oldEvaluate.eid isEqualToNumber:newEvaluate.eid]){
+                [evaluateList removeObject:oldEvaluate];
+                break;
+            }
+        }
+        [evaluateList addObject:newEvaluate];
+    }
+}
+
++ (void) receivedEvaluateDetailFor:(XXTEvaluate *)evaluate PersonDicArr:(NSArray *)personDicArr
+{
+    NSMutableArray* personArr = [NSMutableArray array];
+    for (NSDictionary* dict in personDicArr){
+        XXTEvaluatedPerson* person = [[XXTEvaluatedPerson alloc] initWithDictionary:dict];
+        [personArr addObject:person];
+    }
+    
+    evaluate.evaluatedPersonArr = personArr;
+}
+
++ (void) receivedEvaluateHistory2Person:(XXTPersonBase *)person
+                         evaluateDicArr:(NSArray *)evaluateDicArr
+{
+    for (NSDictionary* evaluateDic in evaluateDicArr){
+        XXTEvaluate* evaluate = [[XXTEvaluate alloc] initWithDictionary:evaluateDic];
+        for (XXTEvaluate* oldEva in person.evaluateArr){
+            if ([oldEva.eid isEqual:evaluate.eid]){
+                [person.evaluateArr removeObject:oldEva];
+                break;
+            }
+        }
+        [person.evaluateArr addObject:evaluate];
+    }
+}
+
++ (void) receivedEvaluateTemplatesWithDic:(NSDictionary *)dict{
+    XXTUserRole *currentUser = [XXTModelGlobal sharedModel].currentUser;
+    NSDate* updateTime = [NSDate dateFromString:[dict objectForKey:@"dateTime"]];
+    currentUser.lastUpdateTimeForEvaluateTemplates = updateTime;
+    
+    NSArray* tempDicArr = [dict objectForKey:@"items"];
+    [currentUser.evaluateTemplatesArr removeAllObjects];
+    
+    for (NSDictionary* tempDic in tempDicArr){
+        XXTEvaluateTemplate* temp = [[XXTEvaluateTemplate alloc] initWithDictionary:tempDic];
+        [currentUser.evaluateTemplatesArr addObject:temp];
+    }
+}
+
++ (void) prepareToPostEvaluate:(XXTEvaluate *)evaluate{
+    XXTUserRole* currentUser = [XXTModelGlobal sharedModel].currentUser;
+    
+    for (XXTEvaluatedPerson* person in evaluate.evaluatedPersonArr){
+        NSNumber *pid = person.pid;
+        XXTPersonBase *evaPerson = [currentUser getPersonObjectById:pid.stringValue];
+        [evaPerson.evaluateArr addObject:evaluate];
+    }
+}
+
++ (void) postEvaluateSuccess:(XXTEvaluate *)evaluate WithDictionary:(NSDictionary *)receivedDic
+{
+    evaluate.eid = [receivedDic objectForKey:@"id"];
+}
+
++ (void) receivedFeedbackDic:(NSDictionary *)receivedDic{
+    NSArray* feedbackDicArr = [receivedDic objectForKey:@"items"];
+    NSMutableArray *feedbacks = [NSMutableArray array];
+    for (NSDictionary* feedbackDic in feedbackDicArr){
+        XXTFeedback* feedback = [[XXTFeedback alloc] initWithDictionary:feedbackDic];
+        [feedbacks addObject:feedback];
+    }
+    
+    [XXTModelGlobal sharedModel].feedbackArr = feedbacks;
+    [XXTModelGlobal sharedModel].feedbackCount = [[receivedDic objectForKey:@"total"] intValue];
 }
 
 @end

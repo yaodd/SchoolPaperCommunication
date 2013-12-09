@@ -14,11 +14,16 @@
 
 #pragma mark 客户端需要调用的接口
 + (void) selectUserRole:(XXTUserRole*) user;
+
 + (void) prepareToSendGroupMessage:(XXTMessageSend*) messageSend;
 + (void) prepareToInstantMessage:(XXTMessageSend*) messageSend;
++ (void) prepareToPostBulletin:(XXTBulletin*) bulletin;
++ (void) prepareToPostHomework:(XXTHomework*) homework;
++ (void) prepareToPostEvaluate:(XXTEvaluate*) evaluate;
 
 #pragma mark 网络端用的接口, 客户端可以不用理
 + (void) loginSuccess:(NSDictionary*) receivedDic;
++ (void) logoffSuccess;
 + (void) receivedNewMessages:(NSArray*) messagesDicArr;
 + (void) receivedAppUpdateMessage:(NSDictionary*) updateMessageDic;
 + (void) ReceiveMessageStatusUpdate:(NSArray*)messageObjects;
@@ -45,4 +50,19 @@
 + (void) receivedModuleMessageDic:(NSDictionary*) receiveDic;
 + (void) receivedContactsListDicArr:(NSArray*) groupDicArr;
 
++ (void) receivedBulletinListDicArr:(NSArray*) bulletinDicArr type:(XXTBulletinType) type;
++ (void) postBulletinSuccess:(XXTBulletin*) bulletin WithDic:(NSDictionary*) receivedDic;
+
++ (void) receivedHomeworkListDicArr:(NSArray*) homeworkDicArr;
++ (void) postHomeworkSuccess:(XXTHomework*) homework WithDic:(NSDictionary*) receivedDic;
+
++ (void) receivedEvaluateListDicArr:(NSArray*) evaluateDicArr;
++ (void) receivedEvaluateDetailFor:(XXTEvaluate*) evaluate PersonDicArr:(NSArray*) personDicArr;
+
++ (void) receivedEvaluateHistory2Person:(XXTPersonBase*) person evaluateDicArr:(NSArray*) evaluateDicArr;
+
++ (void) receivedEvaluateTemplatesWithDic:(NSDictionary*) dict;
+
++ (void) postEvaluateSuccess:(XXTEvaluate*) evaluate WithDictionary:(NSDictionary*) receivedDic;
++ (void) receivedFeedbackDic:(NSDictionary*) receivedDic;
 @end
