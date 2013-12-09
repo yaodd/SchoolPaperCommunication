@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#include <sys/types.h>
+#include <sys/sysctl.h>
 
 @interface UIApplication (appinfo)
 

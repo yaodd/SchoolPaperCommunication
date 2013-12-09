@@ -7,6 +7,7 @@
 //
 
 #import "ChatViewController.h"
+#import "PersonDetailViewController.h"
 //#import <Foundation/Foundation.h>
 #import "BubbleView.h"
 #import "VoiceView.h"
@@ -74,41 +75,75 @@
                                                object:nil];
 	// Do any additional setup after loading the view.
 }
-
+//初始化布局
 - (void)initLayout{
-    self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT)];
+    UIBarButtonItem *detailButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"usersinfo"] style:UIBarButtonItemStylePlain target:self action:@selector(detailAction:)];
+    self.navigationItem.rightBarButtonItem = detailButton;
+    CGFloat sendViewHeight = 44;
+    self.chatTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - sendViewHeight - TOP_BAR_HEIGHT)];
+    [self.chatTableView setBackgroundColor:[UIColor colorWithRed:230.0/255 green:243.0/255 blue:250.0/255 alpha:1.0]];
     self.chatTableView.delegate = self;
     self.chatTableView.dataSource = self;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tableViewTapGesture:)];
+    [self.chatTableView addGestureRecognizer:tapGesture];
     [self.view addSubview:chatTableView];
     
-    self.sendView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - 56 - TOP_BAR_HEIGHT, self.view.frame.size.width, 56)];
-    [self.sendView setBackgroundColor:[UIColor yellowColor]];
+    self.sendView = [[UIView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height - sendViewHeight - TOP_BAR_HEIGHT, self.view.frame.size.width, sendViewHeight)];
+    [self.sendView setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:sendView];
+    UIView *sepector = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 1)];
+    [sepector setBackgroundColor:[UIColor colorWithWhite:187.0/255 alpha:1.0]];
+    [self.sendView addSubview:sepector];
     
-    self.recordButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    CGFloat leftButtonX = 5;
+    CGFloat buttonY = 6;
+    self.imagePickerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.imagePickerButton setImage:[UIImage imageNamed:@"photo"] forState:UIControlStateNormal];
+    [self.imagePickerButton setImage:[UIImage imageNamed:@"photo_click"] forState:UIControlStateHighlighted];
+    [self.imagePickerButton setFrame:CGRectMake(leftButtonX, buttonY, 33, 33)];
+    [self.imagePickerButton addTarget:self action:@selector(imagePickerAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sendView addSubview:self.imagePickerButton];
+
+    leftButtonX += (33 + 8);
+    self.recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.recordButton setImage:[UIImage imageNamed:@"record"] forState:UIControlStateNormal];
+    [self.recordButton setImage:[UIImage imageNamed:@"record_click"] forState:UIControlStateHighlighted];
     [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
-    [self.recordButton setFrame:CGRectMake(0, 6, 56, 44)];
+    [self.recordButton setFrame:CGRectMake(leftButtonX, buttonY, 33, 33)];
     [self.recordButton addTarget:self action:@selector(beginRecord:) forControlEvents:UIControlEventTouchDown];
     [self.recordButton addTarget:self action:@selector(cancelRecord:) forControlEvents:UIControlEventTouchDragExit];
     [self.recordButton addTarget:self action:@selector(finishRecord:) forControlEvents:UIControlEventTouchUpInside];
     [self.sendView addSubview:self.recordButton];
     
-    self.imagePickerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.imagePickerButton setTitle:@"image" forState:UIControlStateNormal];
-    [self.imagePickerButton setFrame:CGRectMake(56, 6, 56, 44)];
-    [self.imagePickerButton addTarget:self action:@selector(imagePickerAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.sendView addSubview:self.imagePickerButton];
-    
-    self.sendTextField = [[UITextField alloc]initWithFrame:CGRectMake(56 + 56, 6, self.view.frame.size.width - 56 * 3, 44)];
+    leftButtonX += (33 + 8);
+    self.sendTextField = [[UITextField alloc]initWithFrame:CGRectMake(leftButtonX, buttonY, 189, 32)];
     self.sendTextField.delegate = self;
-    [self.sendTextField addTarget:self action:@selector(textFieldDoneEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    [self.sendTextField addTarget:self action:@selector(textFieldDoneEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.sendTextField.layer setCornerRadius:5];
+    [self.sendTextField.layer  setBorderWidth:1];
+    [self.sendTextField.layer setBorderColor:[UIColor colorWithWhite:187.0/255 alpha:1.0].CGColor];
+    [self.sendTextField setPlaceholder:@"输入消息"];
     [self.sendView addSubview:self.sendTextField];
     
     self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.sendButton setFrame:CGRectMake(self.view.frame.size.width - 56, 6, 56, 44)];
-    [self.sendButton setTitle:@"send" forState:UIControlStateNormal];
+    [self.sendButton setFrame:CGRectMake(self.view.frame.size.width - sendViewHeight - 6, 0, 56, 44)];
+    [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [self.sendButton setTintColor:[UIColor colorWithRed:13.0/255 green:152.0/255 blue:219.0/255 alpha:1.0]];
     [self.sendView addSubview:sendButton];
+}
+//个人详细信息响应
+- (void)detailAction:(id)sender{
+    [self setHidesBottomBarWhenPushed:YES];
+    UIStoryboard *storyborad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PersonDetailViewController *personDetailViewController = [storyborad instantiateViewControllerWithIdentifier:@"PersonDetail"];
+    [self.navigationController pushViewController:personDetailViewController animated:YES];
+    [self setHidesBottomBarWhenPushed:NO];
+}
+//点击tableView任何地方都收起键盘
+- (void)tableViewTapGesture:(id)sender{
+    [self.sendTextField resignFirstResponder];
 }
 //初始化历史消息记录
 - (void)initHistoryMsg{
@@ -116,7 +151,7 @@
     for (int i = 0; i < 10; i ++) {
         MessageVO *msg = [[MessageVO alloc]init];
         msg.strId = @"strId";
-        msg.strText = @"adwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdwadwdasdw";
+        msg.strText = @"等你的发问发生的范围发生的范围发色发文发生的氛围发生地方发送范围发生的范围发生大飞阿是非法违法";
         msg.strUserid = @"userId";
         msg.strTime = @"2011/11/11";
         msg.strFromUsername = @"FromUserName";
@@ -206,10 +241,10 @@
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.sendView.frame;
     __block CGRect frame2 = self.chatTableView.frame;
-    
-    if (frame.origin.y != screenHeight - keyboardSize.height - 56.) {
-        frame.origin.y = screenHeight - keyboardSize.height - 56.;//lxf
-        frame2.origin.y = screenHeight - keyboardSize.height - frame2.size.height - 56;
+    CGFloat sendViewHeight = 44;
+    if (frame.origin.y != screenHeight - keyboardSize.height - sendViewHeight) {
+        frame.origin.y = screenHeight - keyboardSize.height - sendViewHeight;//lxf
+        frame2.origin.y = screenHeight - keyboardSize.height - frame2.size.height - sendViewHeight;
         [UIView animateWithDuration:0.3
                               delay:0
                             options:UIViewAnimationOptionCurveEaseIn
@@ -227,12 +262,15 @@
 - (void)keyboardWillHide:(NSNotification *)notification {
     
     
-    
+    CGFloat sendViewHeight = 44;
+
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.sendView.frame;
-    frame.origin.y = screenHeight - 56;//lxf
+    __block CGRect frame2 = self.chatTableView.frame;
+    frame.origin.y = screenHeight - sendViewHeight;//lxf
+    frame2.origin.y = 0;
     self.sendView.frame = frame;
-    
+    self.chatTableView.frame = frame2;
     
     //    [UIView animateWithDuration:fAniTimeSecond animations:^{
     //        self.viewItems.frame = frame;
@@ -268,7 +306,7 @@
     int row = [indexPath row];
     MessageVO *message = [aryMessages objectAtIndex:row];
     CGFloat height = 0;
-    UIFont *font = [UIFont systemFontOfSize:14];
+    UIFont *font = [UIFont systemFontOfSize:16];
 	CGSize size = [message.strText sizeWithFont:font constrainedToSize:CGSizeMake(180.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
     height = size.height;
     
@@ -278,7 +316,7 @@
     if (message.msgType == kMsgType_Image) {
         height = 150;
     }
-    return height + 44;
+        return height + 60;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -310,20 +348,21 @@
         
         UIImageView *photo = [[UIImageView alloc]init];
         [photo.layer setMasksToBounds:YES];
-        [photo.layer setCornerRadius:10.0f];
+        [photo.layer setCornerRadius:23.0f];
         [photo setTag:HEAD_VIEW_TAG];
         [cell addSubview:photo];
+        [cell setBackgroundColor:[UIColor clearColor]];
     }
     BubbleView *bubbleView = (BubbleView *)[cell viewWithTag:BUBBLE_VIEW_TAG];
     VoiceView *voiceView = (VoiceView *)[cell viewWithTag:VOICE_VIEW_TAG];
     ImageView *imageView = (ImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
     UIImageView *photo = (UIImageView *)[cell viewWithTag:HEAD_VIEW_TAG];
     if (msg.msgMode == kMsgMode_Send) {
-        photo.frame = CGRectMake(320-60, 10, 50, 50);
+        photo.frame = CGRectMake(10, 10, 46, 46);
         [photo setImage:[UIImage imageNamed:@"photo1"]];
         NSLog(@"1");
     } else{
-        photo.frame = CGRectMake(10, 10, 50, 50);
+        photo.frame = CGRectMake(320-56, 10, 46, 46);
         [photo setImage:[UIImage imageNamed:@"photo"]];
         NSLog(@"2");
     }

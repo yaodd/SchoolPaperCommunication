@@ -38,7 +38,7 @@
     CGFloat position = 65;
     //计算大小
     NSString *text = msg.strText;
-    UIFont *font = [UIFont systemFontOfSize:14];
+    UIFont *font = [UIFont systemFontOfSize:16];
     CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(180.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
 //    CGRect rect = [text boundingRectWithSize:CGSizeMake(180.0f, 20000.0f) options:NSStringDrawingUsesFontLeading attributes:nil context:nil];
 //    CGSize size = rect.size;
@@ -48,14 +48,16 @@
     returnView.backgroundColor = [UIColor clearColor];
     
     //背影图片
-    UIImage *bubble = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:fromSelf?@"SenderAppNodeBkg_HL":@"ReceiverTextNodeBkg" ofType:@"png"]];
-        [bubbleImageView setImage:[bubble stretchableImageWithLeftCapWidth:floorf(bubble.size.width/2) topCapHeight:floorf(bubble.size.height/2)]];
+    UIImage *bubble = [UIImage imageNamed:fromSelf ? @"bubble_grey" : @"bubble_blue"];
+    [bubbleImageView setImage:[bubble stretchableImageWithLeftCapWidth:floorf(bubble.size.width/2) topCapHeight:floorf(bubble.size.height/2)]];
     
 //    NSLog(@"%f,%f",size.width,size.height);
     
     
     //添加文本信息
-    bubbleText.frame = CGRectMake(fromSelf?15.0f:22.0f, 20.0f, size.width+10, size.height+10);
+    UIColor *textColor = fromSelf?[UIColor colorWithWhite:30.0/255 alpha:1.0]:[UIColor whiteColor];
+    bubbleText.textColor = textColor;
+    bubbleText.frame = CGRectMake(fromSelf?23.0f:18.0f, 23.0f, size.width+10, size.height+10);
     bubbleText.backgroundColor = [UIColor clearColor];
     bubbleText.font = font;
     bubbleText.numberOfLines = 0;
@@ -66,10 +68,11 @@
     CGRect frame;
     
     if(fromSelf)
-        frame = CGRectMake(320-position-(bubbleText.frame.size.width+30.0f), 0.0f, bubbleText.frame.size.width+30.0f, bubbleText.frame.size.height+30.0f);
-    else
         frame = CGRectMake(position, 0.0f, bubbleText.frame.size.width+30.0f, bubbleText.frame.size.height+30.0f);
+    else
+        frame = CGRectMake(320-position-(bubbleText.frame.size.width+30.0f), 0.0f, bubbleText.frame.size.width+30.0f, bubbleText.frame.size.height+30.0f);
     self.frame = frame;
+
     
 
 }

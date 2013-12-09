@@ -13,6 +13,7 @@
 #import "FunctionListViewController.h"
 #import "DynamicsViewController.h"
 #import "SetUpViewController.h"
+#import "ShareListViewController.h"
 @interface TabBarViewController (){
     NSArray *titleArray;
     NSMutableArray *tabButtonArray;
@@ -53,7 +54,7 @@
     FunctionListViewController *functionListViewController = [[FunctionListViewController alloc]init];
     UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:functionListViewController];
     
-    DynamicsViewController *dynamicsViewController = [[DynamicsViewController alloc]init];
+    ShareListViewController *dynamicsViewController = [[ShareListViewController alloc]init];
     UINavigationController *tab4 = [[UINavigationController alloc]initWithRootViewController:dynamicsViewController];
     
     SetUpViewController *setUpViewController = [[SetUpViewController alloc]init];
@@ -77,28 +78,42 @@
     
     tabBarView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 49)];
     tabBarView.userInteractionEnabled = YES;
-    [tabBarView setBackgroundColor:[UIColor yellowColor]];
+    [tabBarView setBackgroundColor:[UIColor colorWithRed:92.0/255 green:92.0/255 blue:92.0/255 alpha:1.0]];
 //    [self.view addSubview:tabBarView];
     [self.tabBar addSubview:tabBarView];
     
-    NSArray *selectedImages = [[NSArray alloc]initWithObjects:@"business_pressed.png",@"case_pressed",@"serve_pressed",@"about_pressed",@"more_pressed",nil];
-    NSArray *unselectedImages = [[NSArray alloc]initWithObjects:@"business.png",@"case",@"service",@"about",@"more",nil];
-    titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯",@"功能",@"动态",@"设置", nil];
-    self.title = [titleArray objectAtIndex:0];
+    NSArray *selectedImages = [[NSArray alloc]initWithObjects:@"news_chosen",@"contact_chosen",@"circle_chosen",@"study_chosen",@"setting_chosen",nil];
+    NSArray *unselectedImages = [[NSArray alloc]initWithObjects:@"news",@"contact",@"circle",@"study",@"setting",nil];
+    titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯录",@"家校圈",@"学习",@"设置", nil];
+//    self.title = [titleArray objectAtIndex:0];
     tabButtonArray = [[NSMutableArray alloc]init];
     
     float coordinax = 0;
     for (int index = 0; index < 5; index ++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.tag = index;
-        button.frame = CGRectMake(20+coordinax, 49.0/2-10, 25, 25);
+//        [button setShowsTouchWhenHighlighted:NO];
+//        [button setTintColor:[UIColor clearColor]];
+//        [button setTitleShadowColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         
-        [button setBackgroundImage:[UIImage imageNamed:[unselectedImages objectAtIndex:index]] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageNamed:[selectedImages objectAtIndex:index]] forState:UIControlStateSelected];
-        [button addTarget:self action:@selector(changeViewController:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = index;
+//        button.frame = CGRectMake(17+coordinax, 9, 30, 25);
+        button.frame = CGRectMake(0 + coordinax, 0, 64, 49);
+        
+        [button setImageEdgeInsets:UIEdgeInsetsMake(-4, 17, 10, 17)];
+        
+        [button setImage:[UIImage imageNamed:[unselectedImages objectAtIndex:index]] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:[selectedImages objectAtIndex:index]] forState:UIControlStateSelected];
+        [button addTarget:self action:@selector(changeViewController:) forControlEvents:UIControlEventTouchDown];
+        
+        [button setTitle:[titleArray objectAtIndex:index] forState:UIControlStateNormal];
+        [button setTitleEdgeInsets:UIEdgeInsetsMake(32, -15, 0, 15)];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithRed:13.0/255 green:152.0/255 blue:219.0/255 alpha:1.0] forState:UIControlStateSelected];
+        [button.titleLabel setFont:[UIFont systemFontOfSize:10]];
+        [button.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [tabBarView addSubview:button];
         [tabButtonArray addObject:button];
-        coordinax +=62;
+        coordinax += 64;
     }
 }
 
@@ -107,7 +122,7 @@
     UIButton *button = (UIButton *) sender;
     self.selectedIndex = button.tag;
     button.selected = YES;
-    self.title = [titleArray objectAtIndex:button.tag];
+//    self.title = [titleArray objectAtIndex:button.tag];
     for (UIButton *tempButton in tabButtonArray) {
         if (tempButton.tag != button.tag) {
             tempButton.selected = NO;

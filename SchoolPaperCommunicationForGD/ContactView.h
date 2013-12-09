@@ -7,18 +7,30 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXTContactPerson.h"
+#define PHONE_BUTTON_TAG    0
+#define MESSAGE_BUTTON_TAG  1
+#define CHAT_BUTTON_TAG     2
+
+@class ContactView;
+@protocol ContactViewDelegate <NSObject>
+
+@optional
+- (void)ContactViewButtonAction:(ContactView *)contactView button:(UIButton *)button;
+
+@end
 
 @interface ContactView : UIView
 
 @property (nonatomic, retain) UIImageView *userHeadIV;
 @property (nonatomic, retain) UILabel   *userNameLabel;
-@property (nonatomic, retain) UIView    *toolView;
-@property (nonatomic, retain) UIButton  *showButton;
-@property (nonatomic, retain) UIButton  *hideButton;
 @property (nonatomic, retain) UIButton  *phoneButton;
 @property (nonatomic, retain) UIButton  *msgButton;
+@property (nonatomic, retain) UIButton  *toolButton;
 @property (nonatomic, retain) UIButton  *chatButton;
-@property (nonatomic, retain) UIButton  *deleteButton;
-@property (nonatomic, retain) NSMutableDictionary *myDict;
-- (void)setData:(NSMutableDictionary *)dict;
+@property (nonatomic, retain) UILabel   *phoneLabel;
+@property (nonatomic, assign) id<ContactViewDelegate> delegate;
+//@property (nonatomic, retain) NSMutableDictionary *myDict;
+@property (nonatomic, retain) XXTContactPerson *contactPerson;
+- (void)setData:(XXTContactPerson *)person;
 @end
