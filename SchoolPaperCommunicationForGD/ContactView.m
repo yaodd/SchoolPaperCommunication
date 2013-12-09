@@ -75,7 +75,7 @@
 }
 - (void)buttonAction:(id)sender{
     UIButton *button = (UIButton *)sender;
-    [self.delegate ContactViewButtonAction:self button:button];
+    [self.delegate ContactViewButtonAction:self button:button person:contactPerson];
 }
 /*
 // Only override drawRect: if you perform custom drawing.

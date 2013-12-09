@@ -146,6 +146,7 @@
     <resources>
         <image name="button.png" width="297" height="46"/>
         <image name="check_unselected.png" width="21" height="21"/>
+        <image name="check_unselected.png" width="21" height="21"/>
         <image name="logo.png" width="184" height="68"/>
     </resources>
 </document>

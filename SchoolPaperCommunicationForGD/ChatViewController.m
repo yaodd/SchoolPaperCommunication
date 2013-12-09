@@ -37,6 +37,7 @@
 @synthesize chatTableView;
 @synthesize recordButton;
 @synthesize avPlay;
+@synthesize currentPid;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -335,6 +336,7 @@
         [bubbleView setHidden:YES];
         [cell addSubview:bubbleView];
         
+        
         VoiceView *voiceView = [[VoiceView alloc]initWithDefault];
         [voiceView setTag:VOICE_VIEW_TAG];
         [voiceView setHidden:YES];
@@ -352,6 +354,7 @@
         [photo setTag:HEAD_VIEW_TAG];
         [cell addSubview:photo];
         [cell setBackgroundColor:[UIColor clearColor]];
+        
     }
     BubbleView *bubbleView = (BubbleView *)[cell viewWithTag:BUBBLE_VIEW_TAG];
     VoiceView *voiceView = (VoiceView *)[cell viewWithTag:VOICE_VIEW_TAG];
