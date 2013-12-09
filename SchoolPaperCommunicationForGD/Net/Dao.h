@@ -7,9 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "XXTMessageSend.h"
-#import "XXTMicroblog.h"
-#import "XXTHistoryMessage.h"
+#import "XXTUserRole.h"
 
 @interface Dao : NSObject
 
@@ -17,7 +15,16 @@
 
 @property BOOL reachbility;
 
+#pragma mark 用户模块
 - (NSInteger) requestForLogin:(NSString*) username password:(NSString*)pwd;
+- (NSInteger) requestForLogoff;
+- (NSInteger) requestForForgetPasswordForAccount:(NSString*) account;
+- (NSInteger) requestForDynamicPasswordForAccount:(NSString*) account;
+- (NSInteger) requestForChangeProfileWithName:(NSString*) name avatar:(XXTImage*) avatar;
+- (NSInteger) requestForChangePasswordForAccount:(NSString*) account
+                                     OldPassword:(NSString*) oldPwd
+                                    ValidateCode:(NSString*) validCode
+                                     NewPassword:(NSString*) newPwd;
 
 #pragma mark 消息模块
 - (void) setTimerForMessageList;
@@ -44,9 +51,45 @@
                                       pageSize:(NSInteger) pageSize;
 //isPull:1为下拉更新, 0为上拉获取
 - (NSInteger) requestForPostMicroblog:(XXTMicroblog*) microblog;
-- (NSInteger) requestforPostComment:(XXTComment*) comment microblog:(XXTMicroblog *)microblog;
+- (NSInteger) requestForPostComment:(XXTComment*) comment microblog:(XXTMicroblog *)microblog;
 - (NSInteger) requestForPostLike:(XXTMicroblog*) microblog;
 - (NSInteger) requestForMicroblogDetail:(XXTMicroblog*) microblog;
 - (NSInteger) requestForMyCommentAndLikes;
+
+#pragma mark 通知公告
+- (NSInteger) requestForBulletinListWithType:(XXTBulletinType) type
+                                      isPull:(int) isPull
+                                    pageSize:(int) pageSize;
+- (NSInteger) requestForPostBulletin:(XXTBulletin*) bulletin;
+
+#pragma mark 作业管理
+- (NSInteger) requestForHomeworkListForTime:(NSDate*) dateTime isPull:(int) isPull pageSize:(int) pageSize;
+- (NSInteger) requestForPostHomework:(XXTHomework*) homework;
+
+#pragma mark 学生点评
+- (NSInteger) requestForEvaluateListForTime:(NSDate*) dateTime
+                                     isPull:(int) isPull
+                                   pageSize:(int) pageSize;
+- (NSInteger) requestForEvaluateDetail:(XXTEvaluate*) evaluate;
+- (NSInteger) requestForEvaluateToPerson:(XXTPersonBase*) person
+                                    time:(NSDate*) dateTime
+                                  isPull:(int) isPull
+                                pageSize:(int) pageSize;
+- (NSInteger) requestForEvaluateTemplates;
+- (NSInteger) requestForPostEvaluate:(XXTEvaluate*) evaluate;
+
+#pragma mark 提问答疑
+- (NSInteger) requestForQuestionListForSubjectId:(int) subjectId
+                                           state:(int) state
+                                      questioner:(int) questioner
+                                           grade:(int) gradeId
+                                            page:(int) page
+                                        pageSize:(int) pageSize;
+
+#pragma mark 意见反馈
+- (NSInteger) requestForFeedbackListWithPageNo:(int) page pageSize:(int) pageSize;
+- (NSInteger) requestForPostFeedback:(NSString*) content;
+
+#pragma mark 补充功能
 
 @end

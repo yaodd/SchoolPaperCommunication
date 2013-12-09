@@ -65,4 +65,5 @@
 
 + (void) postEvaluateSuccess:(XXTEvaluate*) evaluate WithDictionary:(NSDictionary*) receivedDic;
 + (void) receivedFeedbackDic:(NSDictionary*) receivedDic;
++ (void) receivedQuestionListDicArr:(NSArray*) questionDicArr;
 @end

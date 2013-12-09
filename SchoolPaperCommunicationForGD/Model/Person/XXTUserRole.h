@@ -18,6 +18,7 @@
 #import "XXTBulletin.h"
 #import "XXTHomework.h"
 #import "XXTEvaluateTemplate.h"
+#import "XXTQuestion.h"
 
 @interface XXTUserRole : XXTPersonBase
 
@@ -34,6 +35,7 @@
 @property (strong,nonatomic) NSMutableArray* bulletinArrOfArr;
 @property (strong,nonatomic) NSMutableArray* homeworkArr;
 @property (strong,nonatomic) NSMutableArray* evaluateTemplatesArr;
+@property (strong,nonatomic) NSMutableArray* questionArr;
 
 @property (strong,nonatomic) NSDate* lastUpdateTimeForMessageList;
 @property (strong,nonatomic) NSMutableArray* lastUpdateTimeForMicroblogListArr;
@@ -50,8 +52,8 @@
 - (id) initLoad;
 - (void) save;
 
--(XXTGroup*) getGroupObjectById:(NSString*) groupId;
--(XXTPersonBase*) getPersonObjectById:(NSString*) pid;
--(NSArray*) getMessagesBetweenMeAndPerson:(NSString*) pid;
+-(XXTGroup*) getGroupObjectById:(id) groupId;
+-(XXTPersonBase*) getPersonObjectById:(id) pid;
+-(NSArray*) getMessagesBetweenMeAndPerson:(id) pid;
 
 @end

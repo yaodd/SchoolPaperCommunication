@@ -31,7 +31,12 @@
     return self;
 }
 
-- (XXTPersonBase*) getPersonObjectById:(NSString *)pid{
+- (XXTPersonBase*) getPersonObjectById:(id)ppid{
+    NSString* pid;
+    if ([ppid isKindOfClass:[NSString class]])
+        pid = ppid;
+    if ([ppid isKindOfClass:[NSNumber class]])
+        pid = [ppid stringValue];
     if ([pid isEqualToString:[self.pid stringValue]]){
         return self;
     }
@@ -46,6 +51,31 @@
     return nil;
 }
 
+- (NSArray*) getMessagesBetweenMeAndPerson:(id)ppid{
+    NSString* pid;
+    if ([ppid isKindOfClass:[NSString class]])
+        pid = ppid;
+    if ([ppid isKindOfClass:[NSNumber class]])
+        pid = [ppid stringValue];
+    
+    NSMutableArray* messages = [NSMutableArray array];
+    
+    for (XXTMessageBase* message in self.allMessagesArr){
+        if ([message isKindOfClass:[XXTMessageSend class]]){
+            XXTMessageSend* msgS = (XXTMessageSend*)message;
+            if (msgS.sendToGroupIdArr.count == 0 && msgS.sendToPersonIdArr.count == 1)
+                if ([msgS.sendToPersonIdArr.firstObject isEqualToString:pid])
+                    [messages addObject:msgS];
+        }
+        if ([message isKindOfClass:[XXTMessageReceive class]]){
+            XXTMessageReceive *msgR = (XXTMessageReceive*)message;
+            if ([msgR.senderId isEqualToString:pid])
+                [messages addObject:msgR];
+        }
+    }
+    
+    return messages;
+}
 
 
 - (void) encodeWithCoder:(NSCoder *)aCoder{
@@ -61,6 +91,7 @@
     [aCoder encodeObject:self.microblogsArrOfArr forKey:@"microblogsArrOfArr"];
     [aCoder encodeObject:self.homeworkArr forKey:@"homeworkArr"];
     [aCoder encodeObject:self.evaluateTemplatesArr forKey:@"evaluateTemplatesArr"];
+    [aCoder encodeObject:self.questionArr forKey:@"questionArr"];
     [aCoder encodeObject:self.lastUpdateTimeForMessageList
                   forKey:@"lastUpdateTimeForMessageList"];
     [aCoder encodeObject:self.lastUpdateTimeForMicroblogListArr
@@ -83,26 +114,6 @@
 
 }
 
-- (NSArray*) getMessagesBetweenMeAndPerson:(NSString *)pid{
-    NSMutableArray* messages = [NSMutableArray array];
-    
-    for (XXTMessageBase* message in self.allMessagesArr){
-        if ([message isKindOfClass:[XXTMessageSend class]]){
-            XXTMessageSend* msgS = (XXTMessageSend*)message;
-            if (msgS.sendToGroupIdArr.count == 0 && msgS.sendToPersonIdArr.count == 1)
-                if ([msgS.sendToPersonIdArr.firstObject isEqualToString:pid])
-                    [messages addObject:msgS];
-        }
-        if ([message isKindOfClass:[XXTMessageReceive class]]){
-            XXTMessageReceive *msgR = (XXTMessageReceive*)message;
-            if ([msgR.senderId isEqualToString:pid])
-                [messages addObject:msgR];
-        }
-    }
-    
-    return messages;
-}
-
 - (id) initWithCoder:(NSCoder *)aDecoder{
     if (self = [super initWithCoder:aDecoder]){
         self.schoolName = [aDecoder decodeObjectForKey:@"schoolName"];
@@ -117,6 +128,8 @@
         self.bulletinArrOfArr = [aDecoder decodeObjectForKey:@"bulletinArr"];
         self.homeworkArr = [aDecoder decodeObjectForKey:@"homeworkArr"];
         self.evaluateTemplatesArr = [aDecoder decodeObjectForKey:@"evaluateTemplatesArr"];
+        self.questionArr = [aDecoder decodeObjectForKey:@"questionArr"];
+        
         self.lastUpdateTimeForMessageList = [aDecoder decodeObjectForKey:@"lastUpdateTimeForMessageList"];
         self.lastUpdateTimeForMicroblogListArr = [aDecoder decodeObjectForKey:@"lastUpdateTimeForMicroblogListArr"];
         self.lastUpdateTimeForCommentsAndLikes = [aDecoder decodeObjectForKey:@"lastUpdateTimeForCommentsAndLikes"];
@@ -127,7 +140,6 @@
         self.lastUpdateTimeForEvaluateTemplates = [aDecoder decodeObjectForKey:@"lastUpdateTimeForEvaluateTemplates"];
         self.myCommentsAndLikes = [aDecoder decodeObjectForKey:@"myCommentsAndLikes"];
         self.commentAndLikesReadCount = [aDecoder decodeIntegerForKey:@"commentAndLikesReadCount"];
-        
     }
     return self;
 }
@@ -201,6 +213,8 @@
         
         self.evaluateTemplatesArr = [NSMutableArray array];
         self.lastUpdateTimeForEvaluateTemplates = [NSDate dateWithTimeIntervalSince1970:0];
+        
+        self.questionArr = [NSMutableArray array];
     }
     
     return self;

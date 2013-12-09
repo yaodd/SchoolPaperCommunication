@@ -319,4 +319,14 @@
     [XXTModelGlobal sharedModel].feedbackCount = [[receivedDic objectForKey:@"total"] intValue];
 }
 
++(void) receivedQuestionListDicArr:(NSArray *)questionDicArr{
+    XXTUserRole *currentUser = [XXTModelGlobal sharedModel].currentUser;
+    [currentUser.questionArr removeAllObjects];
+    
+    for (NSDictionary* questionDic in questionDicArr){
+        XXTQuestion* question = [[XXTQuestion alloc] initWithDictionary:questionDic];
+        [currentUser.questionArr addObject:question];
+    }
+}
+
 @end
