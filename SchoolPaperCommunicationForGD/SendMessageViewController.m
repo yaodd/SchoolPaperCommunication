@@ -70,9 +70,9 @@
     currentViewTag = XXT_VIEW_TAG;
     modelGlobal = [XXTModelGlobal sharedModel];
     userRole = modelGlobal.currentUser;
-//    currentPerson = (XXTContactPerson *)[userRole getPersonObjectById:currentPid];
-//    NSString *contactInfo = [NSString stringWithFormat:@"%@ %@",currentPerson.name,currentPerson.phone];
-//    [receiveContactsLabel setText:contactInfo];
+    currentPerson = (XXTContactPerson *)[userRole getPersonObjectById:currentPid];
+    NSString *contactInfo = [NSString stringWithFormat:@"%@ %@",currentPerson.name,currentPerson.phone];
+    [receiveContactsLabel setText:contactInfo];
     upRect = methodXXTView.frame;
     downRect = methodMSGView.frame;
     
