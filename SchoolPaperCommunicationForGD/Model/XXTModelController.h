@@ -12,21 +12,20 @@
 
 @interface XXTModelController : NSObject
 
-+ (void) loginSuccess:(NSDictionary*) receivedDic;
+#pragma mark 客户端需要调用的接口
 + (void) selectUserRole:(XXTUserRole*) user;
++ (void) prepareToSendGroupMessage:(XXTMessageSend*) messageSend;
++ (void) prepareToInstantMessage:(XXTMessageSend*) messageSend;
 
+#pragma mark 网络端用的接口, 客户端可以不用理
++ (void) loginSuccess:(NSDictionary*) receivedDic;
 + (void) receivedNewMessages:(NSArray*) messagesDicArr;
 + (void) receivedAppUpdateMessage:(NSDictionary*) updateMessageDic;
 + (void) ReceiveMessageStatusUpdate:(NSArray*)messageObjects;
-
-+ (void) prepareToSendGroupMessage:(XXTMessageSend*) messageSend;
 + (void) groupMessageSendSuccess:(XXTMessageSend*) messageSend
                   WithDictionary:(NSDictionary*) dict;
-
-+ (void) prepareToInstantMessage:(XXTMessageSend*) messageSend;
 + (void) instantMessageSendSuccess:(XXTMessageSend*) messageSend
                     WithDictionary:(NSDictionary*) dict;
-
 + (void) receivedMicroblogDics:(NSArray*) microblogsDicArr
                       WithType:(XXTMicroblogCircleType)circleType;
 + (void) postMicroblogSuccess:(XXTMicroblog*) microblog
@@ -36,12 +35,9 @@
                     WithDic:(NSDictionary*) receivedDic;
 + (void) postLikeSuccessToMicroblog:(XXTMicroblog*) microblog
                             WithDic:(NSDictionary*) receivedDic;
-
 + (void) microblogDetail:(NSDictionary*) receivedDic
             forMicroblog:(XXTMicroblog*) microblog;
-
 + (void) getCommentsAndLikes:(NSArray*) commentsAndLikes;
-
 + (void) receivedMessageTemplatesDictionary:(NSDictionary*) receivedDictionary;
 + (void) receivedMessageHistoryDictionary:(NSDictionary*) receivedDic;
 + (void) receivedMessageHistoryReceiverDic:(NSDictionary*) receiverDic
