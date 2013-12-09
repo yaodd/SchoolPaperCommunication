@@ -59,22 +59,16 @@
     InfoViewController *infoViewController = [[InfoViewController alloc]init];
     UINavigationController *tab1 = [[UINavigationController alloc]initWithRootViewController:infoViewController];
     
-    UINavigationController *tab2;
-    if (personType == XXTPersonTypeParent || personType == XXTPersonTypeTeacher) {
-        ContactsViewController *contactsViewController = [[ContactsViewController alloc]init];
-         tab2 = [[UINavigationController alloc]initWithRootViewController:contactsViewController];
-    } else{
-        StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
-        tab2 = [[UINavigationController alloc]initWithRootViewController:studyViewController];
-        
-    }
     
-    
-    FunctionListViewController *functionListViewController = [[FunctionListViewController alloc]init];
-    UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:functionListViewController];
+
+    ContactsViewController *contactsViewController = [[ContactsViewController alloc]init];
+    UINavigationController *tab2 = [[UINavigationController alloc]initWithRootViewController:contactsViewController];
     
     ShareListViewController *dynamicsViewController = [[ShareListViewController alloc]init];
-    UINavigationController *tab4 = [[UINavigationController alloc]initWithRootViewController:dynamicsViewController];
+    UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:dynamicsViewController];
+    
+    StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
+    UINavigationController *tab4 = [[UINavigationController alloc]initWithRootViewController:studyViewController];
     
     SetUpViewController *setUpViewController = [[SetUpViewController alloc]init];
     UINavigationController *tab5 = [[UINavigationController alloc]initWithRootViewController:setUpViewController];
@@ -104,12 +98,9 @@
     NSArray *selectedImages = [[NSArray alloc]initWithObjects:@"news_chosen",@"contact_chosen",@"circle_chosen",@"study_chosen",@"setting_chosen",nil];
     NSArray *unselectedImages = [[NSArray alloc]initWithObjects:@"news",@"contact",@"circle",@"study",@"setting",nil];
     NSLog(@"personType %d",personType);
-    if (personType == XXTPersonTypeParent || personType == XXTPersonTypeTeacher) {
-        titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯录",@"家校圈",@"学习",@"设置", nil];
-    } else{
-        titleArray = [[NSArray alloc]initWithObjects:@"消息",@"学习",@"家校圈",@"学习",@"设置", nil];
-
-    }
+    
+    titleArray = [[NSArray alloc]initWithObjects:@"消息",@"通讯录",@"家校圈",@"学习",@"设置", nil];
+    
 //    self.title = [titleArray objectAtIndex:0];
     tabButtonArray = [[NSMutableArray alloc]init];
     
