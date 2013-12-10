@@ -48,21 +48,27 @@
         isIOS7 = NO;
         originY = 0;
     }
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     [self initNavigationViews];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320,self.view.frame.size.height)];
+    view.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:view];
     
     shareContent= [[UITextView alloc] initWithFrame:CGRectMake(10, originY+10, 310, 150)];
     shareContent.backgroundColor = [UIColor clearColor];
     shareContent.font = [UIFont fontWithName:@"Heiti SC" size:16.0];
     shareContent.textColor = [UIColor blackColor];
-    shareContent.returnKeyType = UIReturnKeyDone;
+    shareContent.returnKeyType = UIReturnKeyDefault;
     shareContent.scrollEnabled = YES;
     shareContent.delegate = self;
-    shareContent.selectedRange = NSMakeRange(0, 0);//设置光标初始位置
+    shareContent.textAlignment = NSTextAlignmentLeft;
+    [shareContent becomeFirstResponder];
     [self.view addSubview:shareContent];
     
     //model the placehold of UITextField
-    textViewHint = [[UILabel alloc] initWithFrame:CGRectMake(8, 10, 200, 20)];
+    textViewHint = [[UILabel alloc] initWithFrame:CGRectMake(8, 6, 200, 20)];
+    textViewHint.backgroundColor = [UIColor clearColor];
     textViewHint.text = @"你想分享什么呢..";
     textViewHint.textColor = [UIColor colorWithRed:179/255.0 green:179/255.0 blue:179/255.0 alpha:1.0];
     textViewHint.textAlignment = NSTextAlignmentLeft;
@@ -71,7 +77,7 @@
     
     shareImage = [[UIImageView alloc] initWithFrame:CGRectZero];
     shareImage.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:shareImage];
+    //[self.view addSubview:shareImage];
     
     [self initCustomBarViewAboveKeyboard];
 }
@@ -86,17 +92,22 @@
 
 - (void)initCustomBarViewAboveKeyboard
 {
-    UIToolbar *topView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    [topView setBarStyle:UIBarStyleDefault];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44 + 90)];
+    topView.backgroundColor = [UIColor whiteColor];
     
-    UIImageView *topViewBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    shareImage = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 80, 80)];
+    shareImage.backgroundColor = [UIColor blackColor];
+    [topView addSubview:shareImage];
+    
+    UIImageView *topViewBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 90, 320, 44)];
     topViewBackground.backgroundColor = [UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1.0];
+    topViewBackground.userInteractionEnabled = YES;
     [topView addSubview:topViewBackground];
     
     addPhoto = [[UIButton alloc] initWithFrame:CGRectMake(214, 0, 320-214, 44)];
     addPhoto.backgroundColor = [UIColor clearColor];
     [addPhoto addTarget:self action:@selector(addPhotoAction) forControlEvents:UIControlEventTouchUpInside];
-    [topView addSubview:addPhoto];
+    [topViewBackground addSubview:addPhoto];
     
     UIImageView *addPhotoIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 4, 36.5, 36.5)];
     addPhotoIcon.backgroundColor = [UIColor clearColor];
@@ -118,6 +129,7 @@
 - (void)sendShare
 {
     NSLog(@"Bar button '发送' is pressed!");
+    [shareContent resignFirstResponder];
 }
 
 - (void)addPhotoAction
@@ -131,11 +143,6 @@
 //把回车键当做退出键盘的响应键
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([text isEqualToString:@"\n"]){
-        [shareContent resignFirstResponder];
-        
-        return NO;
-    }
     
     return YES;
 }
@@ -144,23 +151,25 @@
 {
     NSLog(@"TextView did begin editing!");
     
-    if([textView.text isEqualToString:@""]){
-        textViewHint.hidden = YES;
-    }
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
     NSLog(@"TextView did Changed!");
-    textView.selectedRange = NSMakeRange(textView.text.length, 0);
+    if([textView.text isEqualToString:@""]){
+        textViewHint.hidden = NO;
+    }else {
+        textViewHint.hidden = YES;
+    }
+ 
+    
 }
-
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     NSLog(@"TextView did end editing!");
-    if([textView.text isEqualToString:@""]){
-        textViewHint.hidden = NO;
-    }
+
+    textView.text = [textView.text stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+
 }
 
 - (void)didReceiveMemoryWarning

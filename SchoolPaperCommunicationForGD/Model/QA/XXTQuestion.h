@@ -9,6 +9,7 @@
 #import "XXTObject.h"
 #import "XXTImage.h"
 #import "XXTAudio.h"
+#import "XXTAnswer.h"
 
 typedef enum{
     XXTQuestionStateUnsolved = 1,
@@ -20,7 +21,7 @@ typedef enum{
 @property (copy , nonatomic) NSNumber* qid;
 @property (copy , nonatomic) NSString* content;
 @property (strong , nonatomic) XXTImage* qImage;
-@property (strong , nonatomic) XXTAudio* qAudio;
+@property (strong , nonatomic) NSArray* qAudios;
 @property (strong , nonatomic) NSString* subjectName;
 @property (strong , nonatomic) NSNumber* subjectId;
 @property XXTQuestionState state;
@@ -29,8 +30,9 @@ typedef enum{
 @property (copy , nonatomic) NSString* questionerName;
 @property (strong , nonatomic) XXTImage* questionerAvatar;
 
-@property (strong , nonatomic) NSArray* answersArr;
+@property (strong , nonatomic) NSMutableArray* answersArr;
 
 - (XXTQuestion*) initWithDictionary:(NSDictionary*) dict;
+- (XXTQuestion*) initNewQuestion:(NSString*) content subjectId:(int) sid image:(XXTImage*) image audio:(XXTAudio*) audio;
 
 @end

@@ -38,6 +38,7 @@
 
 - (void)initLayout{
     [self.layer setCornerRadius:5.0];
+    [self setBackgroundColor:[UIColor colorWithRed:229.0/255 green:232.0/255 blue:229.0/255 alpha:1.0]];
     [contentLabel setNumberOfLines:0];
     [contentLabel setLineBreakMode:NSLineBreakByCharWrapping];
 }
@@ -45,7 +46,12 @@
     xxtQuestion = question;
     NSString *content = question.content;
     XXTImage *qImage = question.qImage;
-    XXTAudio *qAudio = question.qAudio;
+    XXTAudio *qAudio = [[XXTAudio alloc]init];
+    NSArray *qAudioArr = question.qAudios;
+    
+    if ([qAudioArr count] != 0) {
+        qAudio = [qAudioArr objectAtIndex:0];
+    }
     NSString *subjectName = question.subjectName;
     NSNumber *subjectId = question.subjectId;
     XXTQuestionState state = question.state;
@@ -98,7 +104,14 @@
         [self.avPlay stop];
         return;
     }
-    XXTAudio *audio = xxtQuestion.qAudio;
+//    XXTAudio *audio = xxtQuestion.qAudio;
+    XXTAudio *audio = [[XXTAudio alloc]init];
+    NSArray *qAudioArr = xxtQuestion.qAudios;
+    
+    if ([qAudioArr count] != 0) {
+        audio = [qAudioArr objectAtIndex:0];
+    }
+
     if (audio.audiodata != nil) {
         AVAudioPlayer *player = [[AVAudioPlayer alloc]initWithData:audio.audiodata error:nil];
         self.avPlay = player;

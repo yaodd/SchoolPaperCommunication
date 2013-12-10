@@ -36,6 +36,7 @@
 @synthesize numberOfComment;
 @synthesize numberOflike;
 @synthesize bottomView;
+@synthesize tag;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -164,9 +165,7 @@
 
 - (void)commentBtnPressedUp{
     commentImg.image = [UIImage imageNamed:@"comment"];
-    int number = [numberOfComment.text intValue];
-    number++;
-    numberOfComment.text = [NSString stringWithFormat:@"%d",number];
+    [self.delegate jumpToAddCommentDelegateWithTag:tag];
 }
 
 - (void)likeBtnPressedDown{
@@ -181,7 +180,7 @@
 }
 
 - (void)jumpToShareDetal{
-    [self.delegate jumpToShareDetailDelegate];
+    [self.delegate jumpToShareDetailDelegateWithTag:tag];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

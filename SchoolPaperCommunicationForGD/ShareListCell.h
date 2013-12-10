@@ -25,11 +25,14 @@
 @property (nonatomic, retain) UILabel *numberOflike;
 @property (nonatomic, retain) UILabel *numberOfComment;
 @property (nonatomic, retain) UIButton *bottomView;
+@property (nonatomic) NSInteger tag;
 
 @end
 
 @protocol ShareListCellDelegate
 
-- (void)jumpToShareDetailDelegate;
+- (void)jumpToShareDetailDelegateWithTag:(NSInteger)tag;
+
+- (void)jumpToAddCommentDelegateWithTag:(NSInteger)tag;
 
 @end

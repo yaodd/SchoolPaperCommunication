@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXTModelGlobal.h"
 
 @interface DetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
@@ -21,5 +22,7 @@
 @property (nonatomic, retain) UIView *commentBackground;
 @property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic ,retain) NSMutableArray *commentDataArray;
+
+- (id)initWithMicro:(XXTMicroblog*)micro;
 
 @end

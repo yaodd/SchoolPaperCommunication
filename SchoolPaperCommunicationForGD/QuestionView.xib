@@ -25,7 +25,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="麦提沙" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1zz-9L-dSe">
-                    <rect key="frame" x="58" y="13" width="51" height="21"/>
+                    <rect key="frame" x="58" y="13" width="67" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.33725490196078434" green="0.47843137254901957" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
@@ -86,7 +86,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.8980392157" green="0.90980392160000001" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>

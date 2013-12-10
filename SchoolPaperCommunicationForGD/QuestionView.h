@@ -14,7 +14,7 @@
 #define CONTENT_TEXT_Y      65
 #define CONTENT_TEXT_WIDTH  288
 
-#define VIEW_X          10
+#define VIEW_X          6
 #define VIEW_Y          0
 #define VIEW_WIDTH      308
 

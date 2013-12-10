@@ -11,6 +11,7 @@
 #import "QuestionView.h"
 #import "Dao.h"
 #import "XXTModelGlobal.h"
+#import "ChooseSubjectViewController.h"
 
 #define QUESTION_VIEW_TAG   111111
 @interface StudyViewController ()
@@ -57,8 +58,17 @@
     self.questionPikerView.dataSource = self;
     [self.questionPikerView setBackgroundColor:[UIColor whiteColor]];
 //    [self.questionTableView addSubview:questionPikerView];
-    
+    UIBarButtonItem *issueItem = [[UIBarButtonItem alloc]initWithTitle:@"提问" style:UIBarButtonItemStylePlain target:self action:@selector(issueAction:)];
+    self.navigationItem.rightBarButtonItem = issueItem;
 }
+- (void)issueAction:(id)sender{
+    [self setHidesBottomBarWhenPushed:YES];
+    ChooseSubjectViewController *chooseSubjectViewController = [[ChooseSubjectViewController alloc]initWithNibName:@"ChooseSubjectViewController" bundle:nil];
+    [self.navigationController pushViewController:chooseSubjectViewController animated:YES];
+    [self setHidesBottomBarWhenPushed:NO];
+
+}
+
 - (void)initData{
     questionArray = [[NSMutableArray alloc]init];
     NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(loadDataSelector:) object:nil];
@@ -153,7 +163,11 @@
     XXTQuestion *question = [questionArray objectAtIndex:indexPath.row];
     NSString *content = question.content;
     XXTImage *qImage = question.qImage;
-    XXTAudio *qAudio = question.qAudio;
+    XXTAudio *qAudio = [[XXTAudio alloc]init];
+    NSArray *qAudioArr = question.qAudios;
+    if ([qAudioArr count] != 0) {
+        qAudio = [qAudioArr objectAtIndex:0];
+    }
     UIFont *font = [UIFont systemFontOfSize:16];
     CGSize size = [content sizeWithFont:font constrainedToSize:CGSizeMake(CONTENT_TEXT_WIDTH - 10, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
     height += size.height + 10;
@@ -163,7 +177,7 @@
     if (qAudio != nil) {
         height += (AUDIO_HEIGHT + 10);
     }
-    
+    height += 10;
     
     return height;
 }

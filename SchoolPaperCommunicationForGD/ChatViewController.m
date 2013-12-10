@@ -148,7 +148,7 @@
     UIStoryboard *storyborad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PersonDetailViewController *personDetailViewController = [storyborad instantiateViewControllerWithIdentifier:@"PersonDetail"];
     [self.navigationController pushViewController:personDetailViewController animated:YES];
-    [self setHidesBottomBarWhenPushed:NO];
+//    [self setHidesBottomBarWhenPushed:NO];
 }
 //点击tableView任何地方都收起键盘
 - (void)tableViewTapGesture:(id)sender{
