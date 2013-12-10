@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XXTModelGlobal.h"
 @interface TabBarViewController : UITabBarController
 @property (nonatomic, retain) UIImageView *tabBarView;
 @end

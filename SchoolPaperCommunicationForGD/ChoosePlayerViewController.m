@@ -113,7 +113,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    [XXTModelController selectUserRole:[dataArray objectAtIndex:indexPath.row]];//更改当前的角色选择；
+    XXTUserRole *userRole = [dataArray objectAtIndex:indexPath.row];
+    [XXTModelController selectUserRole:userRole];//更改当前的角色选择；
     TabBarViewController *tabBarViewController = [[TabBarViewController alloc]init];
     [self presentViewController:tabBarViewController animated:YES completion:nil];
 }

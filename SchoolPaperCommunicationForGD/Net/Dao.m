@@ -25,8 +25,6 @@
 
 @synthesize reachbility;
 
-#define WTF                      YES
-
 //此处为基本ip地址
 //#define baseUrl  @"http://localhost:8888/index.php"
 #define baseUrl @"http://120.197.89.182:8080/mobile/pull"
@@ -41,6 +39,11 @@
 //此处为基本操作码与URL后缀
 
 #define loginCmd                @"10011"
+#define logoffCmd               @"10012"
+#define forgetPwdCmd            @"10013"
+#define dynamicPwdCmd           @"10014"
+#define changeProfileCmd        @"10015"
+#define changePwdCmd            @"10016"
 
 #define messageListCmd          @"10021"
 #define messageStatusUpdateCmd  @"10022"
@@ -59,6 +62,27 @@
 #define postLikeCmd             @"10044"
 #define microblogDetailCmd      @"10045"
 #define getCommentAndLikesCmd   @"10046"
+
+#define bulletinListCmd         @"10051"
+#define postBulletinCmd         @"10052"
+
+#define homeworkListCmd         @"10062"
+#define postHomeworkCmd         @"10061"
+
+#define evaluateListCmd         @"10071"
+#define evaluateDetailCmd       @"10072"
+#define evaluateHistory2PersonCmd @"10073"
+#define evaluateTemplatesCmd    @"10074"
+#define postEvaluateCmd         @"10075"
+
+#define questionListCmd         @"10081"
+#define questionDetailCmd       @"10082"
+#define postQuestionCmd         @"10083"
+#define postAnswerCmd           @"10084"
+#define gradeListCmd            @"10085"
+
+#define feedbackListCmd         @"10091"
+#define postFeedbackCmd         @"10092"
 
 //此处为一些常量 - 可以把它们移到config.h里
 #define PLATFORM @"ios"
@@ -253,6 +277,88 @@
     return ret;
 }
 
+- (NSInteger) requestForLogoff{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:logoffCmd forKey:@"cmd"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:userModuleUrl WithCmd:logoffCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        //TODO save the user message
+        [XXTModelController logoffSuccess];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForForgetPasswordForAccount:(NSString *)account{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:forgetPwdCmd forKey:@"cmd"];
+    [postDic setObject:account forKey:@"account"];
+    
+    NSString* url = [self getUrlForModule:userModuleUrl WithCmd:forgetPwdCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    return ret;
+}
+
+- (NSInteger) requestForDynamicPasswordForAccount:(NSString *)account{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:dynamicPwdCmd forKey:@"cmd"];
+    [postDic setObject:account forKey:@"account"];
+    
+    NSString* url = [self getUrlForModule:userModuleUrl WithCmd:dynamicPwdCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    return ret;
+}
+
+- (NSInteger) requestForChangeProfileWithName:(NSString *)name avatar:(XXTImage *)avatar{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:changeProfileCmd forKey:@"cmd"];
+    [postDic setObject:name forKey:@"userName"];
+    [postDic setObject:avatar.originPicURL forKey:@"avatar"];
+    [postDic setObject:avatar.thumbPicURL forKey:@"avatarThumb"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:userModuleUrl WithCmd:forgetPwdCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    return ret;
+}
+
+- (NSInteger) requestForChangePasswordForAccount:(NSString *)account
+                                     OldPassword:(NSString *)oldPwd
+                                    ValidateCode:(NSString *)validCode
+                                     NewPassword:(NSString *)newPwd
+{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:changePwdCmd forKey:@"cmd"];
+    [postDic setObject:account forKey:@"account"];
+    if (validCode!=nil)
+        [postDic setObject:validCode forKey:@"validCode"];
+    if (oldPwd!=nil)
+        [postDic setObject:oldPwd forKey:@"oldPwd"];
+    [postDic setObject:newPwd forKey:@"newPwd"];
+    
+    NSString* url = [self getUrlForModule:userModuleUrl WithCmd:changePwdCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    return ret;
+}
+
 - (NSInteger) requestForMessageList
 {
     int ret = 0;
@@ -274,7 +380,9 @@
         NSArray *newMessagesList = [rs objectForKey:@"items"];
         if ([newMessagesList count] > 0)
             [XXTModelController receivedNewMessages:newMessagesList];
+        
     }
+    
     return ret;
 }
 
@@ -601,7 +709,7 @@
     return ret;
 }
 
-- (NSInteger) requestforPostComment:(XXTComment*) comment microblog:(XXTMicroblog *)microblog{
+- (NSInteger) requestForPostComment:(XXTComment*) comment microblog:(XXTMicroblog *)microblog{
     int ret = 0;
     
     NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
@@ -684,4 +792,272 @@
     return ret;
 }
 
+- (NSInteger) requestForBulletinListWithType:(XXTBulletinType)type
+                                      isPull:(int)isPull
+                                    pageSize:(int)pageSize
+{
+    XXTUserRole* currentUser = [XXTModelGlobal sharedModel].currentUser;
+    NSDate* lastUpdateTime = [currentUser.lastUpdateTimeForBulletinArr objectAtIndex:type];
+    NSString* lastUpdateStr= [NSDate stringValueOfDate:lastUpdateTime];
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:bulletinListCmd forKey:@"cmd"];
+    [postDic setObject:[NSNumber numberWithInt:type] forKey:@"type"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    [postDic setObject:[NSNumber numberWithInt:isPull] forKey:@"isPull"];
+    [postDic setObject:lastUpdateStr forKey:@"updateTime"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:bulletinListCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        NSArray* bulletinArr = [rs objectForKey:@"items"];
+        [XXTModelController receivedBulletinListDicArr:bulletinArr type:type];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForPostBulletin:(XXTBulletin *)bulletin{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postBulletinCmd forKey:@"cmd"];
+    [postDic setObject:bulletin.schoolId forKey:@"schoolId"];
+    NSString* startDateStr = [NSDate stringValueOfDate:bulletin.startDate];
+    [postDic setObject:startDateStr forKey:@"startDate"];
+    NSString* endDateStr = [NSDate stringValueOfDate:bulletin.endDate];
+    [postDic setObject:endDateStr forKey:@"endDate"];
+    [postDic setObject:bulletin.senderId forKey:@"teacherId"];
+    [postDic setObject:bulletin.classId forKey:@"classId"];
+    [postDic setObject:bulletin.title forKey:@"title"];
+    [postDic setObject:bulletin.content forKey:@"content"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:postBulletinCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postBulletinSuccess:bulletin WithDic:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForHomeworkListForTime:(NSDate *)dateTime isPull:(int)isPull pageSize:(int)pageSize{
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:homeworkListCmd forKey:@"cmd"];
+    NSString* lastStr = [NSDate stringValueOfDate:dateTime];
+    [postDic setObject:lastStr forKey:@"dateTime"];
+    [postDic setObject:[NSNumber numberWithInt:isPull] forKey:@"isPull"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:homeworkListCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedHomeworkListDicArr:[rs objectForKey:@"items"]];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForPostHomework:(XXTHomework *)homework{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postHomeworkCmd forKey:@"cmd"];
+    [postDic setObject:homework.subjectId forKey:@"subjectId"];
+    [postDic setObject:homework.classId forKey:@"classId"];
+    [postDic setObject:homework.content forKey:@"content"];
+    if (homework.image!=nil){
+        [postDic setObject:homework.image.originPicURL forKey:@"original"];
+        [postDic setObject:homework.image.thumbPicURL forKey:@"thumb"];
+    }
+    NSString* dateTimeStr = [NSDate stringValueOfDate:homework.finishTime];
+    [postDic setObject:dateTimeStr forKey:@"dateTime"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:postHomeworkCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postHomeworkSuccess:homework WithDic:rs];
+    }
+    return ret;
+}
+
+- (NSInteger) requestForEvaluateListForTime:(NSDate *)dateTime
+                                     isPull:(int)isPull
+                                   pageSize:(int)pageSize
+{
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:evaluateListCmd forKey:@"cmd"];
+    NSString* dateTimeStr = [NSDate stringValueOfDate:dateTime];
+    [postDic setObject:dateTimeStr forKey:@"dateTime"];
+    [postDic setObject:[NSNumber numberWithInt:isPull] forKey:@"isPull"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:evaluateListCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    if (ret == 1){
+        [XXTModelController receivedEvaluateListDicArr:[rs objectForKey:@"items"]];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForEvaluateDetail:(XXTEvaluate *)evaluate{
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:evaluateDetailCmd forKey:@"cmd"];
+    [postDic setObject:evaluate.eid forKey:@"id"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:evaluateDetailCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedEvaluateDetailFor:evaluate PersonDicArr:[rs objectForKey:@"item"]];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForEvaluateToPerson:(XXTPersonBase *)person
+                                    time:(NSDate *)dateTime
+                                  isPull:(int)isPull
+                                pageSize:(int)pageSize
+{
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:evaluateHistory2PersonCmd forKey:@"cmd"];
+    [postDic setObject:person.pid forKey:@"id"];
+    NSString* dateStr = [NSDate stringValueOfDate:dateTime];
+    [postDic setObject:dateStr forKey:@"dateTime"];
+    [postDic setObject:[NSNumber numberWithInt:isPull] forKey:@"isPull"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:evaluateHistory2PersonCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedEvaluateHistory2Person:person evaluateDicArr:[rs objectForKey:@"items"]];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForEvaluateTemplates{
+    XXTUserRole *currentUser = [XXTModelGlobal sharedModel].currentUser;
+    NSMutableDictionary *postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:evaluateTemplatesCmd forKey:@"cmd"];
+    [postDic setObject:currentUser.lastUpdateTimeForEvaluateTemplates forKey:@"updateTime"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:evaluateTemplatesCmd];
+    NSDictionary *rs =[self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    if (ret == 1){
+        [XXTModelController receivedEvaluateTemplatesWithDic:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForPostEvaluate:(XXTEvaluate*) evaluate{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postEvaluateCmd forKey:@"cmd"];
+    NSMutableArray* idArr = [NSMutableArray array];
+    for (XXTEvaluatedPerson* person in evaluate.evaluatedPersonArr){
+        [idArr addObject:person.pid];
+    }
+    [postDic setObject:idArr forKey:@"id"];
+    [postDic setObject:evaluate.content forKey:@"comment"];
+    [postDic setObject:[NSNumber numberWithInt:evaluate.rank] forKey:@"rank"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:postEvaluateCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postEvaluateSuccess:evaluate WithDictionary:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForQuestionListForSubjectId:(int)subjectId
+                                           state:(int)state
+                                      questioner:(int)questioner
+                                           grade:(int)gradeId
+                                            page:(int)page
+                                        pageSize:(int)pageSize
+{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:questionListCmd forKey:@"cmd"];
+    [postDic setObject:[NSNumber numberWithInt:subjectId] forKey:@"id"];
+    [postDic setObject:[NSNumber numberWithInt:state] forKey:@"status"];
+    [postDic setObject:[NSNumber numberWithInt:questioner] forKey:@"questioner"];
+    [postDic setObject:[NSNumber numberWithInt:gradeId] forKey:@"grade"];
+    [postDic setObject:[NSNumber numberWithInt:page] forKey:@"page"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:questionListCmd];
+    NSDictionary *rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    if (ret == 1){
+        [XXTModelController receivedQuestionListDicArr:[rs objectForKey:@"items"]];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForFeedbackListWithPageNo:(int)page pageSize:(int)pageSize{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:feedbackListCmd forKey:@"cmd"];
+    [postDic setObject:[NSNumber numberWithInt:page] forKey:@"page"];
+    [postDic setObject:[NSNumber numberWithInt:pageSize] forKey:@"pageSize"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:feedbackListCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    if (ret == 1){
+        [XXTModelController receivedFeedbackDic:rs] ;
+    }
+    
+    return ret;
+}
+
+- (NSInteger)requestForPostFeedback:(NSString *)content{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postFeedbackCmd forKey:@"cmd"];
+    [postDic setObject:content forKey:@"content"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:postFeedbackCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    return ret;
+}
 @end

@@ -12,6 +12,7 @@
 #import "XXTModelGlobal.h"
 #import "Dao.h"
 #import "UIImageView+category.h"
+#import "SendMessageViewController.h"
 
 #define CONTACT_VIEW_TAG    111111
 
@@ -19,6 +20,9 @@
 {
     CGFloat tableViewY;
     NSMutableArray *data;
+    XXTModelGlobal *modelGlobal;
+    XXTUserRole *userRole;
+    BOOL isSearching;
 }
 @property(nonatomic, strong) UISearchDisplayController *strongSearchDisplayController; // UIViewController doesn't retain the search display controller if it's created programmatically: http://openradar.appspot.com/10254897
 @property(nonatomic, copy) NSArray *famousPersons;
@@ -61,6 +65,7 @@
 //初始化tableView
 - (void)initLayout{
 //    self.title = @"通讯录";
+    isSearching = NO;
     self.contactsTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - tableViewY - TOP_BAR_HEIGHT)];
     self.contactsTableView.dataSource = self;
     self.contactsTableView.delegate = self;
@@ -88,8 +93,9 @@
 
 //初始化数据加载
 - (void)initData{
-    XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
-    XXTUserRole *userRole = modelGlobal.currentUser;
+    
+    modelGlobal = [XXTModelGlobal sharedModel];
+    userRole = modelGlobal.currentUser;
     if ([userRole.contactGroupArr count] == 0) {
         NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadContactGroup:) object:nil];
         [thread start];
@@ -101,7 +107,7 @@
 //下载通讯录
 - (void)downloadContactGroup:(NSThread *)thread{
     Dao *dao = [Dao sharedDao];
-    int isSuccess = [dao requestForGetContactList];
+    NSInteger isSuccess = [dao requestForGetContactList];
     if (isSuccess ==  1) {
         [self performSelectorOnMainThread:@selector(updateContactGroup) withObject:nil waitUntilDone:YES];
     }
@@ -109,8 +115,9 @@
 }
 //更新通讯录
 - (void)updateContactGroup{
-    XXTModelGlobal *modelGlobal = [XXTModelGlobal sharedModel];
-    XXTUserRole *userRole = modelGlobal.currentUser;
+    isSearching = NO;
+    modelGlobal = [XXTModelGlobal sharedModel];
+    userRole = modelGlobal.currentUser;
     data = [[NSMutableArray alloc]init];
 
     for (XXTGroup *group in userRole.contactGroupArr) {
@@ -119,6 +126,7 @@
         NSLog(@"groupname %@",group.groupName);
         NSArray *groupMemberArr = group.groupMemberArr;
         [dict setObject:groupMemberArr forKey:@"users"];
+//        [dict setObject:[NSNumber numberWithBool:YES] forKey:@"expanded"];
         [data addObject:dict];
     }
     [contactsTableView reloadData];
@@ -201,6 +209,7 @@
 	NSArray *users = (NSArray*)[item objectForKey:@"users"];
     
 	if (users == nil) {
+        NSLog(@"nil");
 		return cell;
 	}
 	//加载数据
@@ -210,17 +219,19 @@
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (isSearching) {
+        return 0;
+    }
     return  44;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    ContactView *contactView = (ContactView *)[cell viewWithTag:CONTACT_VIEW_TAG];
+    [self jumpToChatWithPerson:contactView.contactPerson];
     
-    self.hidesBottomBarWhenPushed = YES;
-    ChatViewController *chatViewController = [[ChatViewController alloc]init];
-    [self.navigationController pushViewController:chatViewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
 }
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 {
@@ -282,7 +293,9 @@
     [sepector setBackgroundColor:[UIColor colorWithRed:213.0/255 green:213.0/255 blue:213.0/255 alpha:1.0]];
     
     [hView addSubview:sepector];
+//    [hView setHidden:YES];
 	return hView;
+//    return nil;
     
 }
 
@@ -320,7 +333,7 @@
 -(void)expandButtonClicked:(id)sender{
 	
 	UIButton* btn= (UIButton*)sender;
-	int section= btn.tag; //取得tag知道点击对应哪个块
+	NSInteger section= btn.tag; //取得tag知道点击对应哪个块
 	
 	//	NSLog(@"click %d", section);
 	[self collapseOrExpand:section];
@@ -357,7 +370,8 @@
 //    }x
 }
 #pragma contactViewDelegate mark -
-- (void)ContactViewButtonAction:(ContactView *)contactView button:(UIButton *)button{
+- (void)ContactViewButtonAction:(ContactView *)contactView button:(UIButton *)button person:(XXTContactPerson *)person{
+    [self.searchBar resignFirstResponder];
     if (button.tag == 0) {
         NSLog(@"打电话");
 //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://10086"]];
@@ -370,15 +384,80 @@
     }
     if (button.tag == 1) {
         NSLog(@"发短信");
+        [self jumpToMessageWithPerson:person];
     }
     if (button.tag == 2) {
         NSLog(@"即时聊天");
-        self.hidesBottomBarWhenPushed = YES;
-        ChatViewController *chatViewController = [[ChatViewController alloc]init];
-        [self.navigationController pushViewController:chatViewController animated:YES];
-        self.hidesBottomBarWhenPushed = NO;
-
+        [self jumpToChatWithPerson:person];
     }
 }
-#pragma UISearchBarDelegate mark;
+//跳转到发短信页面
+- (void)jumpToMessageWithPerson:(XXTContactPerson *)person{
+    self.hidesBottomBarWhenPushed = YES;
+    SendMessageViewController *sendMessageViewController = [[SendMessageViewController alloc]initWithNibName:@"SendMessageViewController" bundle:nil];
+    [sendMessageViewController setCurrentPid:person.pid];
+    [self.navigationController pushViewController:sendMessageViewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
+    
+}
+//跳转到聊天界面
+- (void)jumpToChatWithPerson:(XXTContactPerson *)person{
+    [self.searchBar resignFirstResponder];
+    self.hidesBottomBarWhenPushed = YES;
+    ChatViewController *chatViewController = [[ChatViewController alloc]init];
+    [chatViewController setCurrentPid:person.pid];
+    [self.navigationController pushViewController:chatViewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
+    
+}
+#pragma UISearchBarDelegate mark
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    isSearching = YES;
+    data = [[NSMutableArray alloc]init];
+    for (XXTGroup *group in userRole.contactGroupArr) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setObject:group.groupName forKey:@"groupname"];
+        NSLog(@"groupname %@",group.groupName);
+        NSMutableArray *groupMemberArr = [[NSMutableArray alloc]init];
+        for (XXTContactPerson *person in group.groupMemberArr) {
+            if ([self isMatchWithSeatchText:searchText originalText:person.name] || [self isMatchWithSeatchText:searchText originalText:person.phone]) {
+                [groupMemberArr addObject:person];
+            }
+        }
+        [dict setObject:groupMemberArr forKey:@"users"];
+        [dict setObject:[NSNumber numberWithBool:YES] forKey:@"expanded"];
+        [data addObject:dict];
+    }
+    if (searchText.length == 0) {
+        isSearching = NO;
+    }
+    [contactsTableView reloadData];
+}
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    
+}
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    [self updateContactGroup];
+}
+//字符串匹配搜索算法
+- (BOOL)isMatchWithSeatchText:(NSString *)searchText originalText:(NSString *)originalText{
+    BOOL result = YES;
+    int start = 0;
+    for (int i = 0; i < searchText.length; i ++) {
+        unichar c = [searchText characterAtIndex:i];
+        for (int k = start; k < originalText.length; k ++) {
+            if (c == [originalText characterAtIndex:k]) {
+                start = k + 1;
+                break;
+            }
+            if (k == originalText.length - 1) {
+                result = NO;
+            }
+        }
+    }
+    
+    return result;
+}
+
+
 @end
