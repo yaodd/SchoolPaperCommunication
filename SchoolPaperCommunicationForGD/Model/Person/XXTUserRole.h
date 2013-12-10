@@ -19,6 +19,10 @@
 #import "XXTHomework.h"
 #import "XXTEvaluateTemplate.h"
 #import "XXTQuestion.h"
+#import "XXTGrade.h"
+#import "XXTSubject.h"
+#import "XXTClass.h"
+#import "XXTOtherPerson.h"
 
 @interface XXTUserRole : XXTPersonBase
 
@@ -48,6 +52,11 @@
 
 @property (strong,nonatomic) NSMutableArray *myCommentsAndLikes;
 @property NSInteger commentAndLikesReadCount; //已经读过的comment和like数,未读数为当前总数-已读数
+
+@property (strong , nonatomic) NSArray* gradeArr;
+@property (strong , nonatomic) NSArray* subjectArr;
+@property (strong , nonatomic) NSArray* myClassArr;
+@property (strong , nonatomic) NSArray* myChildrenArr;
 
 - (id) initLoad;
 - (void) save;

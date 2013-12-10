@@ -85,11 +85,17 @@
                                            grade:(int) gradeId
                                             page:(int) page
                                         pageSize:(int) pageSize;
+- (NSInteger) requestForQuestionDetail:(XXTQuestion*) question;
+- (NSInteger) requestForPostQuestion:(XXTQuestion*) question;
+- (NSInteger) requestForPostAnswer:(XXTAnswer*) answer forQuestion:(XXTQuestion*) question;
+- (NSInteger) requestForGradeList;
 
 #pragma mark 意见反馈
 - (NSInteger) requestForFeedbackListWithPageNo:(int) page pageSize:(int) pageSize;
 - (NSInteger) requestForPostFeedback:(NSString*) content;
 
 #pragma mark 补充功能
+- (NSInteger) requestForClassList;
+- (NSInteger)
 
 @end

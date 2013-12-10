@@ -329,4 +329,43 @@
     }
 }
 
++(void) receivedQuestionDetailForQuestion:(XXTQuestion *)question
+                              receivedDic:(NSDictionary *)receivedDic
+{
+    NSMutableArray* answerArr = [NSMutableArray array];
+    NSArray* answerDicArr = [receivedDic objectForKey:@"items"];
+    for (NSDictionary* answerDic in answerDicArr){
+        XXTAnswer* ans = [[XXTAnswer alloc] initWithDicitionary:answerDic];
+        [answerArr addObject:ans];
+    }
+    question.answersArr = answerArr;
+}
+
++ (void) prepareToPostQuestion:(XXTQuestion *)question{
+    [[XXTModelGlobal sharedModel].currentUser.questionArr addObject:question];
+}
+
++ (void) postQuestionSuccess:(XXTQuestion *)question receivedDict:(NSDictionary *)dict{
+    question.qid = [dict objectForKey:@"id"];
+}
+
++ (void) prepareToPostAnswer:(XXTAnswer *)ans ForQuestion:(XXTQuestion *)question{
+    [question.answersArr addObject:ans];
+    ans.isSended = NO;
+}
+
++ (void) postAnswerSuccess:(XXTAnswer *)ans{
+    ans.isSended = YES;
+}
+
++ (void) receivedGradeListDicArr:(NSArray *)gradeDicArr{
+    XXTUserRole* currentUser = [XXTModelGlobal sharedModel].currentUser;
+    NSMutableArray* gradeArr = [NSMutableArray array];
+    for (NSDictionary* gradeDic in gradeDicArr){
+        XXTGrade *grade = [[XXTGrade alloc] initWithDictionary:gradeDic];
+        [gradeArr addObject:grade];
+    }
+    currentUser.gradeArr = gradeArr;
+}
+
 @end
