@@ -8,6 +8,7 @@
 
 #import "DynamicPswViewController.h"
 #import "XXTAlertView.h"
+#import "Dao.h"
 
 
 @interface DynamicPswViewController ()
@@ -58,12 +59,33 @@
 
 - (IBAction)getDynamicAction:(id)sender {
     
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(getDynamicSelector:) object:nil];
+    [thread start];
+    
+}
+//异步获取动态密码
+- (void)getDynamicSelector:(NSThread *)thread{
+    NSString *accountStr = phoneTF.text;
+    Dao *dao = [Dao sharedDao];
+    NSInteger isSuccess = [dao requestForDynamicPasswordForAccount:accountStr];
+    if (accountStr.length != 0) {
+        if (isSuccess) {
+            [self performSelectorOnMainThread:@selector(showAlertView) withObject:nil waitUntilDone:YES];
+        }else{
+            NSLog(@"动态密码发送失败！");
+        }
+
+    }else{
+        NSLog(@"手机号不能为空");
+    }
+}
+//发送成功
+- (void)showAlertView{
     XXTAlertView *alertView = [[XXTAlertView alloc]initWithTitle:@"发送成功" XXTAlertViewType:kXXTAlertViewTypeSucceed otherButtonTitles:@"返回", nil];
     alertView.delegate = self;
     [self.navigationController.view addSubview:alertView];
     [alertView show];
 }
-
 #pragma XXTAlertViewDelegate mark -
 - (void)XXTAlertViewButtonAction:(XXTAlertView *)alertView button:(UIButton *)button{
     if (button.tag == 0) {

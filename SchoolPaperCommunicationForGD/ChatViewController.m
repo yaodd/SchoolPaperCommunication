@@ -7,7 +7,9 @@
 //
 
 #import "ChatViewController.h"
+#import "XXTModelGlobal.h"
 #import "PersonDetailViewController.h"
+#import "Dao.h"
 //#import <Foundation/Foundation.h>
 #import "BubbleView.h"
 #import "VoiceView.h"
@@ -19,13 +21,18 @@
 
 @interface ChatViewController ()
 {
-    NSMutableArray *aryMessages;
+    NSMutableArray *aryMessages;  //数据源
     
+    //用于录音
     AVAudioRecorder *recorder;
     NSTimer *timer;
     NSURL *urlPlay;
         
-    UIImagePickerController *imagePicker;
+    UIImagePickerController *imagePicker;//用于选择图片
+    
+    XXTModelGlobal *modelGlobal;
+    XXTUserRole *userRole;
+    
 }
 
 @end
@@ -37,6 +44,7 @@
 @synthesize chatTableView;
 @synthesize recordButton;
 @synthesize avPlay;
+@synthesize currentPid;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -147,6 +155,18 @@
 }
 //初始化历史消息记录
 - (void)initHistoryMsg{
+    modelGlobal = [XXTModelGlobal sharedModel];
+    userRole = modelGlobal.currentUser;
+    NSArray *hisMsgArray = [userRole getMessagesBetweenMeAndPerson:currentPid];
+    NSLog(@"array count %d",[userRole.allMessagesArr count]);
+    for (XXTMessageBase *message in hisMsgArray) {
+        if ([message isKindOfClass:[XXTMessageReceive class]]) {
+            NSLog(@"receive");
+        }
+        else{
+            NSLog(@"send");
+        }
+    }
     aryMessages = [NSMutableArray array];
     for (int i = 0; i < 10; i ++) {
         MessageVO *msg = [[MessageVO alloc]init];
@@ -335,6 +355,7 @@
         [bubbleView setHidden:YES];
         [cell addSubview:bubbleView];
         
+        
         VoiceView *voiceView = [[VoiceView alloc]initWithDefault];
         [voiceView setTag:VOICE_VIEW_TAG];
         [voiceView setHidden:YES];
@@ -352,6 +373,7 @@
         [photo setTag:HEAD_VIEW_TAG];
         [cell addSubview:photo];
         [cell setBackgroundColor:[UIColor clearColor]];
+        
     }
     BubbleView *bubbleView = (BubbleView *)[cell viewWithTag:BUBBLE_VIEW_TAG];
     VoiceView *voiceView = (VoiceView *)[cell viewWithTag:VOICE_VIEW_TAG];

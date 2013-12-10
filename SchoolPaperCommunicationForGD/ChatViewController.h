@@ -31,6 +31,7 @@
 @property (strong, nonatomic) UIButton *recordButton;
 @property (retain, nonatomic) AVAudioPlayer *avPlay;
 @property (strong, nonatomic) UIButton *imagePickerButton;
+@property (nonatomic, retain) NSString *currentPid;
 
 @property (strong, nonatomic) NSString *chatWithUser;
 - (IBAction)imagePickerAction:(id)sender;
