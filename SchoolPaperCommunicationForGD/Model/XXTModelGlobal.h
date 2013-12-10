@@ -21,6 +21,7 @@
 @property (strong , nonatomic) XXTUserRole* currentUser;
 
 @property (strong , nonatomic) NSArray* feedbackArr;
+
 @property NSInteger feedbackCount;
 
 -(void) initWithLoginInfoDictionary:(NSDictionary*) infoDic;

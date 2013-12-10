@@ -20,11 +20,30 @@
         self.questionerName = [dict objectForKey:@"questioner"];
         self.questionerAvatar = [[XXTImage alloc] init];
         self.questionerAvatar.thumbPicURL = [dict objectForKey:@"avatarThumb"];
-        self.qAudio = [[XXTAudio alloc] initWithDictionary:[dict objectForKey:@"audio"]];
+        NSMutableArray* audios = [NSMutableArray array];
+        for (NSDictionary* audioDic in [dict objectForKey:@"audio"]){
+            XXTAudio* audio = [[XXTAudio alloc] initWithDictionary:audioDic];
+            [audios addObject:audio];
+        }
+        self.qAudios = audios;
         self.subjectName = [dict objectForKey:@"subject"];
         self.state = [[dict objectForKey:@"status"] intValue];
         NSDate *dateTime = [NSDate dateFromString:[dict objectForKey:@"dateTime"]];
         self.dateTime = dateTime;
+        
+        self.answersArr = [NSMutableArray array];
+    }
+    return self;
+}
+
+- (XXTQuestion*) initNewQuestion:(NSString *)content subjectId:(int)sid image:(XXTImage *)image audio:(XXTAudio *)audio
+{
+    if (self = [super init]){
+        self.content = content;
+        self.subjectId = [NSNumber numberWithInt:sid];
+        self.qImage = image;
+        if (audio!=nil)
+            self.qAudios = [NSArray arrayWithObject:audio];
     }
     return self;
 }
@@ -33,7 +52,7 @@
     [aCoder encodeObject:self.qid forKey:@"qid"];
     [aCoder encodeObject:self.content forKey:@"content"];
     [aCoder encodeObject:self.qImage forKey:@"qImage"];
-    [aCoder encodeObject:self.qAudio forKey:@"qAudio"];
+    [aCoder encodeObject:self.qAudios forKey:@"qAudios"];
     [aCoder encodeObject:self.subjectName forKey:@"subjectName"];
     [aCoder encodeObject:self.subjectId forKey:@"subjectId"];
     [aCoder encodeInteger:self.state forKey:@"state"];
@@ -48,7 +67,7 @@
         self.qid = [aDecoder decodeObjectForKey:@"qid"];
         self.content=[aDecoder decodeObjectForKey:@"content"];
         self.qImage=[aDecoder decodeObjectForKey:@"qImage"];
-        self.qAudio=[aDecoder decodeObjectForKey:@"qAudio"];
+        self.qAudios=[aDecoder decodeObjectForKey:@"qAudios"];
         self.subjectName=[aDecoder decodeObjectForKey:@"subjectName"];
         self.subjectId = [aDecoder decodeObjectForKey:@"subjectId"];
         self.state = [aDecoder decodeIntegerForKey:@"state"];

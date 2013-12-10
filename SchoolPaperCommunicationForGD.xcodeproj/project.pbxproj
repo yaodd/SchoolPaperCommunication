@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		591102701856FD5F00DE41ED /* AddNewCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5911026F1856FD5F00DE41ED /* AddNewCommentViewController.m */; };
 		5913102C185411A600B57E96 /* addphoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5913102B185411A600B57E96 /* addphoto@2x.png */; };
 		59142FB118558229006FD141 /* ChoosePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACE1E184F1A7E00739327 /* ChoosePlayerViewController.xib */; };
 		59BD2211185301CF00528A12 /* AddNewShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD2208185301CF00528A12 /* AddNewShareViewController.m */; };
@@ -252,6 +253,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5911026E1856FD5F00DE41ED /* AddNewCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewCommentViewController.h; sourceTree = "<group>"; };
+		5911026F1856FD5F00DE41ED /* AddNewCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewCommentViewController.m; sourceTree = "<group>"; };
 		5913102B185411A600B57E96 /* addphoto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addphoto@2x.png"; sourceTree = "<group>"; };
 		59BD2207185301CF00528A12 /* AddNewShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewShareViewController.h; sourceTree = "<group>"; };
 		59BD2208185301CF00528A12 /* AddNewShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewShareViewController.m; sourceTree = "<group>"; };
@@ -622,6 +625,8 @@
 				59BD220E185301CF00528A12 /* ShareListCell.m */,
 				59BD220F185301CF00528A12 /* ShareListViewController.h */,
 				59BD2210185301CF00528A12 /* ShareListViewController.m */,
+				5911026E1856FD5F00DE41ED /* AddNewCommentViewController.h */,
+				5911026F1856FD5F00DE41ED /* AddNewCommentViewController.m */,
 			);
 			name = HomeSchoolCircle;
 			sourceTree = "<group>";
@@ -1731,6 +1736,9 @@
 				9C29085F184B05AE002CCAF1 /* BubbleView.m in Sources */,
 				9C1BF1161855D5FA002E57DD /* XXTMessageTemplate.m in Sources */,
 				9CCACE25184F24B300739327 /* DynamicPswViewController.m in Sources */,
+				9C28BE761851DFCC003C1D6F /* XXTModuleMessage.m in Sources */,
+				591102701856FD5F00DE41ED /* AddNewCommentViewController.m in Sources */,
+				9C28BE731851DFCC003C1D6F /* XXTMicroblog.m in Sources */,
 				9C28BE391851DED3003C1D6F /* Reachability.m in Sources */,
 				9C29082818499567002CCAF1 /* Statics.m in Sources */,
 				9C1BF10B1855D5FA002E57DD /* XXTMessageBase.m in Sources */,
