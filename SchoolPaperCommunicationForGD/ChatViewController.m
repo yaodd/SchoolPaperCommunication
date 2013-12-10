@@ -157,16 +157,16 @@
 - (void)initHistoryMsg{
     modelGlobal = [XXTModelGlobal sharedModel];
     userRole = modelGlobal.currentUser;
-//    NSArray *hisMsgArray = [userRole getMessagesBetweenMeAndPerson:currentPid];
+    NSArray *hisMsgArray = [userRole getMessagesBetweenMeAndPerson:currentPid];
     NSLog(@"array count %d",[userRole.allMessagesArr count]);
-//    for (XXTMessageBase *message in hisMsgArray) {
-//        if ([message isKindOfClass:[XXTMessageReceive class]]) {
-//            NSLog(@"receive");
-//        }
-//        else{
-//            NSLog(@"send");
-//        }
-//    }
+    for (XXTMessageBase *message in hisMsgArray) {
+        if ([message isKindOfClass:[XXTMessageReceive class]]) {
+            NSLog(@"receive");
+        }
+        else{
+            NSLog(@"send");
+        }
+    }
     aryMessages = [NSMutableArray array];
     for (int i = 0; i < 10; i ++) {
         MessageVO *msg = [[MessageVO alloc]init];

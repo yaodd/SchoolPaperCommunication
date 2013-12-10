@@ -1023,7 +1023,7 @@
     
     int ret = [[rs objectForKey:@"resultState"] intValue];
     if (ret == 1){
-        
+        [XXTModelController receivedQuestionListDicArr:[rs objectForKey:@"items"]];
     }
     
     return ret;

@@ -7,6 +7,8 @@
 //
 
 #import "UIApplication+appinfo.h"
+#include <sys/types.h>
+#include <sys/sysctl.h>
 
 @implementation UIApplication (appinfo)
 

@@ -231,6 +231,7 @@
 		9CCACE26184F24B300739327 /* DynamicPswViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACE24184F24B300739327 /* DynamicPswViewController.xib */; };
 		9CCACE2A184F2C1F00739327 /* XXTAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCACE29184F2C1F00739327 /* XXTAlertView.m */; };
 		9CCACE2C184F320D00739327 /* succeed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACE2B184F320D00739327 /* succeed@2x.png */; };
+		9CFA5F5C1856C09900082E15 /* NSNumber+stringCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFA5F5B1856C09900082E15 /* NSNumber+stringCompare.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -549,6 +550,8 @@
 		9CCACE28184F2C1F00739327 /* XXTAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXTAlertView.h; sourceTree = "<group>"; };
 		9CCACE29184F2C1F00739327 /* XXTAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXTAlertView.m; sourceTree = "<group>"; };
 		9CCACE2B184F320D00739327 /* succeed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "succeed@2x.png"; sourceTree = "<group>"; };
+		9CFA5F5A1856C09900082E15 /* NSNumber+stringCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+stringCompare.h"; sourceTree = "<group>"; };
+		9CFA5F5B1856C09900082E15 /* NSNumber+stringCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+stringCompare.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -870,6 +873,8 @@
 				9C28BE191851DED3003C1D6F /* AES+base64 */,
 				9C28BE211851DED3003C1D6F /* NSDate+string.h */,
 				9C28BE221851DED3003C1D6F /* NSDate+string.m */,
+				9CFA5F5A1856C09900082E15 /* NSNumber+stringCompare.h */,
+				9CFA5F5B1856C09900082E15 /* NSNumber+stringCompare.m */,
 				9C28BE231851DED3003C1D6F /* Reachability */,
 				9C28BE261851DED3003C1D6F /* SSZipArchive */,
 				9C28BE331851DED3003C1D6F /* UIApplication+appinfo.h */,
@@ -1625,6 +1630,7 @@
 				9C1BF10C1855D5FA002E57DD /* XXTObject.m in Sources */,
 				59BD221D1853022A00528A12 /* NIDropDown.m in Sources */,
 				9C1BF1121855D5FA002E57DD /* XXTHomework.m in Sources */,
+				9CFA5F5C1856C09900082E15 /* NSNumber+stringCompare.m in Sources */,
 				9C1BF11D1855D5FA002E57DD /* XXTAnswer.m in Sources */,
 				9C29082918499567002CCAF1 /* MessageVO.m in Sources */,
 				9C28BDE918518291003C1D6F /* ForgetPswViewController.m in Sources */,
