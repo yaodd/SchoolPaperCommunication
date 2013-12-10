@@ -16,7 +16,7 @@
 @protocol ContactViewDelegate <NSObject>
 
 @optional
-- (void)ContactViewButtonAction:(ContactView *)contactView button:(UIButton *)button;
+- (void)ContactViewButtonAction:(ContactView *)contactView button:(UIButton *)button person:(XXTContactPerson *)person;
 
 @end
 
