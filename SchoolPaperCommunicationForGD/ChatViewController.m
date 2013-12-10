@@ -147,6 +147,7 @@
     [self setHidesBottomBarWhenPushed:YES];
     UIStoryboard *storyborad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PersonDetailViewController *personDetailViewController = [storyborad instantiateViewControllerWithIdentifier:@"PersonDetail"];
+    [personDetailViewController setCurrentPid:currentPid];
     [self.navigationController pushViewController:personDetailViewController animated:YES];
 //    [self setHidesBottomBarWhenPushed:NO];
 }

@@ -74,7 +74,9 @@
         UILabel *subjectLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 22, 100, 20)];
         [subjectLabel setTag:LABEL_TAG];
         [subjectLabel setTextColor:[UIColor colorWithWhite:52.0/255 alpha:1.0]];
+        [subjectLabel setBackgroundColor:[UIColor clearColor]];
         [subjectLabel setFont:[UIFont systemFontOfSize:16]];
+        [cell addSubview:subjectLabel];
         
     }
     UIImageView *subjectIV = (UIImageView *)[cell viewWithTag:IMAGEVIEW_TAG];
@@ -91,6 +93,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     self.hidesBottomBarWhenPushed = YES;
     IssueQAViewController *issueQAViewController = [[IssueQAViewController alloc]initWithNibName:@"IssueQAViewController" bundle:nil];
+    [issueQAViewController setIssueType:IssueTypeQuestion];
     [self.navigationController pushViewController:issueQAViewController animated:YES];
 }
 

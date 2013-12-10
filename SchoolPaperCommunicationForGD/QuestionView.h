@@ -33,6 +33,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *contentLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *contentIV;
 @property (strong, nonatomic) IBOutlet UIButton *contentAudio;
+@property (strong, nonatomic) IBOutlet UIView *sepectorView;
 @property (nonatomic, retain) XXTQuestion *xxtQuestion;
 @property (nonatomic, retain) AVAudioPlayer *avPlay;
 - (IBAction)playAudioAction:(id)sender;

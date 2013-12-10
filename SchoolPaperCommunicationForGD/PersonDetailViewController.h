@@ -16,6 +16,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *phoneButton;
 @property (strong, nonatomic) IBOutlet UIButton *messageButton;
 @property (strong, nonatomic) IBOutlet UIButton *chatButton;
+@property (nonatomic, retain) NSString *currentPid;
+
 - (IBAction)phoneAction:(id)sender;
 - (IBAction)messageAction:(id)sender;
 - (IBAction)chatAction:(id)sender;

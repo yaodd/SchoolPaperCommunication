@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+typedef enum{
+    StudyViewTypeAll = 1,
+    StudyViewTypeMine  = 2
+} StudyViewType;
 
 @interface StudyViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *myHeadImageView;
@@ -16,7 +20,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *chooseStateButton;
 @property (strong, nonatomic) IBOutlet UITableView *questionTableView;
 @property (strong, nonatomic) IBOutlet UIView *chooseView;
-@property (nonatomic, retain) UIPickerView *questionPikerView;
+@property (nonatomic, assign) StudyViewType studyViewType;
+//@property (nonatomic, retain) UIPickerView *questionPikerView;
 
 @property (nonatomic, retain) NSMutableArray *questionArray;
 - (IBAction)myQuestionAction:(id)sender;

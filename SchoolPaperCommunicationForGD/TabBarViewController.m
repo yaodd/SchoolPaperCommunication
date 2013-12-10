@@ -60,7 +60,6 @@
     UINavigationController *tab1 = [[UINavigationController alloc]initWithRootViewController:infoViewController];
     
     
-
     ContactsViewController *contactsViewController = [[ContactsViewController alloc]init];
     UINavigationController *tab2 = [[UINavigationController alloc]initWithRootViewController:contactsViewController];
     
@@ -68,6 +67,7 @@
     UINavigationController *tab3 = [[UINavigationController alloc]initWithRootViewController:dynamicsViewController];
     
     StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
+    [studyViewController setStudyViewType:StudyViewTypeAll];
     UINavigationController *tab4 = [[UINavigationController alloc]initWithRootViewController:studyViewController];
     
     SetUpViewController *setUpViewController = [[SetUpViewController alloc]init];

@@ -179,6 +179,7 @@
     <resources>
         <image name="Consignee.png" width="25" height="25"/>
         <image name="arrow_right.png" width="8" height="12"/>
+        <image name="arrow_right.png" width="8" height="12"/>
         <image name="normalmessage.png" width="19" height="17"/>
         <image name="xiaoxuntonglogo.png" width="20" height="19"/>
     </resources>

@@ -169,6 +169,14 @@
 		9C290875184B0821002CCAF1 /* ReceiverVoiceNodeDownloading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C290869184B0821002CCAF1 /* ReceiverVoiceNodeDownloading@2x.png */; };
 		9C290876184B0821002CCAF1 /* ReceiverVoiceNodePlaying.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C29086A184B0821002CCAF1 /* ReceiverVoiceNodePlaying.png */; };
 		9C290877184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C29086B184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png */; };
+		9C2A4E6E1858410B001017E7 /* QuestionPikerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2A4E6D1858410B001017E7 /* QuestionPikerView.m */; };
+		9C2A4E7318585F4C001017E7 /* answers@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2A4E6F18585F4C001017E7 /* answers@2x.png */; };
+		9C2A4E7418585F4C001017E7 /* questions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2A4E7018585F4C001017E7 /* questions@2x.png */; };
+		9C2A4E7518585F4C001017E7 /* solved@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2A4E7118585F4C001017E7 /* solved@2x.png */; };
+		9C2A4E7618585F4C001017E7 /* unsolved@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C2A4E7218585F4C001017E7 /* unsolved@2x.png */; };
+		9C2A4E7918586D45001017E7 /* AnswerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2A4E7818586D45001017E7 /* AnswerView.m */; };
+		9C2A4E7B18586D5A001017E7 /* AnswerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C2A4E7A18586D5A001017E7 /* AnswerView.xib */; };
+		9C2A4E7E185876B7001017E7 /* NSString+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2A4E7D185876B7001017E7 /* NSString+category.m */; };
 		9C6306DA1853042200511954 /* sync_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C6306D81853042200511954 /* sync_click@2x.png */; };
 		9C6306DB1853042200511954 /* sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C6306D91853042200511954 /* sync@2x.png */; };
 		9C6306E71853077600511954 /* audio_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C6306DC1853077600511954 /* audio_click@2x.png */; };
@@ -506,6 +514,17 @@
 		9C290869184B0821002CCAF1 /* ReceiverVoiceNodeDownloading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodeDownloading@2x.png"; sourceTree = "<group>"; };
 		9C29086A184B0821002CCAF1 /* ReceiverVoiceNodePlaying.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ReceiverVoiceNodePlaying.png; sourceTree = "<group>"; };
 		9C29086B184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ReceiverVoiceNodePlaying@2x.png"; sourceTree = "<group>"; };
+		9C2A4E6C1858410B001017E7 /* QuestionPikerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionPikerView.h; sourceTree = "<group>"; };
+		9C2A4E6D1858410B001017E7 /* QuestionPikerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionPikerView.m; sourceTree = "<group>"; };
+		9C2A4E6F18585F4C001017E7 /* answers@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "answers@2x.png"; sourceTree = "<group>"; };
+		9C2A4E7018585F4C001017E7 /* questions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "questions@2x.png"; sourceTree = "<group>"; };
+		9C2A4E7118585F4C001017E7 /* solved@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "solved@2x.png"; sourceTree = "<group>"; };
+		9C2A4E7218585F4C001017E7 /* unsolved@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unsolved@2x.png"; sourceTree = "<group>"; };
+		9C2A4E7718586D45001017E7 /* AnswerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnswerView.h; sourceTree = "<group>"; };
+		9C2A4E7818586D45001017E7 /* AnswerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnswerView.m; sourceTree = "<group>"; };
+		9C2A4E7A18586D5A001017E7 /* AnswerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnswerView.xib; sourceTree = "<group>"; };
+		9C2A4E7C185876B7001017E7 /* NSString+category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+category.h"; sourceTree = "<group>"; };
+		9C2A4E7D185876B7001017E7 /* NSString+category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+category.m"; sourceTree = "<group>"; };
 		9C6306D81853042200511954 /* sync_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_click@2x.png"; sourceTree = "<group>"; };
 		9C6306D91853042200511954 /* sync@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync@2x.png"; sourceTree = "<group>"; };
 		9C6306DC1853077600511954 /* audio_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio_click@2x.png"; sourceTree = "<group>"; };
@@ -915,6 +934,8 @@
 				9C1BF1401855FA68002E57DD /* QuestionView.h */,
 				9C1BF1411855FA68002E57DD /* QuestionView.m */,
 				9C1BF1431855FA7B002E57DD /* QuestionView.xib */,
+				9C2A4E6C1858410B001017E7 /* QuestionPikerView.h */,
+				9C2A4E6D1858410B001017E7 /* QuestionPikerView.m */,
 			);
 			name = Study;
 			sourceTree = "<group>";
@@ -922,6 +943,10 @@
 		9C1BF1271855F339002E57DD /* study */ = {
 			isa = PBXGroup;
 			children = (
+				9C2A4E6F18585F4C001017E7 /* answers@2x.png */,
+				9C2A4E7018585F4C001017E7 /* questions@2x.png */,
+				9C2A4E7118585F4C001017E7 /* solved@2x.png */,
+				9C2A4E7218585F4C001017E7 /* unsolved@2x.png */,
 				9CFA5F90185751A900082E15 /* dili40*40@2x.png */,
 				9CFA5F91185751A900082E15 /* huaxue40*40@2x.png */,
 				9CFA5F92185751A900082E15 /* lishi40*40@2x.png */,
@@ -1185,6 +1210,7 @@
 		9C2908371849C6D9002CCAF1 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				9C2A4E7F185876BE001017E7 /* NSString+category */,
 				9CFA5F5D1856C70800082E15 /* UIButton+category */,
 				59BD221A185301F400528A12 /* NIDropDown */,
 				9C28BE811852B9B3003C1D6F /* UIImageView+category */,
@@ -1249,6 +1275,15 @@
 				9C29086B184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png */,
 			);
 			name = Chat;
+			sourceTree = "<group>";
+		};
+		9C2A4E7F185876BE001017E7 /* NSString+category */ = {
+			isa = PBXGroup;
+			children = (
+				9C2A4E7C185876B7001017E7 /* NSString+category.h */,
+				9C2A4E7D185876B7001017E7 /* NSString+category.m */,
+			);
+			name = "NSString+category";
 			sourceTree = "<group>";
 		};
 		9C6307111853224900511954 /* PersonDetail */ = {
@@ -1512,6 +1547,9 @@
 			children = (
 				9CFA5F7B18574E3100082E15 /* QADetailViewController.h */,
 				9CFA5F7C18574E3100082E15 /* QADetailViewController.m */,
+				9C2A4E7718586D45001017E7 /* AnswerView.h */,
+				9C2A4E7818586D45001017E7 /* AnswerView.m */,
+				9C2A4E7A18586D5A001017E7 /* AnswerView.xib */,
 			);
 			name = QuestionDetail;
 			sourceTree = "<group>";
@@ -1625,6 +1663,7 @@
 				9C290872184B0821002CCAF1 /* ReceiverTextNodeBkg.png in Resources */,
 				59BD22491853072300528A12 /* newsbutton_click@2x.png in Resources */,
 				9C1BF1261855E962002E57DD /* StudyViewController.xib in Resources */,
+				9C2A4E7618585F4C001017E7 /* unsolved@2x.png in Resources */,
 				9C0F7DAA184B3FC7002B9233 /* photo1@2x.png in Resources */,
 				9C28BDFE1851C11A003C1D6F /* buttonright_click@2x.png in Resources */,
 				59BD22441853072300528A12 /* create@2x.png in Resources */,
@@ -1642,6 +1681,7 @@
 				59BD22521853074500528A12 /* like_on@2x.png in Resources */,
 				59BD224B1853072300528A12 /* next_click@2x.png in Resources */,
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
+				9C2A4E7318585F4C001017E7 /* answers@2x.png in Resources */,
 				9CFA5F9D185751A900082E15 /* shengwu40*40@2x.png in Resources */,
 				9C2908481849C756002CCAF1 /* blueArrow@2x.png in Resources */,
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
@@ -1686,6 +1726,7 @@
 				9C28BE131851C45F003C1D6F /* study@2x.png in Resources */,
 				9C6306E71853077600511954 /* audio_click@2x.png in Resources */,
 				9C28BDFF1851C11A003C1D6F /* buttonright@2x.png in Resources */,
+				9C2A4E7B18586D5A001017E7 /* AnswerView.xib in Resources */,
 				9CFA5F6A1856F06A00082E15 /* middle@2x.png in Resources */,
 				59BD223F1853072300528A12 /* back_click@2x.png in Resources */,
 				9C290877184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png in Resources */,
@@ -1727,6 +1768,7 @@
 				59BD2228185303DF00528A12 /* phone_click@2x.png in Resources */,
 				9C6307241853414A00511954 /* startchat@2x.png in Resources */,
 				9C6306DA1853042200511954 /* sync_click@2x.png in Resources */,
+				9C2A4E7418585F4C001017E7 /* questions@2x.png in Resources */,
 				59BD22421853072300528A12 /* comment@2x.png in Resources */,
 				9C28BE0E1851C45F003C1D6F /* news_chosen@2x.png in Resources */,
 				9C1BF0BC1853630F002E57DD /* arrow_open@2x.png in Resources */,
@@ -1765,6 +1807,7 @@
 				9C1BF13C1855F347002E57DD /* yingyu@2x.png in Resources */,
 				9C1BF1391855F347002E57DD /* shengwu@2x.png in Resources */,
 				9C1BF0B3185362D3002E57DD /* call_click@2x.png in Resources */,
+				9C2A4E7518585F4C001017E7 /* solved@2x.png in Resources */,
 				9C290875184B0821002CCAF1 /* ReceiverVoiceNodeDownloading@2x.png in Resources */,
 				59BD22411853072300528A12 /* comment_click@2x.png in Resources */,
 				9C28BDFA1851C11A003C1D6F /* button_click@2x.png in Resources */,
@@ -1806,9 +1849,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CCACDB6184C824800739327 /* SetUpViewController.m in Sources */,
+				9C2A4E7918586D45001017E7 /* AnswerView.m in Sources */,
 				59BD2219185301F000528A12 /* EGORefreshTableFooterView.m in Sources */,
 				9C28BE3F1851DED3003C1D6F /* UIApplication+appinfo.m in Sources */,
 				9C1BF10C1855D5FA002E57DD /* XXTObject.m in Sources */,
+				9C2A4E6E1858410B001017E7 /* QuestionPikerView.m in Sources */,
 				59BD221D1853022A00528A12 /* NIDropDown.m in Sources */,
 				9C1BF1121855D5FA002E57DD /* XXTHomework.m in Sources */,
 				9CFA5F7818574BFF00082E15 /* XXTOtherPerson.m in Sources */,
@@ -1858,6 +1903,7 @@
 				9C28BE3B1851DED3003C1D6F /* mztools.c in Sources */,
 				9C1BF1201855D5FA002E57DD /* XXTModelGlobal.m in Sources */,
 				9C28BE371851DED3003C1D6F /* NSString+base64.m in Sources */,
+				9C2A4E7E185876B7001017E7 /* NSString+category.m in Sources */,
 				9C6307151853229000511954 /* PersonDetailViewController.m in Sources */,
 				9C1BF10E1855D5FA002E57DD /* XXTGroup.m in Sources */,
 				9CFA5F7918574BFF00082E15 /* XXTSubject.m in Sources */,

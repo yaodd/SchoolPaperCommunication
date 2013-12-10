@@ -8,6 +8,7 @@
 
 #import "QuestionView.h"
 #import "UIImageView+category.h"
+#import "NSString+category.h"
 
 
 
@@ -39,10 +40,13 @@
 - (void)initLayout{
     [self.layer setCornerRadius:5.0];
     [self setBackgroundColor:[UIColor colorWithRed:229.0/255 green:232.0/255 blue:229.0/255 alpha:1.0]];
-    [contentLabel setNumberOfLines:0];
-    [contentLabel setLineBreakMode:NSLineBreakByCharWrapping];
+    
 }
 - (void)setDataWithQuestion:(XXTQuestion *)question{
+    UIColor *greyColor = [UIColor colorWithWhite:179.0/255 alpha:1.0];
+    UIColor *greenColor = [UIColor colorWithRed:44.0/255 green:187.0/255 blue:0 alpha:1.0];
+    [contentLabel setNumberOfLines:0];
+    [contentLabel setLineBreakMode:NSLineBreakByCharWrapping];
     xxtQuestion = question;
     NSString *content = question.content;
     XXTImage *qImage = question.qImage;
@@ -52,6 +56,7 @@
     if ([qAudioArr count] != 0) {
         qAudio = [qAudioArr objectAtIndex:0];
     }
+    NSString *audioTime = [NSString stringWithFormat:@"%d''",qAudio.duration];
     NSString *subjectName = question.subjectName;
     NSNumber *subjectId = question.subjectId;
     XXTQuestionState state = question.state;
@@ -64,7 +69,10 @@
     [gradeLabel setText:@"待定"];
     [subjectLabel setText:subjectName];
     [isSolvedLabel setText:(state == XXTQuestionStateSolved) ? @"已解决" : @"未解决"];
-    NSString *timeStr = [self getStringWithDate:dateTime];
+    [isSolvedLabel setTextColor:(state == XXTQuestionStateSolved) ? greenColor : greyColor];
+    [isSolvedLabel setBackgroundColor:[UIColor clearColor]];
+    [isSolvedIV setImage:(state == XXTQuestionStateSolved) ?[UIImage imageNamed:@"solved"] : [UIImage imageNamed:@"unsolved"]];
+    NSString *timeStr = [[NSString alloc]initWithDate:dateTime];
     [timeLabel setText:timeStr];
     
     UIFont *font = [UIFont systemFontOfSize:16];
@@ -87,18 +95,12 @@
         [contentAudio setFrame:CGRectZero];
     }
     topY += (contentAudio.frame.size.height + 10);
-    
+    [contentAudio setTitle:audioTime forState:UIControlStateNormal];
     
     CGFloat viewHeight = topY;
     [self setFrame:CGRectMake(VIEW_X, VIEW_Y, VIEW_WIDTH, viewHeight)];
 }
-- (NSString *)getStringWithDate:(NSDate *)date{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    
-    [formatter setDateFormat:@"M月d日 HH:MM"];
-    
-    return [formatter stringFromDate:date];
-}
+
 - (void)playAudioAction:(id)sender{
     if ([self.avPlay isPlaying]) {
         [self.avPlay stop];
@@ -123,6 +125,7 @@
 }
 - (void)downloadAudio:(XXTAudio *)audio{
     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:audio.audioURL]];
+    NSLog(@"audioUrl %@",audio.audioURL);
     if (data != nil) {
         audio.audiodata = data;
         [self playAudioAction:nil];

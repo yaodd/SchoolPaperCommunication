@@ -12,9 +12,17 @@
 #import "Dao.h"
 #import "XXTModelGlobal.h"
 #import "ChooseSubjectViewController.h"
+#import "QuestionPikerView.h"
+#import "QADetailViewController.h"
+
 
 #define QUESTION_VIEW_TAG   111111
+
+
 @interface StudyViewController ()
+{
+    QuestionPikerView *questionPikerView;
+}
 
 @end
 
@@ -27,7 +35,8 @@
 @synthesize chooseSubjectButton;
 @synthesize questionTableView;
 @synthesize chooseView;
-@synthesize questionPikerView;
+@synthesize studyViewType;
+//@synthesize questionPikerView;
 @synthesize questionArray;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,13 +62,20 @@
     [self.questionTableView setTableHeaderView:headView];
 //    [self.questionTableView setContentOffset:CGPointMake(0, headView.frame.size.height)];
 //    [self.questionTableView setAllowsSelection:NO];
-    self.questionPikerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, 300)];
-    self.questionPikerView.delegate = self;
-    self.questionPikerView.dataSource = self;
-    [self.questionPikerView setBackgroundColor:[UIColor whiteColor]];
+//    self.questionPikerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 95, self.view.frame.size.width, 300)];
+//    self.questionPikerView.delegate = self;
+//    self.questionPikerView.dataSource = self;
+//    [self.questionPikerView setBackgroundColor:[UIColor whiteColor]];
 //    [self.questionTableView addSubview:questionPikerView];
-    UIBarButtonItem *issueItem = [[UIBarButtonItem alloc]initWithTitle:@"提问" style:UIBarButtonItemStylePlain target:self action:@selector(issueAction:)];
-    self.navigationItem.rightBarButtonItem = issueItem;
+    if (studyViewType == StudyViewTypeAll) {
+        UIBarButtonItem *issueItem = [[UIBarButtonItem alloc]initWithTitle:@"提问" style:UIBarButtonItemStylePlain target:self action:@selector(issueAction:)];
+        self.navigationItem.rightBarButtonItem = issueItem;
+    }
+    
+    questionPikerView = [[QuestionPikerView alloc]initWithFrame:CGRectMake(0, self.tabBarController.view.frame.size.height, self.tabBarController.view.frame.size.width, PIKER_VIEW_HEIGHT)];
+    [self.tabBarController.view addSubview:questionPikerView];
+    
+    
 }
 - (void)issueAction:(id)sender{
     [self setHidesBottomBarWhenPushed:YES];
@@ -79,7 +95,7 @@
     BOOL isSuccess = [[Dao sharedDao] requestForQuestionListForSubjectId:0 state:0 questioner:1 grade:0 page:1 pageSize:10];
     if (isSuccess) {
         XXTUserRole *userRole = [XXTModelGlobal sharedModel].currentUser;
-        NSLog(@"问题获取成功 arr count %d",[userRole.questionArr count]);
+//        NSLog(@"问题获取成功 arr count %d",[userRole.questionArr count]);
 
         [self performSelectorOnMainThread:@selector(updateTableView:) withObject:userRole.questionArr waitUntilDone:YES];
     }
@@ -89,32 +105,43 @@
     [questionTableView reloadData];
 }
 - (UIView *)createHeadView{
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 95)];
+    CGFloat viewHeight = 0;
+    CGFloat chooseViewY = 0;
+    if (studyViewType == StudyViewTypeAll) {
+        viewHeight = 95;
+        chooseViewY = 58;
+    } else{
+        viewHeight = 49;
+        chooseViewY = 10;
+    }
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, viewHeight)];
+    if (studyViewType == StudyViewTypeAll) {
+        myQuestionButton = [[UIButton alloc]initWithFrame:view.frame];
+        [myQuestionButton setBackgroundColor:[UIColor clearColor]];
+        [myQuestionButton addTarget:self action:@selector(myQuestionAction:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:myQuestionButton];
+        
+        myHeadImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 7.5, 35, 35)];
+        [myHeadImageView setImage:[UIImage imageNamed:@"photo"]];
+        [view addSubview:myHeadImageView];
+        
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(55, 17, 70, 20)];
+        [label setText:@"我的提问"];
+        [label setFont:[UIFont systemFontOfSize:15]];
+        [label setTextAlignment:NSTextAlignmentLeft];
+        [label setTextColor:[UIColor colorWithWhite:128.0/255 alpha:1.0]];
+        [view addSubview:label];
+        
+        UIImageView *arrowImageView = [[UIImageView alloc]initWithFrame:CGRectMake(292, 19, 8, 12)];
+        [arrowImageView setImage:[UIImage imageNamed:@"arrow_right.png"]];
+        [view addSubview:arrowImageView];
+        
+        UIView *sepector = [[UIView alloc]initWithFrame:CGRectMake(0, 50, self.view.frame.size.width, 1)];
+        [sepector setBackgroundColor:[UIColor colorWithWhite:179.0/255 alpha:1.0]];
+        [view addSubview:sepector];
+    }
     
-    myQuestionButton = [[UIButton alloc]initWithFrame:view.frame];
-    [myQuestionButton setBackgroundColor:[UIColor clearColor]];
-    [view addSubview:myQuestionButton];
-    
-    myHeadImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 7.5, 35, 35)];
-    [myHeadImageView setImage:[UIImage imageNamed:@"photo"]];
-    [view addSubview:myHeadImageView];
-    
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(55, 17, 70, 20)];
-    [label setText:@"我的提问"];
-    [label setFont:[UIFont systemFontOfSize:15]];
-    [label setTextAlignment:NSTextAlignmentLeft];
-    [label setTextColor:[UIColor colorWithWhite:128.0/255 alpha:1.0]];
-    [view addSubview:label];
-    
-    UIImageView *arrowImageView = [[UIImageView alloc]initWithFrame:CGRectMake(292, 19, 8, 12)];
-    [arrowImageView setImage:[UIImage imageNamed:@"arrow_right.png"]];
-    [view addSubview:arrowImageView];
-    
-    UIView *sepector = [[UIView alloc]initWithFrame:CGRectMake(0, 50, self.view.frame.size.width, 1)];
-    [sepector setBackgroundColor:[UIColor colorWithWhite:179.0/255 alpha:1.0]];
-    [view addSubview:sepector];
-    
-    chooseView = [[UIView alloc]initWithFrame:CGRectMake(6, 58, 308, 29)];
+    chooseView = [[UIView alloc]initWithFrame:CGRectMake(6, chooseViewY, 308, 29)];
     UIColor *textColor = [UIColor colorWithRed:80.0/255 green:161.0/255 blue:198.0/255 alpha:1.0];
     CGFloat buttonX = 0;
     chooseSubjectButton = [[UIButton alloc]initWithFrame:CGRectMake(buttonX, 0, 103, 29)];
@@ -200,16 +227,34 @@
     QuestionView *questionView = (QuestionView *)[cell viewWithTag:QUESTION_VIEW_TAG];
     XXTQuestion *question = [questionArray objectAtIndex:indexPath.row];
     [questionView setDataWithQuestion:question];
-    
+//    NSLog(@"answer count %d",[question.answersArr count]);
     
     return cell;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self setHidesBottomBarWhenPushed:YES];
+    XXTQuestion *xxtQuestion = [questionArray objectAtIndex:indexPath.row];
+    QADetailViewController *qaDetailViewController = [[QADetailViewController alloc]init];
+    qaDetailViewController.xxtQuestion = [[XXTQuestion alloc]init];
+    [qaDetailViewController setXxtQuestion:xxtQuestion];
+    [self.navigationController pushViewController:qaDetailViewController animated:YES];
+    [self setHidesBottomBarWhenPushed:NO];
+}
 
 - (IBAction)myQuestionAction:(id)sender {
+    [self setHidesBottomBarWhenPushed:YES];
+    StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
+    [studyViewController setStudyViewType:StudyViewTypeMine];
+    [self.navigationController pushViewController:studyViewController animated:YES];
+    [self setHidesBottomBarWhenPushed:NO];
 }
 
 - (IBAction)chooseSubjectAction:(id)sender {
-    
+    if ([questionPikerView isHidden]) {
+        [questionPikerView showPikerView];
+    } else{
+        [questionPikerView hidePikerView];
+    }
 }
 
 - (IBAction)chooseGradeAction:(id)sender {
@@ -225,14 +270,14 @@
     return 10;
 }
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component{
-    return 50;
+    return 35;
 }
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component{
     return 320;
 }
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 50)];
-    [label setFont:[UIFont systemFontOfSize:30]];
+    [label setFont:[UIFont systemFontOfSize:23]];
     [label setText:@"科目科目"];
     [label setTextColor:[UIColor blackColor]];
     return label;
