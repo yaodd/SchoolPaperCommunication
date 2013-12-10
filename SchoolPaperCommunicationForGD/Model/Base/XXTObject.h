@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NSDate+string.h"
+#import "NSNumber+stringCompare.h"
 
 @interface XXTObject : NSObject <NSCoding>
 
