@@ -61,7 +61,7 @@
     userRole = role;
     
     NSString *player = [playerArray objectAtIndex:role.type - 1];
-    [headImageView setImageWithPerson:role];
+    [headImageView setImageWithXXTImage:role.avatar];
     [playerLabel setText:player];
     
 }

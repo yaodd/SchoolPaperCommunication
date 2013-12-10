@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "XXTPersonBase.h"
+#import "XXTImage.h"
 
 @interface UIImageView (category)
-- (void)setImageWithPerson:(XXTPersonBase *)person;
+- (void)setImageWithXXTImage:(XXTImage *)xxtImage;
 @end

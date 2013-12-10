@@ -14,6 +14,7 @@
 #import "BubbleView.h"
 #import "VoiceView.h"
 #import "ImageView.h"
+#import "XXTModelController.h"
 #define BUBBLE_VIEW_TAG     111111
 #define VOICE_VIEW_TAG      222222
 #define IMAGE_VIEW_TAG      333333
@@ -158,37 +159,10 @@
     modelGlobal = [XXTModelGlobal sharedModel];
     userRole = modelGlobal.currentUser;
     NSArray *hisMsgArray = [userRole getMessagesBetweenMeAndPerson:currentPid];
-    NSLog(@"array count %d",[userRole.allMessagesArr count]);
-    for (XXTMessageBase *message in hisMsgArray) {
-        if ([message isKindOfClass:[XXTMessageReceive class]]) {
-            NSLog(@"receive");
-        }
-        else{
-            NSLog(@"send");
-        }
-    }
+    NSLog(@"array count %d",[hisMsgArray count]);
     aryMessages = [NSMutableArray array];
-    for (int i = 0; i < 10; i ++) {
-        MessageVO *msg = [[MessageVO alloc]init];
-        msg.strId = @"strId";
-        msg.strText = @"等你的发问发生的范围发生的范围发色发文发生的氛围发生地方发送范围发生的范围发生大飞阿是非法违法";
-        msg.strUserid = @"userId";
-        msg.strTime = @"2011/11/11";
-        msg.strFromUsername = @"FromUserName";
-        msg.strToUsername = @"toUserName";
-        if (i % 2) {
-            msg.msgMode = kMsgMode_Receive;
-        } else{
-            msg.msgMode = kMsgMode_Send;
-        }
-        if (i % 3 == 0) {
-            msg.msgType = kMsgType_Audio;
-        } else if (i % 3 == 1){
-            msg.msgType = kMsgType_Text;
-        } else{
-            msg.msgType = kMsgType_Image;
-        }
-        [aryMessages addObject:msg];
+    for (XXTMessageBase *message in hisMsgArray) {
+        [aryMessages addObject:message];
     }
 }
 
@@ -235,18 +209,35 @@
 
 //发送消息
 - (void)sendAction:(id)sender{
-    NSString *sendText = [sendTextField text];
-    MessageVO *msg = [[MessageVO alloc]init];
-    msg.strId = @"strId";
-    msg.strText = sendText;
-    msg.strUserid = @"userId";
-    msg.strTime = @"2022/12/22";
-    msg.strFromUsername = @"FromUserName";
-    msg.strToUsername = @"toUserName";
-    msg.msgMode = kMsgMode_Send;
-    [aryMessages addObject:msg];
-    [self.chatTableView reloadData];
-    [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height) animated:YES];
+    NSString *content = [sendTextField text];
+    if (content.length != 0) {
+        XXTMessageSend *msg = [[XXTMessageSend alloc]initWithGroupIds:nil personIds:[NSArray arrayWithObjects:currentPid, nil] content:content images:nil audio:nil];
+        [aryMessages addObject:msg];
+        [self.chatTableView reloadData];
+        [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height) animated:YES];
+        [self sendWithMessage:msg];
+    }
+    else{
+        NSLog(@"发送内容不能为空！");
+    }
+    
+}
+//发送消息函数
+- (void)sendWithMessage:(XXTMessageSend *)message{
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(sendMsgSelector:) object:message];
+    [thread start];
+}
+//异步发送消息
+- (void)sendMsgSelector:(XXTMessageSend *)msg{
+    if (msg.content == nil) {
+        msg.content = @"";
+    }
+    Dao *dao = [Dao sharedDao];
+    [XXTModelController prepareToInstantMessage:msg];
+    NSInteger isSuccess = [dao requestForSendInstantMessage:msg];
+    if (isSuccess) {
+        NSLog(@"消息发送成功");
+    }
     
 }
 - (void)didReceiveMemoryWarning
@@ -324,24 +315,26 @@
 {
 //    NSLog(@"height");
     int row = [indexPath row];
-    MessageVO *message = [aryMessages objectAtIndex:row];
+    XXTMessageBase *message = [aryMessages objectAtIndex:row];
     CGFloat height = 0;
     UIFont *font = [UIFont systemFontOfSize:16];
-	CGSize size = [message.strText sizeWithFont:font constrainedToSize:CGSizeMake(180.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
+	CGSize size = [message.content sizeWithFont:font constrainedToSize:CGSizeMake(180.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
     height = size.height;
-    
-    if (message.msgType == kMsgType_Audio) {
-        height = 22;
+    if (message.content.length == 0) {
+        if ([message.audios count] != 0) {
+            height = 22;
+        }
+        else if ([message.images count] != 0) {
+            height = 150;
+        }
+
     }
-    if (message.msgType == kMsgType_Image) {
-        height = 150;
-    }
-        return height + 60;
+    return height + 60;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    MessageVO *msg = [aryMessages objectAtIndex:indexPath.row];
+    XXTMessageBase *msg = [aryMessages objectAtIndex:indexPath.row];
     NSString *CellIdentifier = [NSString stringWithFormat:@"Cell"];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -379,28 +372,26 @@
     VoiceView *voiceView = (VoiceView *)[cell viewWithTag:VOICE_VIEW_TAG];
     ImageView *imageView = (ImageView *)[cell viewWithTag:IMAGE_VIEW_TAG];
     UIImageView *photo = (UIImageView *)[cell viewWithTag:HEAD_VIEW_TAG];
-    if (msg.msgMode == kMsgMode_Send) {
+    if ([msg isKindOfClass:[XXTMessageSend class]]) {
         photo.frame = CGRectMake(10, 10, 46, 46);
         [photo setImage:[UIImage imageNamed:@"photo1"]];
-        NSLog(@"1");
     } else{
         photo.frame = CGRectMake(320-56, 10, 46, 46);
         [photo setImage:[UIImage imageNamed:@"photo"]];
-        NSLog(@"2");
     }
 
-    if (msg.msgType == kMsgType_Text) {
+    if (msg.content.length != 0) {
         [bubbleView setHidden:NO];
         [bubbleView setData:msg];
         [voiceView setHidden:YES];
         [imageView setHidden:YES];
         
-    } else if (msg.msgType == kMsgType_Audio) {
+    } else if ([msg.audios count] != 0) {
         [voiceView setHidden:NO];
         [voiceView setData:msg];
         [bubbleView setHidden:YES];
         [imageView setHidden:YES];
-    } else{
+    } else if ([msg.images count] != 0){
         [imageView setHidden:NO];
         [imageView setData:msg];
         [bubbleView setHidden:YES];
@@ -427,14 +418,8 @@
 - (void)doneLoadingTableViewData{
     NSLog(@"new1");
     //  model should call this when its done loading
-    MessageVO *msg = [[MessageVO alloc]init];
-    msg.strId = @"newID";
-    msg.strText = @"大家好哇！！！";
-    msg.strUserid = @"userId";
-    msg.strTime = @"2011/11/11";
-    msg.strFromUsername = @"newName";
-    msg.strToUsername = @"toUserName";
-    //    [aryMessages addObject:msg];
+    XXTMessageReceive *msg = [[XXTMessageReceive alloc]initWithContent:@"位家长、同学、教师，新年快乐，在新的一年里，祝大家身体健康！" imageObjects:nil audioObjects:nil];
+    
     [aryMessages insertObject:msg atIndex:0];
     [self.chatTableView reloadData];
 
@@ -500,14 +485,16 @@
     double cTime = recorder.currentTime;
     if (cTime > 2) {//如果录制时间<2 不发送
         NSLog(@"发出去");
-        MessageVO *msg = [[MessageVO alloc]init];
-        msg.audioTime = (NSInteger)cTime;
-        msg.audioUrl = urlPlay;
-        msg.msgMode = kMsgMode_Send;
-        msg.msgType = kMsgType_Audio;
+        
+        NSData *data = [NSData dataWithContentsOfURL:urlPlay];
+        XXTAudio *audio = [[XXTAudio alloc]init];
+        audio.audiodata = data;
+        audio.duration = cTime;
+        XXTMessageSend *msg = [[XXTMessageSend alloc]initWithGroupIds:nil personIds:[NSArray arrayWithObjects:currentPid, nil] content:nil images:nil audio:[NSArray arrayWithObjects:audio, nil]];
         [aryMessages addObject:msg];
         [self.chatTableView reloadData];
         [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height) animated:YES];
+        [self sendWithMessage:msg];
     }else {
         //删除记录的文件
         [recorder deleteRecording];
@@ -619,13 +606,14 @@
         UIGraphicsBeginImageContext(rect.size);
         [editedImage drawInRect:rect];
         editedImage = UIGraphicsGetImageFromCurrentImageContext();
-        MessageVO *msg = [[MessageVO alloc]init];
-        msg.image = editedImage;
-        msg.msgMode = kMsgMode_Send;
-        msg.msgType = kMsgType_Image;
+        XXTImage *xxtImage = [[XXTImage alloc]init];
+        xxtImage.thumbPicImage = editedImage;
+        xxtImage.originPicImage = image;
+        XXTMessageSend *msg = [[XXTMessageSend alloc]initWithGroupIds:nil personIds:[NSArray arrayWithObjects:currentPid, nil] content:nil images:[NSArray arrayWithObjects:xxtImage, nil] audio:nil];
         [aryMessages addObject:msg];
         [self.chatTableView reloadData];
         [self.chatTableView setContentOffset:CGPointMake(0, self.chatTableView.contentSize.height - self.chatTableView.frame.size.height) animated:YES];
+        [self sendWithMessage:msg];//发送
         [picker dismissViewControllerAnimated:YES completion:nil];
     } else {
         NSLog(@"MEdia");
@@ -633,15 +621,29 @@
 }
 
 #pragma VoiceViewDelegate mark -
-- (void)playAudio:(NSURL *)url{
+- (void)playAudio:(XXTAudio *)audio{
     if (self.avPlay.playing) {
         [self.avPlay stop];
         return;
     }
-    AVAudioPlayer *player = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
-    self.avPlay = player;
-    [self.avPlay play];
-    NSLog(@"play");
+    if (audio.audiodata != nil) {
+        AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:audio.audiodata error:nil];
+        self.avPlay = player;
+        [self.avPlay play];
+        NSLog(@"play");
+    } else{
+        NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(downloadAudio:) object:audio];
+        [thread start];
+    }
+}
+//下载音频
+- (void)downloadAudio:(XXTAudio *)audio{
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:audio.audioURL]];
+    if (data != nil) {
+        audio.audiodata = data;
+        [self playAudio:audio];//如果下载成功，递归回去播放音频.
+    }
+    
 }
 
 @end

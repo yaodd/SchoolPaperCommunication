@@ -232,6 +232,13 @@
 		9CCACE2A184F2C1F00739327 /* XXTAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCACE29184F2C1F00739327 /* XXTAlertView.m */; };
 		9CCACE2C184F320D00739327 /* succeed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACE2B184F320D00739327 /* succeed@2x.png */; };
 		9CFA5F5C1856C09900082E15 /* NSNumber+stringCompare.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFA5F5B1856C09900082E15 /* NSNumber+stringCompare.m */; };
+		9CFA5F601856C72500082E15 /* UIButton+category.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFA5F5F1856C72500082E15 /* UIButton+category.m */; };
+		9CFA5F671856F06A00082E15 /* left_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFA5F611856F06A00082E15 /* left_click@2x.png */; };
+		9CFA5F681856F06A00082E15 /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFA5F621856F06A00082E15 /* left@2x.png */; };
+		9CFA5F691856F06A00082E15 /* middle_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFA5F631856F06A00082E15 /* middle_click@2x.png */; };
+		9CFA5F6A1856F06A00082E15 /* middle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFA5F641856F06A00082E15 /* middle@2x.png */; };
+		9CFA5F6B1856F06A00082E15 /* right_click@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFA5F651856F06A00082E15 /* right_click@2x.png */; };
+		9CFA5F6C1856F06A00082E15 /* right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFA5F661856F06A00082E15 /* right@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -552,6 +559,14 @@
 		9CCACE2B184F320D00739327 /* succeed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "succeed@2x.png"; sourceTree = "<group>"; };
 		9CFA5F5A1856C09900082E15 /* NSNumber+stringCompare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+stringCompare.h"; sourceTree = "<group>"; };
 		9CFA5F5B1856C09900082E15 /* NSNumber+stringCompare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+stringCompare.m"; sourceTree = "<group>"; };
+		9CFA5F5E1856C72500082E15 /* UIButton+category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+category.h"; sourceTree = "<group>"; };
+		9CFA5F5F1856C72500082E15 /* UIButton+category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+category.m"; sourceTree = "<group>"; };
+		9CFA5F611856F06A00082E15 /* left_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left_click@2x.png"; sourceTree = "<group>"; };
+		9CFA5F621856F06A00082E15 /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left@2x.png"; sourceTree = "<group>"; };
+		9CFA5F631856F06A00082E15 /* middle_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "middle_click@2x.png"; sourceTree = "<group>"; };
+		9CFA5F641856F06A00082E15 /* middle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "middle@2x.png"; sourceTree = "<group>"; };
+		9CFA5F651856F06A00082E15 /* right_click@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right_click@2x.png"; sourceTree = "<group>"; };
+		9CFA5F661856F06A00082E15 /* right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -701,9 +716,9 @@
 				9C1BF0F71855D5FA002E57DD /* Person */,
 				9C1BF0FE1855D5FA002E57DD /* QA */,
 				9C1BF1031855D5FA002E57DD /* XXTModelConfig.h */,
-				9C1BF1041855D5FA002E57DD /* XXTModelController.h */,
 				9C1BF1051855D5FA002E57DD /* XXTModelController.m */,
 				9C1BF1061855D5FA002E57DD /* XXTModelGlobal.h */,
+				9C1BF1041855D5FA002E57DD /* XXTModelController.h */,
 				9C1BF1071855D5FA002E57DD /* XXTModelGlobal.m */,
 			);
 			path = Model;
@@ -841,6 +856,12 @@
 		9C1BF1271855F339002E57DD /* study */ = {
 			isa = PBXGroup;
 			children = (
+				9CFA5F611856F06A00082E15 /* left_click@2x.png */,
+				9CFA5F621856F06A00082E15 /* left@2x.png */,
+				9CFA5F631856F06A00082E15 /* middle_click@2x.png */,
+				9CFA5F641856F06A00082E15 /* middle@2x.png */,
+				9CFA5F651856F06A00082E15 /* right_click@2x.png */,
+				9CFA5F661856F06A00082E15 /* right@2x.png */,
 				9C1BF1281855F347002E57DD /* dili@2x.png */,
 				9C1BF1291855F347002E57DD /* huaxue@2x.png */,
 				9C1BF12A1855F347002E57DD /* lishi@2x.png */,
@@ -1082,6 +1103,7 @@
 		9C2908371849C6D9002CCAF1 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				9CFA5F5D1856C70800082E15 /* UIButton+category */,
 				59BD221A185301F400528A12 /* NIDropDown */,
 				9C28BE811852B9B3003C1D6F /* UIImageView+category */,
 				9CCACE27184F2BF000739327 /* AlertView */,
@@ -1379,6 +1401,15 @@
 			name = AlertView;
 			sourceTree = "<group>";
 		};
+		9CFA5F5D1856C70800082E15 /* UIButton+category */ = {
+			isa = PBXGroup;
+			children = (
+				9CFA5F5E1856C72500082E15 /* UIButton+category.h */,
+				9CFA5F5F1856C72500082E15 /* UIButton+category.m */,
+			);
+			name = "UIButton+category";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1485,6 +1516,7 @@
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
 				59BD22521853074500528A12 /* like_on@2x.png in Resources */,
 				59BD224B1853072300528A12 /* next_click@2x.png in Resources */,
+				9CFA5F671856F06A00082E15 /* left_click@2x.png in Resources */,
 				9C1BF0BB1853630F002E57DD /* arrow_close@2x.png in Resources */,
 				9C290871184B0821002CCAF1 /* SenderVoiceNodePlaying@2x.png in Resources */,
 				9C2908481849C756002CCAF1 /* blueArrow@2x.png in Resources */,
@@ -1512,12 +1544,14 @@
 				9C1BF13F1855F347002E57DD /* zhengzhi@2x.png in Resources */,
 				9C63070F18531F0D00511954 /* phone@2x.png in Resources */,
 				9C63070E18531F0D00511954 /* phone_click@2x.png in Resources */,
+				9CFA5F6B1856F06A00082E15 /* right_click@2x.png in Resources */,
 				9C6307231853414A00511954 /* startchat_click@2x.png in Resources */,
 				9C6307221853414A00511954 /* sendmessage@2x.png in Resources */,
 				9C1BF0C4185598CA002E57DD /* arrow_down@2x.png in Resources */,
 				9C28BE131851C45F003C1D6F /* study@2x.png in Resources */,
 				9C6306E71853077600511954 /* audio_click@2x.png in Resources */,
 				9C28BDFF1851C11A003C1D6F /* buttonright@2x.png in Resources */,
+				9CFA5F6A1856F06A00082E15 /* middle@2x.png in Resources */,
 				59BD223F1853072300528A12 /* back_click@2x.png in Resources */,
 				9C290877184B0821002CCAF1 /* ReceiverVoiceNodePlaying@2x.png in Resources */,
 				9C6306E91853077600511954 /* bubble_blue@2x.png in Resources */,
@@ -1585,6 +1619,8 @@
 				9C1BF0C6185598CA002E57DD /* Consignee_click@2x.png in Resources */,
 				9C6306EC1853077600511954 /* photo@2x.png in Resources */,
 				9C28BDF81851C11A003C1D6F /* backbutton_click@2x.png in Resources */,
+				9CFA5F681856F06A00082E15 /* left@2x.png in Resources */,
+				9CFA5F691856F06A00082E15 /* middle_click@2x.png in Resources */,
 				9C1BF13C1855F347002E57DD /* yingyu@2x.png in Resources */,
 				9C1BF1391855F347002E57DD /* shengwu@2x.png in Resources */,
 				9C1BF0B3185362D3002E57DD /* call_click@2x.png in Resources */,
@@ -1592,6 +1628,7 @@
 				59BD22411853072300528A12 /* comment_click@2x.png in Resources */,
 				9C28BDFA1851C11A003C1D6F /* button_click@2x.png in Resources */,
 				9C1BF0C9185598CA002E57DD /* xiaoxuntonglogo@2x.png in Resources */,
+				9CFA5F6C1856F06A00082E15 /* right@2x.png in Resources */,
 				9C1BF0B4185362D3002E57DD /* call@2x.png in Resources */,
 				9C29084A1849C756002CCAF1 /* grayArrow@2x.png in Resources */,
 				9CCACE2C184F320D00739327 /* succeed@2x.png in Resources */,
@@ -1681,6 +1718,7 @@
 				9C1BF1421855FA68002E57DD /* QuestionView.m in Sources */,
 				9CCACDAD184C821A00739327 /* InfoViewController.m in Sources */,
 				59BD2215185301CF00528A12 /* ShareListViewController.m in Sources */,
+				9CFA5F601856C72500082E15 /* UIButton+category.m in Sources */,
 				9CCACE2A184F2C1F00739327 /* XXTAlertView.m in Sources */,
 				9C29083B1849C712002CCAF1 /* EGORefreshTableHeaderView.m in Sources */,
 				59BD2211185301CF00528A12 /* AddNewShareViewController.m in Sources */,

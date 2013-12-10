@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface StudyViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
+@interface StudyViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *myHeadImageView;
 @property (strong, nonatomic) IBOutlet UIButton *myQuestionButton;
 @property (strong, nonatomic) IBOutlet UIButton *chooseSubjectButton;
@@ -16,6 +16,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *chooseStateButton;
 @property (strong, nonatomic) IBOutlet UITableView *questionTableView;
 @property (strong, nonatomic) IBOutlet UIView *chooseView;
+@property (nonatomic, retain) UIPickerView *questionPikerView;
+
+@property (nonatomic, retain) NSMutableArray *questionArray;
 - (IBAction)myQuestionAction:(id)sender;
 - (IBAction)chooseSubjectAction:(id)sender;
 - (IBAction)chooseGradeAction:(id)sender;

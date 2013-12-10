@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MessageVO.h"
+#import "XXTModelGlobal.h"
 
 @interface ImageView : UIView
 @property (nonatomic, retain) UIButton *button;
 @property (nonatomic, retain) UIImageView *bubbleImageView;
-@property (nonatomic, retain) MessageVO *message;
+@property (nonatomic, retain) XXTMessageBase *message;
 - (id) initWithDefault;
-- (void) setData:(MessageVO *)msg;
+- (void) setData:(XXTMessageBase *)msg;
 @end

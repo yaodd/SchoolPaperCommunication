@@ -7,7 +7,7 @@
 //
 
 #import "ImageView.h"
-
+#import "UIButton+category.h"
 @implementation ImageView
 @synthesize button;
 @synthesize bubbleImageView;
@@ -29,9 +29,9 @@
     [self addSubview:button];
     return self;
 }
-- (void) setData:(MessageVO *)msg{
+- (void) setData:(XXTMessageBase *)msg{
     BOOL fromSelf;
-    if (msg.msgMode == kMsgMode_Receive) {
+    if ([msg isKindOfClass:[XXTMessageReceive class]]) {
         fromSelf = NO;
     }else{
         fromSelf = YES;
@@ -42,12 +42,9 @@
     UIImage *bubble = [UIImage imageNamed:fromSelf?@"bubble_grey":@"bubble_blue"];
     [bubbleImageView setImage:[bubble stretchableImageWithLeftCapWidth:floorf(bubble.size.width/2) topCapHeight:floorf(bubble.size.height/2)]];
     
-    //    NSLog(@"%f,%f",size.width,size.height);
-    
-    
     bubbleImageView.frame = CGRectMake(0.0f, 14.0f, width+30.0f, width+20.0f);
     CGRect frame;
-    [button setBackgroundImage:msg.image forState:UIControlStateNormal];
+    [button setBackgroundImageWithMessage:message forState:UIControlStateNormal];
     if(fromSelf)
     {
         frame = CGRectMake(position, 0.0f, width+30.0f, width+30.0f);
@@ -59,8 +56,6 @@
         button.frame = CGRectMake(10, 20, width, width);
     }
     self.frame = frame;
-    
-    
 }
 /*
 // Only override drawRect: if you perform custom drawing.
