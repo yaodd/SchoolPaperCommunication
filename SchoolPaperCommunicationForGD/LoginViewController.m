@@ -102,9 +102,14 @@
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     CGFloat screenHeight = self.view.bounds.size.height;
     __block CGRect frame = self.moveView.frame;
-    
-    if (frame.origin.y != screenHeight - keyboardSize.height - 56.) {
-        frame.origin.y = 0 - 100;//lxf
+    CGFloat moveHeight = 0;
+    if (SCREEN_RECT.size.height == 568) {
+        moveHeight = keyboardSize.height - 150;
+    } else{
+        moveHeight = keyboardSize.height - 80;
+    }
+    if (frame.origin.y != 0 - moveHeight) {
+        frame.origin.y = 0 - moveHeight;//lxf
         [UIView animateWithDuration:0.3
                               delay:0
                             options:UIViewAnimationOptionCurveEaseIn

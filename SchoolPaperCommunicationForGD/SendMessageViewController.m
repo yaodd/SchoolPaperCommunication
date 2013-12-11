@@ -205,7 +205,7 @@
 //        methodXXTView.hidden = NO;
         CGRect frame = messageTextView.frame;
         frame.origin.y -= 44;
-        frame.size.height -= 44;
+        frame.size.height += 44;
         messageTextView.frame = frame;
         [XXTMethodButton setHidden:YES];
         [MSGMethodButton setHidden:YES];
@@ -221,7 +221,7 @@
         [methodLabel setHidden:YES];
         CGRect frame = messageTextView.frame;
         frame.origin.y += 44;
-        frame.size.height += 44;
+        frame.size.height -= 44;
         messageTextView.frame = frame;
         [XXTMethodButton setHidden:NO];
         [MSGMethodButton setHidden:NO];

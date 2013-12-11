@@ -270,7 +270,10 @@
         [postDic setObject:@"ThisIsSimulator" forKey:@"deviceToken"];
     }
     else{
-        [postDic setObject:[XXTModelGlobal sharedModel].deviceToken forKey:@"deviceToken"];
+        if ([XXTModelGlobal sharedModel].deviceToken != nil) {
+            //用setObject，如果Object为空会崩...
+            [postDic setObject:[XXTModelGlobal sharedModel].deviceToken forKey:@"deviceToken"];
+        }
     }
     [postDic setObject:[UIApplication appId] forKey:@"appId"];
     

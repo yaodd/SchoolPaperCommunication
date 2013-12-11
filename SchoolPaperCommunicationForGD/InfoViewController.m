@@ -7,6 +7,7 @@
 //
 
 #import "InfoViewController.h"
+#import "SendMassMsgViewController.h"
 
 @interface InfoViewController ()
 
@@ -28,7 +29,20 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor grayColor]];
     NSLog(@"didload");
-	// Do any additional setup after loading the view.
+    	// Do any additional setup after loading the view.
+    [self initLayout];
+}
+- (void)initLayout
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(sendMassMsgAction:)];
+    [self.view addGestureRecognizer:tapGesture];
+
+}
+- (void)sendMassMsgAction:(id)sender{
+    [self setHidesBottomBarWhenPushed:YES];
+    SendMassMsgViewController *sendMassMsgViewController = [[SendMassMsgViewController alloc]initWithNibName:@"SendMassMsgViewController" bundle:nil];
+    [self.navigationController pushViewController:sendMassMsgViewController animated:YES];
+    [self setHidesBottomBarWhenPushed:NO];
 }
 
 - (void)didReceiveMemoryWarning

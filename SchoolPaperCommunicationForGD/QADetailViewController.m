@@ -20,7 +20,7 @@
 @implementation QADetailViewController
 @synthesize questionView;
 @synthesize qaScrollView;
-@synthesize xxtQuestion;
+@synthesize currentQuesion;
 @synthesize answerArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,7 +54,7 @@
     
     NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"QuestionView"owner:self options:nil];
     questionView = [nib objectAtIndex:0];
-    [questionView setDataWithQuestion:xxtQuestion];
+    [questionView setDataWithQuestion:currentQuesion];
     CGRect qViewFrame = questionView.frame;
     qViewFrame.origin.x = 0;
     qViewFrame.origin.y = 25;
@@ -85,6 +85,7 @@
     [self setHidesBottomBarWhenPushed:YES];
     IssueQAViewController *issueQAViewController = [[IssueQAViewController alloc]initWithNibName:@"IssueQAViewController" bundle:nil];
     [issueQAViewController setIssueType:IssueTypeAnswer];
+    [issueQAViewController setCurrentQuestion:currentQuesion];
     [self.navigationController pushViewController:issueQAViewController animated:YES];
 }
 - (void)initData:(CGFloat)answerViewY
@@ -93,16 +94,19 @@
         [thread start];
     
 }
+//异步加载当前问题的答案数据，参数为第一个答案的UI坐标的Y值
 - (void)loadAnswersSelector:(NSNumber *)number
 {
     answerArray = [[NSMutableArray alloc]init];
-    int isSuccess = [[Dao sharedDao] requestForQuestionDetail:xxtQuestion];
+    int isSuccess = [[Dao sharedDao] requestForQuestionDetail:currentQuesion];
     if (isSuccess) {
-        NSLog(@"获取答案详情成功 %d",[xxtQuestion.answersArr count]);
-        answerArray = xxtQuestion.answersArr;
+        NSLog(@"获取答案详情成功 %d",[currentQuesion.answersArr count]);
+        answerArray = currentQuesion.answersArr;
+        //加载完数据后更新ScrollView
         [self performSelectorOnMainThread:@selector(updateScrollView:) withObject:number waitUntilDone:YES];
     }
 }
+//更新ScrollView
 - (void)updateScrollView:(NSNumber *)number{
     CGFloat answerViewY = [number floatValue];
     for (int i = 0; i < [answerArray count]; i++) {

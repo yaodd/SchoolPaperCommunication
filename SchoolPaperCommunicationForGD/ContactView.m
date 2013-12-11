@@ -9,6 +9,7 @@
 #import "ContactView.h"
 #import "XXTModelController.h"
 #import "UIImageView+category.h"
+#import <QuartzCore/QuartzCore.h>
 @implementation ContactView
 @synthesize userHeadIV;
 @synthesize userNameLabel;

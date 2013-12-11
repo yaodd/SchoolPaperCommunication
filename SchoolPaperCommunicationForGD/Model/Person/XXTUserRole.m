@@ -66,6 +66,7 @@
             if (msgS.sendToGroupIdArr.count == 0 && msgS.sendToPersonIdArr.count == 1)
                 if ([msgS.sendToPersonIdArr.firstObject isEqualToString:pid])
                     [messages addObject:msgS];
+            
         }
         if ([message isKindOfClass:[XXTMessageReceive class]]){
             XXTMessageReceive *msgR = (XXTMessageReceive*)message;

@@ -11,6 +11,7 @@
 
 #define IOS_VERSION_7_OR_ABOVE (([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)? (YES):(NO))
 #define TOP_BAR_HEIGHT  (IOS_VERSION_7_OR_ABOVE ? 64 : 44)
+#define SCREEN_RECT     [[UIScreen mainScreen] bounds]
 
 @protocol UserListDelegate;
 @protocol ChatDelegate;

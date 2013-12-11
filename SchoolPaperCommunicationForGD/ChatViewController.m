@@ -29,7 +29,6 @@
     NSTimer *timer;
     NSURL *urlPlay;
         
-    UIImagePickerController *imagePicker;//用于选择图片
     
     XXTModelGlobal *modelGlobal;
     XXTUserRole *userRole;
@@ -134,7 +133,7 @@
     [self.sendTextField setPlaceholder:@"输入消息"];
     [self.sendView addSubview:self.sendTextField];
     
-    self.sendButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.sendButton setFrame:CGRectMake(self.view.frame.size.width - sendViewHeight - 6, 0, 56, 44)];
     [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -558,28 +557,27 @@
 //从相册获取图片
 - (void)pickImageFromAlbum
 {
-    imagePicker = [[UIImagePickerController alloc] init];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate =self;
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     imagePicker.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     imagePicker.allowsEditing =YES;
     
-//    [self presentModalViewController:imagePicker animated:YES];
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 //打开相机,从相机获取
-- (IBAction)touch_photo:(id)sender {
+- (void)touch_photo:(id)sender {
     // for iphone
-    UIImagePickerController *pickerImage = [[UIImagePickerController alloc] init];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        pickerImage.sourceType = UIImagePickerControllerSourceTypeCamera;
-        pickerImage.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:pickerImage.sourceType];
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
         
     }
-    pickerImage.delegate =self;
-    pickerImage.allowsEditing =YES;//自定义照片样式
-    [self presentViewController:pickerImage animated:YES completion:nil];
+    imagePicker.delegate =self;
+    imagePicker.allowsEditing =YES;//自定义照片样式
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 #pragma UIImagePickerController mark - 

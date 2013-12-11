@@ -8,6 +8,7 @@
 
 #import "ForgetPswViewController.h"
 #import "Dao.h"
+#import <QuartzCore/QuartzCore.h>
 @interface ForgetPswViewController ()
 
 @end

@@ -233,15 +233,14 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self setHidesBottomBarWhenPushed:YES];
-    XXTQuestion *xxtQuestion = [questionArray objectAtIndex:indexPath.row];
+    XXTQuestion *currentQuestion = [questionArray objectAtIndex:indexPath.row];
     QADetailViewController *qaDetailViewController = [[QADetailViewController alloc]init];
-    qaDetailViewController.xxtQuestion = [[XXTQuestion alloc]init];
-    [qaDetailViewController setXxtQuestion:xxtQuestion];
+    [qaDetailViewController setCurrentQuesion:currentQuestion];
     [self.navigationController pushViewController:qaDetailViewController animated:YES];
     [self setHidesBottomBarWhenPushed:NO];
 }
 
-- (IBAction)myQuestionAction:(id)sender {
+- (void)myQuestionAction:(id)sender {
     [self setHidesBottomBarWhenPushed:YES];
     StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
     [studyViewController setStudyViewType:StudyViewTypeMine];

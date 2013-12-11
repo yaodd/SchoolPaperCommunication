@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "Dao.h"
 #import "StudyViewController.h"
+#import "SendMassMsgViewController.h"
 @implementation AppDelegate
 @synthesize window;
 
@@ -23,6 +24,7 @@
     window.backgroundColor = [UIColor whiteColor];
     UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:loginViewController];
     StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
+//    window.rootViewController = sendMassMsgViewController;
 //    window.rootViewController = studyViewController;
     window.rootViewController = navigationController;
     [window makeKeyAndVisible];
