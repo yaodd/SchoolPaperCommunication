@@ -28,12 +28,13 @@
     [self addSubview:button];
     return self;
 }
-- (void)setData:(MessageVO *)msg{
+- (void)setData:(XXTMessageBase *)msg{
     message = msg;
     BOOL fromSelf;
     CGFloat position = 65;
-    NSInteger longtime = msg.audioTime;
-    if (msg.msgMode == kMsgMode_Receive) {
+    XXTAudio *audio = (XXTAudio *)[msg.audios objectAtIndex:0];
+    NSInteger longtime = audio.duration;
+    if ([msg isKindOfClass:[XXTMessageReceive class]]) {
         fromSelf = NO;
     } else{
         fromSelf = YES;
@@ -72,8 +73,8 @@
 }
 
 - (void)buttonAction:(id)sender{
-    NSURL *url = message.audioUrl;
-    [self.delegate playAudio:url];
+    XXTAudio *audio = (XXTAudio *)[message.audios objectAtIndex:0];
+    [self.delegate playAudio:audio];
 }
 
 /*

@@ -20,6 +20,8 @@
 + (void) prepareToPostBulletin:(XXTBulletin*) bulletin;
 + (void) prepareToPostHomework:(XXTHomework*) homework;
 + (void) prepareToPostEvaluate:(XXTEvaluate*) evaluate;
++ (void) prepareToPostQuestion:(XXTQuestion*) question;
++ (void) prepareToPostAnswer:(XXTAnswer*) ans ForQuestion:(XXTQuestion*) question;
 
 #pragma mark 网络端用的接口, 客户端可以不用理
 + (void) loginSuccess:(NSDictionary*) receivedDic;
@@ -66,4 +68,10 @@
 + (void) postEvaluateSuccess:(XXTEvaluate*) evaluate WithDictionary:(NSDictionary*) receivedDic;
 + (void) receivedFeedbackDic:(NSDictionary*) receivedDic;
 + (void) receivedQuestionListDicArr:(NSArray*) questionDicArr;
++ (void) receivedQuestionDetailForQuestion:(XXTQuestion*) question
+                               receivedDic:(NSDictionary*) receivedDic;
++ (void) postQuestionSuccess:(XXTQuestion*) question receivedDict:(NSDictionary*) dict;
++ (void) postAnswerSuccess:(XXTAnswer*) ans;
+
++ (void) receivedGradeListDicArr:(NSArray*) gradeDicArr;
 @end

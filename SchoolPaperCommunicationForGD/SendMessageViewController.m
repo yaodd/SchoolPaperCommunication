@@ -101,7 +101,53 @@
     placeHolder.backgroundColor = [UIColor clearColor];
     [messageTextView addSubview:placeHolder];
     messageTextView.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+
 }
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGFloat screenHeight = self.view.bounds.size.height;
+    __block CGRect issueFrame = self.messageTextView.frame;
+    CGFloat barHright = 0;
+    if (!methodXXTView.hidden && !methodMSGView.hidden) {
+        barHright = 88;
+        
+    } else{
+        barHright = 44;
+    }
+    issueFrame.size.height = screenHeight - keyboardSize.height - TOP_BAR_HEIGHT - barHright;
+    self.messageTextView.frame = issueFrame;
+    NSLog(@"show");
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    
+    /*
+    CGFloat toolViewHeight = 44;
+    
+    CGFloat screenHeight = self.view.bounds.size.height;
+    __block CGRect toolFrame = self.issueToolView.frame;
+    __block CGRect issueFrmae = self.issueTV.frame;
+    issueFrmae.size.height = issueFrmae.size.height + keyboardSize.height;
+    toolFrame.origin.y = screenHeight - toolViewHeight;//lxf
+    self.issueTV.frame = issueFrmae;
+    self.issueToolView.frame = toolFrame;
+    NSLog(@"hide");
+    *///    [UIView animateWithDuration:fAniTimeSecond animations:^{
+    //        self.viewItems.frame = frame;
+    //    }];
+}
+
 //发送按钮响应
 - (void)sendAction:(id)sender{
     NSLog(@"发送");
@@ -155,7 +201,8 @@
             [methodXXTView setHidden:YES];
             [methodMSGView setHidden:NO];
         }
-        methodMSGView.hidden = YES;
+//        methodMSGView.hidden = YES;
+//        methodXXTView.hidden = NO;
         CGRect frame = messageTextView.frame;
         frame.origin.y -= 44;
         frame.size.height -= 44;

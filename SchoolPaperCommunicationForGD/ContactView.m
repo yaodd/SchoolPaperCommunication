@@ -69,7 +69,7 @@
 
 - (void)setData:(XXTContactPerson *)person{
     contactPerson = person;
-    [userHeadIV setImageWithPerson:person];
+    [userHeadIV setImageWithXXTImage:person.avatar];
     [userNameLabel setText:person.name];
     [phoneLabel setText:person.phone];
 }

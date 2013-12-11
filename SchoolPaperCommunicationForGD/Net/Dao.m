@@ -84,6 +84,14 @@
 #define feedbackListCmd         @"10091"
 #define postFeedbackCmd         @"10092"
 
+#define uploadErrorLogCmd       @"20004"
+#define classListCmd            @"20005"
+#define studentListCmd          @"20006"
+#define childrenListCmd         @"20007"
+#define subjectListCmd          @"20008"
+#define appUpdateCmd            @"20009"
+#define moduleUpdateCmd         @"20010"
+
 //此处为一些常量 - 可以把它们移到config.h里
 #define PLATFORM @"ios"
 #define APIVERSION @"1.0"
@@ -1024,6 +1032,110 @@
     int ret = [[rs objectForKey:@"resultState"] intValue];
     if (ret == 1){
         [XXTModelController receivedQuestionListDicArr:[rs objectForKey:@"items"]];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForQuestionDetail:(XXTQuestion *)question{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:questionDetailCmd forKey:@"cmd"];
+    [postDic setObject:question.qid forKey:@"id"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:questionDetailCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedQuestionDetailForQuestion:question receivedDic:rs];
+    }
+    
+    return ret  ;
+}
+
+- (NSInteger) requestForPostQuestion:(XXTQuestion *)question{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postQuestionCmd forKey:@"cmd"];
+    [postDic setObject:question.subjectId forKey:@"id"];
+    [postDic setObject:question.content forKey:@"content"];
+    
+    XXTImage* image = question.qImage;
+    if (image != nil){
+        NSMutableDictionary* imageDic = [NSMutableDictionary dictionary];
+        [imageDic setObject:image.originPicURL forKey:@"original"];
+        [imageDic setObject:image.thumbPicURL forKey:@"thumb"];
+        [postDic setObject:imageDic forKey:@"image"];
+    }
+    
+    XXTAudio* audio =(XXTAudio*)question.qAudios.firstObject;
+    if (audio != nil){
+        NSMutableDictionary* audioDic = [NSMutableDictionary dictionary];
+        [audioDic setObject:audio.audioURL forKey:@"url"];
+        [audioDic setObject:[NSNumber numberWithInt:audio.duration] forKey:@"duration"];
+        [postDic setObject:audioDic forKey:@"audio"];
+    }
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString *url = [self getUrlForModule:sysModuleUrl WithCmd:postQuestionCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postQuestionSuccess:question receivedDict:rs];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForPostAnswer:(XXTAnswer *)answer forQuestion:(XXTQuestion *)question{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:postAnswerCmd forKey:@"cmd"];
+    [postDic setObject:question.qid forKey:@"id"];
+    [postDic setObject:question.content forKey:@"content"];
+    
+    if (answer.aAudios.count > 0){
+        NSMutableDictionary* audioDic = [NSMutableDictionary dictionary];
+        XXTAudio* audio = (XXTAudio*)answer.aAudios.firstObject;
+        [audioDic setObject:audio.audioURL forKey:@"url"];
+        [audioDic setObject:[NSNumber numberWithInt:audio.duration] forKey:@"duration"];
+        [postDic setObject:audioDic forKey:@"audio"];
+    }
+    if (answer.aImage != nil){
+        NSMutableDictionary* imageDic = [NSMutableDictionary dictionary];
+        XXTImage* image = answer.aImage;
+        [imageDic setObject:image.originPicURL forKey:@"original"];
+        [imageDic setObject:image.thumbPicURL forKey:@"thumb"];
+        [postDic setObject:imageDic forKey:@"image"];
+    }
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:postAnswerCmd];
+    NSDictionary* rs = [self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController postAnswerSuccess:answer];
+    }
+    
+    return ret;
+}
+
+- (NSInteger) requestForGradeList{
+    NSMutableDictionary* postDic = [NSMutableDictionary dictionary];
+    [postDic setObject:gradeListCmd forKey:@"cmd"];
+    [self insertUserInfoToDictionary:postDic];
+    
+    NSString* url = [self getUrlForModule:sysModuleUrl WithCmd:gradeListCmd];
+    NSDictionary* rs=[self request:url dict:postDic];
+    
+    int ret = [[rs objectForKey:@"resultState"] intValue];
+    
+    if (ret == 1){
+        [XXTModelController receivedGradeListDicArr:[rs objectForKey:@"items"]];
     }
     
     return ret;

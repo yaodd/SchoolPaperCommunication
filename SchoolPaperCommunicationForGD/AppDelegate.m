@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "Dao.h"
-
+#import "StudyViewController.h"
 @implementation AppDelegate
 @synthesize window;
 
@@ -22,6 +22,8 @@
     window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     window.backgroundColor = [UIColor whiteColor];
     UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:loginViewController];
+    StudyViewController *studyViewController = [[StudyViewController alloc]initWithNibName:@"StudyViewController" bundle:nil];
+//    window.rootViewController = studyViewController;
     window.rootViewController = navigationController;
     [window makeKeyAndVisible];
     return YES;

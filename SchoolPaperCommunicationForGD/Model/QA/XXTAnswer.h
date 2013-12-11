@@ -15,10 +15,13 @@
 @property (copy , nonatomic) NSNumber* aid;
 @property (copy , nonatomic) NSString* content;
 @property (strong , nonatomic) XXTImage* aImage;
-@property (strong , nonatomic) XXTAudio* aAudio;
+@property (strong , nonatomic) NSArray* aAudios;
 @property (copy , nonatomic) NSString* answererName;
 @property (strong , nonatomic) XXTImage* answererAvatar;
+@property (copy , nonatomic) NSDate* dateTime;
+@property BOOL isSended;
 
-- (XXTAnswer*) initWithDicitonary:(NSDictionary*) dict;
+- (XXTAnswer*) initWithDicitionary:(NSDictionary*) dict;
+- (XXTAnswer*) initNewAnswer:(NSString*) content image:(XXTImage*)image audio:(XXTAudio*) audio;
 
 @end

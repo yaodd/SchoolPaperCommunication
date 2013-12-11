@@ -28,16 +28,16 @@
     return self;
 }
 
-- (void) setData:(MessageVO *)msg{
+- (void) setData:(XXTMessageBase *)msg{
     BOOL fromSelf;
-    if (msg.msgMode == kMsgMode_Receive) {
+    if ([msg isKindOfClass:[XXTMessageReceive class]]) {
         fromSelf = NO;
     }else{
         fromSelf = YES;
     }
     CGFloat position = 65;
     //计算大小
-    NSString *text = msg.strText;
+    NSString *text = msg.content;
     UIFont *font = [UIFont systemFontOfSize:16];
     CGSize size = [text sizeWithFont:font constrainedToSize:CGSizeMake(180.0f, 20000.0f) lineBreakMode:NSLineBreakByWordWrapping];
 //    CGRect rect = [text boundingRectWithSize:CGSizeMake(180.0f, 20000.0f) options:NSStringDrawingUsesFontLeading attributes:nil context:nil];

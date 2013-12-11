@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MessageVO.h"
+#import "XXTModelGlobal.h"
 @interface BubbleView : UIView
 
 @property (nonatomic, retain) UILabel *bubbleText;
@@ -15,5 +15,5 @@
 
 - (id) initWithDefault;
 
-- (void)setData:(MessageVO *)msg;
+- (void)setData:(XXTMessageBase *)msg;
 @end

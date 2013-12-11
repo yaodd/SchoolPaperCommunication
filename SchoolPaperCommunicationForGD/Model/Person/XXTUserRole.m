@@ -111,6 +111,10 @@
                   forKey:@"myCommentsAndLikes"];
     [aCoder encodeInteger:self.commentAndLikesReadCount
                    forKey:@"commentAndLikesReadCount"];
+    [aCoder encodeObject:self.gradeArr forKey:@"gradeArr"];
+    [aCoder encodeObject:self.subjectArr forKey:@"subjectArr"];
+    [aCoder encodeObject:self.myClassArr forKey:@"myClassArr"];
+    [aCoder encodeObject:self.myChildrenArr forKey:@"myChildrenArr"];
 
 }
 
@@ -140,6 +144,11 @@
         self.lastUpdateTimeForEvaluateTemplates = [aDecoder decodeObjectForKey:@"lastUpdateTimeForEvaluateTemplates"];
         self.myCommentsAndLikes = [aDecoder decodeObjectForKey:@"myCommentsAndLikes"];
         self.commentAndLikesReadCount = [aDecoder decodeIntegerForKey:@"commentAndLikesReadCount"];
+        
+        self.gradeArr = [aDecoder decodeObjectForKey:@"gradeArr"];
+        self.subjectArr = [aDecoder decodeObjectForKey:@"subjectArr"];
+        self.myClassArr = [aDecoder decodeObjectForKey:@"myClassArr"];
+        self.myChildrenArr=[aDecoder decodeObjectForKey:@"myChildrenArr"];
     }
     return self;
 }
@@ -215,6 +224,11 @@
         self.lastUpdateTimeForEvaluateTemplates = [NSDate dateWithTimeIntervalSince1970:0];
         
         self.questionArr = [NSMutableArray array];
+        
+        self.gradeArr = [NSMutableArray array];
+        self.subjectArr = [NSMutableArray array];
+        self.myChildrenArr = [NSMutableArray array];
+        self.myClassArr = [NSMutableArray array];
     }
     
     return self;
