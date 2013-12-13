@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "XXTModelGlobal.h"
 
-@interface DetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface ShareDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) UIImageView *userHead;
 @property (nonatomic, retain) UILabel *userName;

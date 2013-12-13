@@ -7,10 +7,13 @@
 //
 
 #import "ShareListViewController.h"
+#import "AppDelegate.h"
 #import "AddNewShareViewController.h"
 #import "AddNewCommentViewController.h"
-#import "DetailViewController.h"
+#import "MyMessageViewController.h"
+#import "ShareDetailViewController.h"
 #import "XXTModelGlobal.h"
+#import "Dao.h"
 #define kRefreshFooter 1
 #define kRefreshHeader 0
 #define kFontOfText @"Heiti SC"
@@ -26,14 +29,11 @@
 
 @implementation ShareListViewController
 {
-    BOOL isIOS7;
-    
     int refreshFlag;
     CGFloat contentOffsetY;
     CGFloat oldContentOffsetY;
     CGFloat newContentOffsetY;
-    
-    CGFloat originY;
+
     NSInteger contentHeight;
     
     UIButton *scopeSelectBtn;
@@ -68,18 +68,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //Get the size of screen and the version of system
-    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"7.0" options: NSNumericSearch];
     CGRect screenFrame =  [[UIScreen mainScreen] bounds];
-    NSLog(@"%ld", (long)screenFrame.size.height);
-    if (order == NSOrderedSame || order == NSOrderedDescending)
+    if (IOS_VERSION_7_OR_ABOVE)
     {
         // OS version >= 7.0
-        originY = 64;
-        isIOS7 = YES;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
         contentHeight = screenFrame.size.height - 64;
     }else{
-        originY = 0;
-        isIOS7 = NO;
         contentHeight = screenFrame.size.height - 44;
     }
     
@@ -93,7 +88,7 @@
     
     [self initViewsOnNavigationBar];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, originY, 320, contentHeight-49)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, contentHeight-49)];
     _tableView.dataSource=self;
     _tableView.delegate=self;
     _tableView.contentOffset = CGPointMake(0, 111);
@@ -141,7 +136,7 @@
     _tableView.tableHeaderView = themeImage;
     _tableView.tableHeaderView.userInteractionEnabled = YES;
     
-    seachBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, originY, 320, 40)];
+    seachBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
     seachBar.placeholder = @"搜索";
     seachBar.backgroundColor = [UIColor clearColor];
     //[self.view addSubview:seachBar];
@@ -151,7 +146,7 @@
     userHeadImage.layer.masksToBounds = YES;
     userHeadImage.layer.cornerRadius = 34.5f;
     userHeadImage.backgroundColor = [UIColor clearColor];
-    [self.themeImage addSubview:userHeadImage];
+    [themeImage addSubview:userHeadImage];
     
     userName = [[UILabel alloc] init];
     userName.frame = CGRectMake(100, 42, 100, 24);
@@ -162,13 +157,14 @@
     userName.shadowOffset = CGSizeMake(1, 1);
     userName.shadowColor = [UIColor blackColor];
     userName.text = @"李小林";
-    [self.themeImage addSubview:userName];
+    [themeImage addSubview:userName];
     
     myMessage = [[UIButton alloc] initWithFrame:CGRectMake(100, 70, 75, 25.5)];
     myMessage.backgroundColor = [UIColor clearColor];
     [myMessage setImage:[UIImage imageNamed:@"newsbutton"] forState:UIControlStateNormal];
     [myMessage setImage:[UIImage imageNamed:@"newsbutton_click"] forState:UIControlStateSelected];
-    [self.themeImage addSubview:myMessage];
+    [myMessage addTarget:self action:@selector(jumpToMyMessageController) forControlEvents:UIControlEventTouchUpInside];
+    [themeImage addSubview:myMessage];
 }
 
 - (IBAction)scopeSelectBtnPressed:(id)sender
@@ -222,6 +218,13 @@
     //[self.view setHidden:YES];
     AddNewShareViewController *addNewController = [[AddNewShareViewController alloc] init];
     [self.navigationController pushViewController:addNewController animated:YES];
+}
+
+- (void)jumpToMyMessageController{
+    self.hidesBottomBarWhenPushed = YES;
+    MyMessageViewController *controller = [[MyMessageViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 ///////////////////////////////
@@ -413,8 +416,8 @@
     NSString *content = micro.content;
     CGSize size = CGSizeMake(240, 2000);
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Heiti SC" size:15.0], NSFontAttributeName,[UIColor colorWithRed:135/255.0 green:132/255.0 blue:134/255.0 alpha:1.0], NSForegroundColorAttributeName, nil];
-    CGFloat height;
-    if(isIOS7 == YES){
+    NSInteger height = 0;
+    if(IOS_VERSION_7_OR_ABOVE){
         CGRect contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];//This method only valid in ios7
         height += contentFrame.size.height;
     }else {
@@ -463,7 +466,7 @@
     cell.shareContent.text = content;
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Heiti SC" size:15.0], NSFontAttributeName,[UIColor colorWithRed:135/255.0 green:132/255.0 blue:134/255.0 alpha:1.0], NSForegroundColorAttributeName, nil];
     CGRect contentFrame;
-    if(isIOS7 == YES){
+    if(IOS_VERSION_7_OR_ABOVE){
         contentFrame = [content boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil];//This method only valid in ios7
     }else {
         CGSize contentSize = [content sizeWithFont:[UIFont fontWithName:@"Heiti SC" size:15.0] forWidth:size.width lineBreakMode:NSLineBreakByCharWrapping];
@@ -485,7 +488,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Row %d did selected!", indexPath.row);
+    NSLog(@"Row %ld did selected!", indexPath.row);
 }
 
 
@@ -498,7 +501,7 @@
     //the method "hidesBottomBarWhenPushed" is for hidding the tab bar
     self.hidesBottomBarWhenPushed = YES;
     
-    DetailViewController *controller = [[DetailViewController alloc] initWithMicro:micro];
+    ShareDetailViewController *controller = [[ShareDetailViewController alloc] initWithMicro:micro];
     [self.navigationController pushViewController:controller animated:YES];
     
     self.hidesBottomBarWhenPushed = NO;

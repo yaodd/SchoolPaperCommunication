@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface commentCell : UITableViewCell
+@interface CommentCell : UITableViewCell
 @property (nonatomic, retain) UIImageView *head;
 @property (nonatomic, retain) UILabel *comment;
 
