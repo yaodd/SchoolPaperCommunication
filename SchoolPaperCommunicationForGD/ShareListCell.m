@@ -135,26 +135,26 @@
     commentImg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 14, 12)];
     commentImg.image = [UIImage imageNamed:@"comment"];
     commentImg.backgroundColor = [UIColor clearColor];
-    [self.commentBtn addSubview:commentImg];
+    [commentBtn addSubview:commentImg];
     
     likeImg = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 14, 15.5)];
     likeImg.image = [UIImage imageNamed:@"like"];
     likeImg.backgroundColor = [UIColor clearColor];
-    [self.likeBtn addSubview:likeImg];
+    [likeBtn addSubview:likeImg];
     
     numberOflike = [[UILabel alloc] initWithFrame:CGRectMake(commentImg.frame.origin.x + commentImg.frame.size.width + 3, 8, 20, 15)];
     numberOflike.backgroundColor = [UIColor clearColor];
     numberOflike.textColor = kTextColorHint;
     numberOflike.font = [UIFont fontWithName:kTextName size:kFontSizeHint];
     numberOflike.text = @"0";
-    [self.likeBtn addSubview:numberOflike];
+    [likeBtn addSubview:numberOflike];
     
     numberOfComment = [[UILabel alloc] initWithFrame:CGRectMake(likeImg.frame.origin.x + likeImg.frame.size.width + 3, 8, 20, 15)];
     numberOfComment.backgroundColor = [UIColor clearColor];
     numberOfComment.textColor = kTextColorHint;
     numberOfComment.font = [UIFont fontWithName:kTextName size:kFontSizeHint];
     numberOfComment.text = @"0";
-    [self.commentBtn addSubview:numberOfComment];
+    [commentBtn addSubview:numberOfComment];
     
     
 }

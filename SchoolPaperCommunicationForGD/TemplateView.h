@@ -26,6 +26,7 @@
 @interface TemplateView : UIView
 @property (nonatomic, retain) UILabel *contentLabel;
 @property (nonatomic, retain) UIButton *expandButton;
+@property (nonatomic, retain) UIView *sepector;
 @property (nonatomic, retain) TemplateHolder *holder;
 @property (nonatomic, assign) id <TemplateViewDelegate> delegate;
 - (void)setDataWithTemplateHolder:(TemplateHolder *)templateHolder;

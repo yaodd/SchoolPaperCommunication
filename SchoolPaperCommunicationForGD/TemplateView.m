@@ -12,6 +12,7 @@
 @synthesize contentLabel;
 @synthesize expandButton;
 @synthesize holder;
+@synthesize sepector;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -29,6 +30,9 @@
         [expandButton addTarget:self action:@selector(expandAction:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:expandButton];
         
+        sepector  = [[UIView alloc]initWithFrame:CGRectZero];
+        [sepector setBackgroundColor:[UIColor colorWithWhite:235.0/255 alpha:1.0]];
+        [self addSubview:sepector];
         
     }
     return self;
@@ -86,6 +90,8 @@
     [expandButton setBackgroundColor:buttonColor];
     [expandButton setTitle:buttonTitle forState:UIControlStateNormal];
     
+    
+    [sepector setFrame:CGRectMake(0, viewHeight - 1, 320, 1)];
     [self setBackgroundColor:viewColor];
     [self setFrame:CGRectMake(0, 0, 320, viewHeight)];
     

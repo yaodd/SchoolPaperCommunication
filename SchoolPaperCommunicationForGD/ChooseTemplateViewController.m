@@ -73,7 +73,7 @@
     
     [self.searchBar sizeToFit];
     
-    self.strongSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+//    self.strongSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
     self.searchDisplayController.searchResultsDataSource = self;
     self.searchDisplayController.searchResultsDelegate = self;
     self.searchDisplayController.delegate = self;
@@ -108,13 +108,17 @@
 //筛选按钮响应
 - (void)chooseTmepTypeAction:(UISegmentedControl *)segmentedControl{
 //    NSLog(@"index %d",segmentedControl.selectedSegmentIndex);
+    //选择常用模板
+    [self.searchBar resignFirstResponder];
     if (segmentedControl.selectedSegmentIndex == OFFENUSE_TEMP_INDEX) {
         displayTempArr = offenUseTempArr;
     }
+    //选择推荐模板
     if (segmentedControl.selectedSegmentIndex == RECOMMENDED_TEMP_INDEX) {
         displayTempArr = recommendedTempArr;
         
     }
+    //选择全部模板
     if (segmentedControl.selectedSegmentIndex == ALL_TEMP_INDEX) {
         displayTempArr = allTempArr;
     }
@@ -213,7 +217,8 @@
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"selected %d",indexPath.row);
+    [self.searchBar resignFirstResponder];
+    
     int index1 = indexPath.row;
     int index2 = -1;
     TemplateHolder *curHolder = [displayTempArr objectAtIndex:index1];
@@ -265,6 +270,9 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
     displayTempArr = allTempArr;
     [self.templateTableView reloadData];
+}
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    
 }
 //字符串匹配搜索算法
 - (BOOL)isMatchWithSeatchText:(NSString *)searchText originalText:(NSString *)originalText{

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PopMenuView.h"
 
-@interface InfoViewController : UIViewController
+@interface InfoViewController : UIViewController <PopMenuViewDelegate>
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AddNewCommentViewController.h"
+#import "AppDelegate.h"
 
 @interface AddNewCommentViewController ()
 
@@ -14,9 +15,6 @@
 
 @implementation AddNewCommentViewController
 {
-    CGFloat originY;
-    BOOL isIOS7;
-    
     UIBarButtonItem *rightBarButton;
     
     UILabel *textViewHint;
@@ -37,16 +35,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"7.0" options: NSNumericSearch];
-    if (order == NSOrderedSame || order == NSOrderedDescending)
+    if (IOS_VERSION_7_OR_ABOVE)
     {
         // OS version >= 7.0
-        originY = 64;
-        isIOS7 = YES;
-    }else{
-        isIOS7 = NO;
-        originY = 0;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self initNavigationViews];
     
@@ -54,7 +48,7 @@
     view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:view];
     
-    comment= [[UITextView alloc] initWithFrame:CGRectMake(10, originY+10, 310, 150)];
+    comment= [[UITextView alloc] initWithFrame:CGRectMake(10, 10, 310, 150)];
     comment.backgroundColor = [UIColor clearColor];
     comment.font = [UIFont fontWithName:@"Heiti SC" size:16.0];
     comment.textColor = [UIColor blackColor];

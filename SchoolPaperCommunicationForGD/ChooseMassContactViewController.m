@@ -12,12 +12,19 @@
 #import "Dao.h"
 #import "ContactHolder.h"
 #import "GroupHolder.h"
+#import "TTTAttributedLabel.h"
 
 #define MASS_CONTACT_VIEW_TAG   111111
 
 @interface ChooseMassContactViewController ()
 {
     BOOL isSearching;
+    UIButton *chooseAllButton;
+    TTTAttributedLabel *chooseCountLabel;
+    int chosenCount;
+    int allCount;
+    UIView *chooseAllView;
+    UIView *headView;
 
 }
 @property(nonatomic, strong) UISearchDisplayController *strongSearchDisplayController; // UIViewController doesn't retain the search display controller if it's created programmatically: http://openradar.appspot.com/10254897
@@ -28,6 +35,7 @@
 @synthesize massTableView;
 @synthesize searchBar;
 @synthesize groupHolderArr;
+@synthesize originalGroupArr;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -67,13 +75,59 @@
     self.searchBar.delegate = self;
     
     [self.searchBar sizeToFit];
-    
-    self.strongSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    //searchDisplayController
+//    self.strongSearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
     self.searchDisplayController.searchResultsDataSource = self;
     self.searchDisplayController.searchResultsDelegate = self;
     self.searchDisplayController.delegate = self;
     
-    self.massTableView.tableHeaderView = self.searchBar;
+    
+    headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 88)];
+    [headView addSubview:self.searchBar];
+    
+    chooseAllView = [[UIView alloc]initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, 44)];
+    
+    chooseAllButton = [[UIButton alloc]initWithFrame:CGRectMake(15, 9.5, 25, 25)];
+    [chooseAllButton setSelected:NO];
+    [chooseAllButton setImage:[UIImage imageNamed:@"allselected"] forState:UIControlStateSelected];
+    [chooseAllButton setImage:[UIImage imageNamed:@"unselected"] forState:UIControlStateNormal];
+    [chooseAllButton addTarget:self action:@selector(chooseAllAction:) forControlEvents:UIControlEventTouchDown];
+    [chooseAllView addSubview:chooseAllButton];
+    
+    UILabel *allChooseLabel = [[UILabel alloc]initWithFrame:CGRectMake(55, 14.5, 100, 18)];
+    [allChooseLabel setText:@"全选"];
+    [allChooseLabel setBackgroundColor:[UIColor clearColor]];
+    [allChooseLabel setTextColor:[UIColor colorWithWhite:52.0/255 alpha:1.0]];
+    [allChooseLabel setFont:[UIFont systemFontOfSize:16]];
+    [chooseAllView addSubview:allChooseLabel];
+    
+    chosenCount = 0;    //选中人数
+    
+    NSMutableAttributedString *labelText = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"已选%d人",chosenCount]];
+    [labelText addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor redColor].CGColor range:NSMakeRange(2, labelText.length - 3)];
+//    [labelText addAttribute:(NSString *)kCTParagraphStyleAttributeName value:(id)[NSTextAlignmentRight] range:NSMakeRange(0, 5)];
+    UIColor *textColor = [UIColor colorWithWhite:52.0/255 alpha:1.0];
+    chooseCountLabel = [[TTTAttributedLabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 100, 14.5, 80, 18)];
+
+    [chooseCountLabel setTextColor:textColor];
+//    [chooseCountLabel setBackgroundColor:[UIColor greenColor]];
+    [chooseCountLabel setText:labelText];
+    [chooseCountLabel setFont:[UIFont systemFontOfSize:16]];
+    [chooseCountLabel setTextAlignment:NSTextAlignmentCenter];
+
+//    [chooseCountLabel setColor:textColor fromIndex:0 length:2];
+//    [chooseCountLabel setColor:[UIColor redColor] fromIndex:2 length:2];
+//    [chooseCountLabel setColor:textColor fromIndex:4 length:1];
+//    [chooseCountLabel setFont:[UIFont systemFontOfSize:16] fromIndex:0 length:5];
+    [chooseAllView addSubview:chooseCountLabel];
+
+    
+    UIView *sepector = [[UIView alloc]initWithFrame:CGRectMake(0, 44 - 1, self.view.frame.size.width, 1)];
+    [sepector setBackgroundColor:[UIColor colorWithWhite:235.0/255 alpha:1.0]];
+    [chooseAllView addSubview:sepector];
+    
+    [headView addSubview:chooseAllView];
+    self.massTableView.tableHeaderView = headView;
     self.massTableView.contentOffset = CGPointMake(0, CGRectGetHeight(self.searchBar.bounds));
 }
 
@@ -85,7 +139,9 @@
         [thread start];
         
     } else{
+        allCount = 0;
         groupHolderArr = [[NSMutableArray alloc]init];
+        originalGroupArr = [[NSMutableArray alloc]init];
         for (XXTGroup *group in userRole.contactGroupArr) {
             GroupHolder *groupHolder = [[GroupHolder alloc]init];
             NSMutableArray *contactHolderArr = [[NSMutableArray alloc]init];
@@ -94,12 +150,14 @@
                 [contactHolder setContactPerson:contactPerson];
                 [contactHolder setIsChosen:NO];
                 [contactHolderArr addObject:contactHolder];
+                allCount++;
             }
             [groupHolder setContactHolderArr:contactHolderArr];
             [groupHolder setIsExpand:NO];
             [groupHolder setGroupChosenType:GroupChosenTypeNone];
             [groupHolder setGroupName:group.groupName];
             [groupHolderArr addObject:groupHolder];
+            [originalGroupArr addObject:groupHolder];
         }
         [self.massTableView reloadData];
     }
@@ -115,6 +173,44 @@
     
 }
 
+//选择全部按钮响应
+-(void)chooseAllAction:(id)sender{
+    if (chooseAllButton.selected) {
+        for (GroupHolder *groupHolder  in groupHolderArr) {
+            groupHolder.groupChosenType = GroupChosenTypeNone;
+            for (ContactHolder *contactHolder in groupHolder.contactHolderArr) {
+                contactHolder.isChosen = NO;
+            }
+        }
+        [self changeChosenCountWithCount:0];
+    } else{
+        int count = 0;
+        for (GroupHolder *groupHolder  in groupHolderArr) {
+            groupHolder.groupChosenType = GroupChosenTypeAll;
+            for (ContactHolder *contactHolder in groupHolder.contactHolderArr) {
+                contactHolder.isChosen = YES;
+            }
+            count += [groupHolder.contactHolderArr count];
+        }
+        [self changeChosenCountWithCount:count];
+    }
+    [self.massTableView reloadData];
+}
+//改变总共选择人数label
+- (void)changeChosenCountWithCount:(int)count{
+    chosenCount = count;
+    NSMutableAttributedString *labelText = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"已选%d人",count]];
+    NSInteger len = labelText.length - 3;
+    [labelText addAttribute:(NSString *)kCTForegroundColorAttributeName value:(id)[UIColor redColor].CGColor range:NSMakeRange(2, len)];
+    [chooseCountLabel setText:labelText];
+    
+    //当选中人数等于总人数时。改变全选按钮的状态
+    if (chosenCount == allCount) {
+        chooseAllButton.selected = YES;
+    } else {
+        chooseAllButton.selected = NO;
+    }
+}
 
 - (void)viewWillAppear:(BOOL)animated{
     if([self respondsToSelector:@selector(edgesForExtendedLayout)])
@@ -129,7 +225,15 @@
     return [groupHolderArr count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 44;
+    CGFloat height = 0;
+    if (isSearching) {
+        height = 0;
+        [chooseAllButton setEnabled:NO];
+    } else{
+        height = 44;
+        [chooseAllButton setEnabled:YES];
+    }
+    return height;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 {
@@ -180,6 +284,7 @@
 	[eButton setTitle:groupHolder.groupName forState:UIControlStateNormal];
 	[eButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [eButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [eButton setTitleColor:[UIColor colorWithWhite:52.0/255 alpha:1.0] forState:UIControlStateNormal];
 	[eButton setBackgroundColor:[UIColor whiteColor]];
 	[hView addSubview: eButton];
     
@@ -192,13 +297,7 @@
     [chooseButton setFrame:CGRectMake(15, 9.5, 25, 25)];
     [chooseButton setTag:section];
     [chooseButton addTarget:self action:@selector(chooseGroupAction:) forControlEvents:UIControlEventTouchDown];
-    if (groupHolder.groupChosenType == GroupChosenTypeNone) {
-        [chooseButton setImage:[UIImage imageNamed:@"unselected"] forState:UIControlStateNormal];
-    } else if(groupHolder.groupChosenType == GroupChosenTypeSome){
-        [chooseButton setImage:[UIImage imageNamed:@"someselected"] forState:UIControlStateNormal];
-    } else if (groupHolder.groupChosenType == GroupChosenTypeAll){
-        [chooseButton setImage:[UIImage imageNamed:@"allselected"] forState:UIControlStateNormal];
-    }
+    
     [hView addSubview:chooseButton];
 
     UIColor *orangeColor = [UIColor colorWithRed:251.0/255 green:131.0/255 blue:9.0/255 alpha:1.0];
@@ -206,20 +305,30 @@
     UIColor *textColor = [[UIColor alloc]init];
     NSString *textStr = [[NSString alloc]init];
     //统计选中数.
-    int chosenCount = 0;
+    int count = 0;
     for (ContactHolder *contactHolder in groupHolder.contactHolderArr) {
         if (contactHolder.isChosen) {
-            chosenCount++;
+            count++;
         }
     }
-    if (chosenCount == [groupHolder.contactHolderArr count]) {
+    if ((count == [groupHolder.contactHolderArr count] && count != 0) || groupHolder.groupChosenType == GroupChosenTypeAll) {
         textColor = orangeColor;
-        textStr = [NSString stringWithFormat:@"全选%d人",chosenCount];
-    } else if (chosenCount == 0){
+        textStr = [NSString stringWithFormat:@"全选%d人",count];
+    } else if (count == 0 && !groupHolder.groupChosenType == GroupChosenTypeAll){
         textStr = [NSString stringWithFormat:@""];
+        
     } else{
         textColor = greenColor;
-        textStr = [NSString stringWithFormat:@"已选%d人",chosenCount];
+        textStr = [NSString stringWithFormat:@"已选%d人",count];
+        groupHolder.groupChosenType = GroupChosenTypeSome;
+    }
+    
+    if (groupHolder.groupChosenType == GroupChosenTypeNone) {
+        [chooseButton setImage:[UIImage imageNamed:@"unselected"] forState:UIControlStateNormal];
+    } else if(groupHolder.groupChosenType == GroupChosenTypeSome){
+        [chooseButton setImage:[UIImage imageNamed:@"someselected"] forState:UIControlStateNormal];
+    } else if (groupHolder.groupChosenType == GroupChosenTypeAll){
+        [chooseButton setImage:[UIImage imageNamed:@"allselected"] forState:UIControlStateNormal];
     }
 
     UILabel *numLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 30 - 100, 16, 90, 14)];
@@ -280,21 +389,32 @@
 - (void)chooseOneGroup:(int)section
 {
     GroupHolder *groupHolder = [groupHolderArr objectAtIndex:section];
+
+    int count = chosenCount;
+    
     for (ContactHolder *contactHolder in groupHolder.contactHolderArr) {
         GroupChosenType type = groupHolder.groupChosenType;
         if (type == GroupChosenTypeAll) {
+            if (!contactHolder.isChosen) {
+                count++;
+            }
             contactHolder.isChosen = YES;
+
         } else{
+            if (contactHolder.isChosen) {
+                count--;
+            }
             contactHolder.isChosen = NO;
         }
     }
+    [self changeChosenCountWithCount:count];
     [self.massTableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger number = 0;
     GroupHolder *groupHolder = [groupHolderArr objectAtIndex:section];
-    if (groupHolder.isExpand) {
+    if (groupHolder.isExpand || isSearching) {
         number = [groupHolder.contactHolderArr count];
     } else{
         number = 0;
@@ -318,15 +438,24 @@
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    [self.strongSearchDisplayController can];
+    [self.searchBar resignFirstResponder];
+
     GroupHolder *groupHolder = [groupHolderArr objectAtIndex:indexPath.section];
     ContactHolder *contactHolder = [groupHolder.contactHolderArr objectAtIndex:indexPath.row];
     BOOL isChosen = contactHolder.isChosen;
+    int count = chosenCount;
+    if (isChosen == YES) {
+        count--;
+    } else{
+        count++;
+    }
+    [self changeChosenCountWithCount:count];
     [contactHolder setIsChosen:!isChosen];
     GroupChosenType curType;
-    int chosenCount = 0;
     for (ContactHolder *contactHolder in groupHolder.contactHolderArr) {
         if (contactHolder.isChosen) {
-            chosenCount ++;
+            count ++;
         }
     }
     if (chosenCount == [groupHolder.contactHolderArr count]) {
@@ -339,6 +468,64 @@
     groupHolder.groupChosenType = curType;
     [self.massTableView reloadData];
 
+}
+#pragma UISearchBarDelegate mark
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    isSearching = YES;
+    groupHolderArr = [NSMutableArray array];
+    for (int i = 0 ; i < [originalGroupArr count]; i ++) {
+        GroupHolder *orinalHolder = [originalGroupArr objectAtIndex:i];
+        GroupHolder *newHolder = [[GroupHolder alloc]init];
+        NSMutableArray *contactArr = [[NSMutableArray alloc]init];
+        for (ContactHolder *contactHolder in orinalHolder.contactHolderArr) {
+            if ([self isMatchWithSeatchText:searchText originalText:contactHolder.contactPerson.name]) {
+                [contactArr addObject:contactHolder];
+            }
+            NSLog(@"search");
+        }
+        [newHolder setContactHolderArr:contactArr];
+        newHolder.groupChosenType = orinalHolder.groupChosenType;
+        newHolder.isExpand = orinalHolder.isExpand;
+        [groupHolderArr addObject:newHolder];
+    }
+    if (searchText.length == 0) {
+        [self.searchBar resignFirstResponder];
+        isSearching = NO;
+        groupHolderArr = originalGroupArr;
+    }
+    [self.massTableView reloadData];
+}
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    
+    isSearching = NO;
+    groupHolderArr = originalGroupArr;
+    [self.massTableView reloadData];
+}
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    isSearching = NO;
+}
+//字符串匹配搜索算法
+- (BOOL)isMatchWithSeatchText:(NSString *)searchText originalText:(NSString *)originalText{
+    BOOL result = YES;
+    int start = 0;
+    for (int i = 0; i < searchText.length; i ++) {
+        unichar c = [searchText characterAtIndex:i];
+        for (int k = start; k < originalText.length; k ++) {
+            if (c == [originalText characterAtIndex:k]) {
+                start = k + 1;
+                break;
+            }
+            if (k == originalText.length - 1) {
+                result = NO;
+            }
+        }
+    }
+    
+    return result;
+}
+#pragma UIScrollViewDelegate mark
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.searchBar resignFirstResponder];
 }
 #pragma MassContactViewDelegate mark
 - (void)MassContactView:(MassContactView *)massContactView withIndexPath:(NSIndexPath *)indexPath{

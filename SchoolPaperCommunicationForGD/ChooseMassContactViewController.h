@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "MassContactView.h"
 
-@interface ChooseMassContactViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,MassContactViewDelegate>
+@interface ChooseMassContactViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,MassContactViewDelegate,UIScrollViewDelegate>
 
 @property (nonatomic, retain) UITableView *massTableView;
 @property (nonatomic, retain) UISearchBar *searchBar;
 @property (nonatomic, retain) NSMutableArray *groupHolderArr;
+@property (nonatomic, retain) NSMutableArray *originalGroupArr;
 
 @end

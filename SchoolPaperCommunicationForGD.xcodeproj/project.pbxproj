@@ -10,9 +10,10 @@
 		591102701856FD5F00DE41ED /* AddNewCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5911026F1856FD5F00DE41ED /* AddNewCommentViewController.m */; };
 		5913102C185411A600B57E96 /* addphoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5913102B185411A600B57E96 /* addphoto@2x.png */; };
 		59142FB118558229006FD141 /* ChoosePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9CCACE1E184F1A7E00739327 /* ChoosePlayerViewController.xib */; };
+		5928933D1857DEC900DED6EF /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5928933C1857DEC900DED6EF /* MyMessageViewController.m */; };
+		592893401857DEFE00DED6EF /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5928933F1857DEFE00DED6EF /* MessageCell.m */; };
 		59BD2211185301CF00528A12 /* AddNewShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD2208185301CF00528A12 /* AddNewShareViewController.m */; };
-		59BD2212185301CF00528A12 /* commentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD220A185301CF00528A12 /* commentCell.m */; };
-		59BD2213185301CF00528A12 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD220C185301CF00528A12 /* DetailViewController.m */; };
+		59BD2212185301CF00528A12 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD220A185301CF00528A12 /* CommentCell.m */; };
 		59BD2214185301CF00528A12 /* ShareListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD220E185301CF00528A12 /* ShareListCell.m */; };
 		59BD2215185301CF00528A12 /* ShareListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD2210185301CF00528A12 /* ShareListViewController.m */; };
 		59BD2219185301F000528A12 /* EGORefreshTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD2218185301F000528A12 /* EGORefreshTableFooterView.m */; };
@@ -38,6 +39,12 @@
 		59BD224D1853072300528A12 /* triangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 59BD223E1853072300528A12 /* triangle@2x.png */; };
 		59BD22511853074500528A12 /* comment_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 59BD224F1853074500528A12 /* comment_on@2x.png */; };
 		59BD22521853074500528A12 /* like_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 59BD22501853074500528A12 /* like_on@2x.png */; };
+		59F4F1151858B3F40071FD44 /* ShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59BD220C185301CF00528A12 /* ShareDetailViewController.m */; };
+		9C01EF76185C789C00401C31 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01EF75185C789C00401C31 /* TTTAttributedLabel.m */; };
+		9C01EF78185C78C700401C31 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C01EF77185C78C700401C31 /* CoreText.framework */; };
+		9C01EF7B185C960800401C31 /* PopMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01EF7A185C960800401C31 /* PopMenuView.m */; };
+		9C01EF81185D978200401C31 /* MsgHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C01EF7F185D978200401C31 /* MsgHistoryViewController.m */; };
+		9C01EF82185D978200401C31 /* MsgHistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C01EF80185D978200401C31 /* MsgHistoryViewController.xib */; };
 		9C0943B71859A3BB00E4265B /* SendMassMsgViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0943B51859A3BB00E4265B /* SendMassMsgViewController.m */; };
 		9C0943B81859A3BB00E4265B /* SendMassMsgViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C0943B61859A3BB00E4265B /* SendMassMsgViewController.xib */; };
 		9C0943BC1859BC1900E4265B /* ChooseMassContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C0943BA1859BC1900E4265B /* ChooseMassContactViewController.m */; };
@@ -305,12 +312,16 @@
 		5911026E1856FD5F00DE41ED /* AddNewCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewCommentViewController.h; sourceTree = "<group>"; };
 		5911026F1856FD5F00DE41ED /* AddNewCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewCommentViewController.m; sourceTree = "<group>"; };
 		5913102B185411A600B57E96 /* addphoto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addphoto@2x.png"; sourceTree = "<group>"; };
+		5928933B1857DEC900DED6EF /* MyMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMessageViewController.h; sourceTree = "<group>"; };
+		5928933C1857DEC900DED6EF /* MyMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMessageViewController.m; sourceTree = "<group>"; };
+		5928933E1857DEFE00DED6EF /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
+		5928933F1857DEFE00DED6EF /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 		59BD2207185301CF00528A12 /* AddNewShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewShareViewController.h; sourceTree = "<group>"; };
 		59BD2208185301CF00528A12 /* AddNewShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewShareViewController.m; sourceTree = "<group>"; };
-		59BD2209185301CF00528A12 /* commentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = commentCell.h; sourceTree = "<group>"; };
-		59BD220A185301CF00528A12 /* commentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = commentCell.m; sourceTree = "<group>"; };
-		59BD220B185301CF00528A12 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		59BD220C185301CF00528A12 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		59BD2209185301CF00528A12 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
+		59BD220A185301CF00528A12 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
+		59BD220B185301CF00528A12 /* ShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDetailViewController.h; sourceTree = "<group>"; };
+		59BD220C185301CF00528A12 /* ShareDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDetailViewController.m; sourceTree = "<group>"; };
 		59BD220D185301CF00528A12 /* ShareListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareListCell.h; sourceTree = "<group>"; };
 		59BD220E185301CF00528A12 /* ShareListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareListCell.m; sourceTree = "<group>"; };
 		59BD220F185301CF00528A12 /* ShareListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareListViewController.h; sourceTree = "<group>"; };
@@ -345,6 +356,14 @@
 		59BD223E1853072300528A12 /* triangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "triangle@2x.png"; sourceTree = "<group>"; };
 		59BD224F1853074500528A12 /* comment_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comment_on@2x.png"; sourceTree = "<group>"; };
 		59BD22501853074500528A12 /* like_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "like_on@2x.png"; sourceTree = "<group>"; };
+		9C01EF74185C789C00401C31 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		9C01EF75185C789C00401C31 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		9C01EF77185C78C700401C31 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		9C01EF79185C960800401C31 /* PopMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopMenuView.h; sourceTree = "<group>"; };
+		9C01EF7A185C960800401C31 /* PopMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopMenuView.m; sourceTree = "<group>"; };
+		9C01EF7E185D978200401C31 /* MsgHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgHistoryViewController.h; sourceTree = "<group>"; };
+		9C01EF7F185D978200401C31 /* MsgHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgHistoryViewController.m; sourceTree = "<group>"; };
+		9C01EF80185D978200401C31 /* MsgHistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MsgHistoryViewController.xib; sourceTree = "<group>"; };
 		9C0943B41859A3BB00E4265B /* SendMassMsgViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMassMsgViewController.h; sourceTree = "<group>"; };
 		9C0943B51859A3BB00E4265B /* SendMassMsgViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMassMsgViewController.m; sourceTree = "<group>"; };
 		9C0943B61859A3BB00E4265B /* SendMassMsgViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMassMsgViewController.xib; sourceTree = "<group>"; };
@@ -694,6 +713,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C01EF78185C78C700401C31 /* CoreText.framework in Frameworks */,
 				9C28BE7C1851E083003C1D6F /* libz.dylib in Frameworks */,
 				9C2908501849EB21002CCAF1 /* AudioToolbox.framework in Frameworks */,
 				9C29084E1849EB0E002CCAF1 /* AVFoundation.framework in Frameworks */,
@@ -734,16 +754,20 @@
 			children = (
 				59BD2207185301CF00528A12 /* AddNewShareViewController.h */,
 				59BD2208185301CF00528A12 /* AddNewShareViewController.m */,
-				59BD2209185301CF00528A12 /* commentCell.h */,
-				59BD220A185301CF00528A12 /* commentCell.m */,
-				59BD220B185301CF00528A12 /* DetailViewController.h */,
-				59BD220C185301CF00528A12 /* DetailViewController.m */,
+				59BD2209185301CF00528A12 /* CommentCell.h */,
+				59BD220A185301CF00528A12 /* CommentCell.m */,
+				59BD220B185301CF00528A12 /* ShareDetailViewController.h */,
+				59BD220C185301CF00528A12 /* ShareDetailViewController.m */,
 				59BD220D185301CF00528A12 /* ShareListCell.h */,
 				59BD220E185301CF00528A12 /* ShareListCell.m */,
 				59BD220F185301CF00528A12 /* ShareListViewController.h */,
 				59BD2210185301CF00528A12 /* ShareListViewController.m */,
 				5911026E1856FD5F00DE41ED /* AddNewCommentViewController.h */,
 				5911026F1856FD5F00DE41ED /* AddNewCommentViewController.m */,
+				5928933B1857DEC900DED6EF /* MyMessageViewController.h */,
+				5928933C1857DEC900DED6EF /* MyMessageViewController.m */,
+				5928933E1857DEFE00DED6EF /* MessageCell.h */,
+				5928933F1857DEFE00DED6EF /* MessageCell.m */,
 			);
 			name = HomeSchoolCircle;
 			sourceTree = "<group>";
@@ -796,6 +820,35 @@
 				59BD22501853074500528A12 /* like_on@2x.png */,
 			);
 			name = Detail;
+			sourceTree = "<group>";
+		};
+		9C01EF73185C787300401C31 /* TTTAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				9C01EF74185C789C00401C31 /* TTTAttributedLabel.h */,
+				9C01EF75185C789C00401C31 /* TTTAttributedLabel.m */,
+			);
+			name = TTTAttributedLabel;
+			sourceTree = "<group>";
+		};
+		9C01EF7C185D974C00401C31 /* SendMassMsg */ = {
+			isa = PBXGroup;
+			children = (
+				9C0943B41859A3BB00E4265B /* SendMassMsgViewController.h */,
+				9C0943B51859A3BB00E4265B /* SendMassMsgViewController.m */,
+				9C0943B61859A3BB00E4265B /* SendMassMsgViewController.xib */,
+			);
+			name = SendMassMsg;
+			sourceTree = "<group>";
+		};
+		9C01EF7D185D975D00401C31 /* MsgHistory */ = {
+			isa = PBXGroup;
+			children = (
+				9C01EF7E185D978200401C31 /* MsgHistoryViewController.h */,
+				9C01EF7F185D978200401C31 /* MsgHistoryViewController.m */,
+				9C01EF80185D978200401C31 /* MsgHistoryViewController.xib */,
+			);
+			name = MsgHistory;
 			sourceTree = "<group>";
 		};
 		9C0943BE1859BC2100E4265B /* chooseMassContact */ = {
@@ -1302,6 +1355,7 @@
 		9C2908371849C6D9002CCAF1 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				9C01EF73185C787300401C31 /* TTTAttributedLabel */,
 				9C0943BF1859C09500E4265B /* AttributedLabel */,
 				9C2A4E7F185876BE001017E7 /* NSString+category */,
 				9CFA5F5D1856C70800082E15 /* UIButton+category */,
@@ -1420,6 +1474,7 @@
 		9CA36FF4184841F1001748F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C01EF77185C78C700401C31 /* CoreText.framework */,
 				9C28BE7B1851E083003C1D6F /* libz.dylib */,
 				9C29084F1849EB21002CCAF1 /* AudioToolbox.framework */,
 				9C29084D1849EB0E002CCAF1 /* AVFoundation.framework */,
@@ -1513,13 +1568,14 @@
 		9CCACDA7184C811100739327 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				9C01EF7D185D975D00401C31 /* MsgHistory */,
+				9C01EF7C185D974C00401C31 /* SendMassMsg */,
 				9C0943C41859C8AE00E4265B /* ChooseTemplate */,
 				9C0943BE1859BC2100E4265B /* chooseMassContact */,
 				9CCACDAB184C821A00739327 /* InfoViewController.h */,
 				9CCACDAC184C821A00739327 /* InfoViewController.m */,
-				9C0943B41859A3BB00E4265B /* SendMassMsgViewController.h */,
-				9C0943B51859A3BB00E4265B /* SendMassMsgViewController.m */,
-				9C0943B61859A3BB00E4265B /* SendMassMsgViewController.xib */,
+				9C01EF79185C960800401C31 /* PopMenuView.h */,
+				9C01EF7A185C960800401C31 /* PopMenuView.m */,
 			);
 			name = Information;
 			sourceTree = "<group>";
@@ -1928,6 +1984,7 @@
 				9CCACE2C184F320D00739327 /* succeed@2x.png in Resources */,
 				9CCACE18184F16A300739327 /* Main.storyboard in Resources */,
 				9C1BF0B7185362D3002E57DD /* message_click@2x.png in Resources */,
+				9C01EF82185D978200401C31 /* MsgHistoryViewController.xib in Resources */,
 				9C12ACDA184B295200C81424 /* bookmark_edit_item_bg.png in Resources */,
 				9C1BF0B5185362D3002E57DD /* chat_click@2x.png in Resources */,
 				9C6306E81853077600511954 /* audio@2x.png in Resources */,
@@ -1956,6 +2013,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59F4F1151858B3F40071FD44 /* ShareDetailViewController.m in Sources */,
 				9CCACDB6184C824800739327 /* SetUpViewController.m in Sources */,
 				9C2A4E7918586D45001017E7 /* AnswerView.m in Sources */,
 				59BD2219185301F000528A12 /* EGORefreshTableFooterView.m in Sources */,
@@ -1965,6 +2023,7 @@
 				59BD221D1853022A00528A12 /* NIDropDown.m in Sources */,
 				9C1BF1121855D5FA002E57DD /* XXTHomework.m in Sources */,
 				9C0943CC1859D8DE00E4265B /* TemplateHolder.m in Sources */,
+				9C01EF7B185C960800401C31 /* PopMenuView.m in Sources */,
 				9CFA5F7818574BFF00082E15 /* XXTOtherPerson.m in Sources */,
 				9CFA5F5C1856C09900082E15 /* NSNumber+stringCompare.m in Sources */,
 				9C1BF11D1855D5FA002E57DD /* XXTAnswer.m in Sources */,
@@ -1990,14 +2049,15 @@
 				9C2908191848A2A3002CCAF1 /* ChatViewController.m in Sources */,
 				9CCACDB3184C823D00739327 /* DynamicsViewController.m in Sources */,
 				9C1BF10F1855D5FA002E57DD /* XXTEvaluate.m in Sources */,
-				59BD2212185301CF00528A12 /* commentCell.m in Sources */,
+				9C01EF76185C789C00401C31 /* TTTAttributedLabel.m in Sources */,
+				59BD2212185301CF00528A12 /* CommentCell.m in Sources */,
+				5928933D1857DEC900DED6EF /* MyMessageViewController.m in Sources */,
 				9C28BE351851DED3003C1D6F /* GTMBase64.m in Sources */,
 				9C1BF10D1855D5FA002E57DD /* XXTBulletin.m in Sources */,
 				9C1BF1131855D5FA002E57DD /* XXTHistoryMessage.m in Sources */,
 				9C2908161848916B002CCAF1 /* ContactsViewController.m in Sources */,
 				9C1BF1191855D5FA002E57DD /* XXTMicroblog.m in Sources */,
 				9C28BE381851DED3003C1D6F /* NSDate+string.m in Sources */,
-				59BD2213185301CF00528A12 /* DetailViewController.m in Sources */,
 				9CFA5F7618574BFF00082E15 /* XXTClass.m in Sources */,
 				9CA37006184841F1001748F3 /* AppDelegate.m in Sources */,
 				9C1BF11B1855D5FA002E57DD /* XXTPersonBase.m in Sources */,
@@ -2008,6 +2068,7 @@
 				9C0943C21859C0A600E4265B /* AttributedLabel.m in Sources */,
 				9C1BF1181855D5FA002E57DD /* XXTComment.m in Sources */,
 				9C0943CF1859DA0E00E4265B /* TemplateView.m in Sources */,
+				9C01EF81185D978200401C31 /* MsgHistoryViewController.m in Sources */,
 				9C1BF1171855D5FA002E57DD /* XXTModuleMessage.m in Sources */,
 				9C1BF1141855D5FA002E57DD /* XXTMessageReceive.m in Sources */,
 				9C0943B71859A3BB00E4265B /* SendMassMsgViewController.m in Sources */,
@@ -2032,6 +2093,7 @@
 				9CCACE2A184F2C1F00739327 /* XXTAlertView.m in Sources */,
 				9CFA5F7718574BFF00082E15 /* XXTGrade.m in Sources */,
 				9C29083B1849C712002CCAF1 /* EGORefreshTableHeaderView.m in Sources */,
+				592893401857DEFE00DED6EF /* MessageCell.m in Sources */,
 				59BD2211185301CF00528A12 /* AddNewShareViewController.m in Sources */,
 				9C12ACD0184B170400C81424 /* VoiceView.m in Sources */,
 				9C0943D9185AF2B200E4265B /* ContactHolder.m in Sources */,

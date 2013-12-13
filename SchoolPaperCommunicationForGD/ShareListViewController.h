@@ -11,7 +11,6 @@
 #import "EGORefreshTableHeaderView.h"
 #import "NIDropDown.h"
 #import "ShareListCell.h"
-#import "Dao.h"
 
 @interface ShareListViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, NIDropDownDelegate, ShareListCellDelegate>
 {

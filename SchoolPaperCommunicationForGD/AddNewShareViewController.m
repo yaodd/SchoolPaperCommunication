@@ -7,6 +7,7 @@
 //
 
 #import "AddNewShareViewController.h"
+#import "AppDelegate.h"
 
 @interface AddNewShareViewController ()
 
@@ -14,8 +15,6 @@
 
 @implementation AddNewShareViewController
 {
-    CGFloat originY;
-    BOOL isIOS7;
     
     UIBarButtonItem *rightBarButton;
     
@@ -38,16 +37,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"7.0" options: NSNumericSearch];
-    if (order == NSOrderedSame || order == NSOrderedDescending)
+    if (IOS_VERSION_7_OR_ABOVE)
     {
         // OS version >= 7.0
-        originY = 64;
-        isIOS7 = YES;
-    }else{
-        isIOS7 = NO;
-        originY = 0;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
+    
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self initNavigationViews];
     
@@ -55,7 +50,7 @@
     view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:view];
     
-    shareContent= [[UITextView alloc] initWithFrame:CGRectMake(10, originY+10, 310, 150)];
+    shareContent= [[UITextView alloc] initWithFrame:CGRectMake(10, 10, 310, 150)];
     shareContent.backgroundColor = [UIColor clearColor];
     shareContent.font = [UIFont fontWithName:@"Heiti SC" size:16.0];
     shareContent.textColor = [UIColor blackColor];

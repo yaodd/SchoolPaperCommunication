@@ -13,10 +13,12 @@
 
 }
 @property (nonatomic,retain)NSMutableAttributedString          *attString;
+@property (nonatomic,retain)UIFont *myFont;
 @end
 
 @implementation AttributedLabel
 @synthesize attString = _attString;
+@synthesize myFont;
 
 - (void)dealloc{
     [_attString release];
@@ -36,8 +38,19 @@
     
     CATextLayer *textLayer = [CATextLayer layer];
     textLayer.string = _attString;
+    
     textLayer.transform = CATransform3DMakeScale(0.5,0.5,1);
-    textLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    CGFloat textLayerX = 0;
+//    CGSize size = CGSizeMake(400,myFont.systemFontSize);
+//    CGSize labelsize = [textLayer.string sizeWithFont:myFont constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    if (self.textAlignment == NSTextAlignmentLeft) {
+        textLayerX = 0;
+    } else if (self.textAlignment == NSTextAlignmentRight){
+        textLayerX = self.frame.size.width - textLayer.frame.size.width;
+    } else if (self.textAlignment == NSTextAlignmentCenter){
+        textLayerX = (self.frame.size.width - textLayer.frame.size.width) / 2;
+    }
+    textLayer.frame = CGRectMake(textLayerX, 0, self.frame.size.width, self.frame.size.height);
     [self.layer addSublayer:textLayer];
 }
 
@@ -62,6 +75,7 @@
 
 // 设置某段字的字体
 - (void)setFont:(UIFont *)font fromIndex:(NSInteger)location length:(NSInteger)length{
+    myFont = font;
     if (location < 0||location>self.text.length-1||length+location>self.text.length) {
         return;
     }

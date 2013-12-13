@@ -6,9 +6,10 @@
 //  Copyright (c) 2013年 yaodd. All rights reserved.
 //
 
-#import "commentCell.h"
+#import "CommentCell.h"
+#import "AppDelegate.h"
 
-@implementation commentCell
+@implementation CommentCell
 @synthesize comment;
 @synthesize head;
 
@@ -36,6 +37,7 @@
         comment.numberOfLines = 0;
         [self.contentView addSubview:comment];
         
+        //tableView的分界线的初始化
         UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1)];
         line.backgroundColor = [UIColor colorWithRed:213/255.0 green:213/255.0 blue:213/255.0 alpha:1.0];
         [self.contentView addSubview:line];
